@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { MarketingShell } from "@/components/marketing/shell";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { JsonLd } from "@/components/JsonLd";
+import { webPageSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -18,6 +20,14 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <MarketingShell>
+      <JsonLd
+        data={webPageSchema({
+          path: "/contact",
+          name: "Contact famile",
+          description:
+            "Reach the famile team for partnerships, care-team integrations, or a guided walkthrough of the suite.",
+        })}
+      />
       <section className="py-32 sm:py-40">
         <Container>
           <div className="mx-auto max-w-2xl text-center">

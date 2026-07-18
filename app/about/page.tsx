@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MarketingShell } from "@/components/marketing/shell";
 import { Container } from "@/components/ui/container";
+import { JsonLd } from "@/components/JsonLd";
+import { webPageSchema } from "@/lib/schema";
 import { products } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "We build health products that disappear into care. The famile ethos: AI-native and AI-enabled, calm enough to live with, energising enough to act on.",
+    "We build health products that disappear into care. The famile ethos: AI-native and AI-enabled, quiet to live with, present when it matters.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About famile - health products that disappear into care",
@@ -19,6 +21,14 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <MarketingShell>
+      <JsonLd
+        data={webPageSchema({
+          path: "/about",
+          name: "About famile",
+          description:
+            "Why famile builds health products that disappear into care.",
+        })}
+      />
       <section className="py-32 sm:py-40">
         <Container>
           <div className="mx-auto max-w-3xl">
@@ -34,19 +44,20 @@ export default function AboutPage() {
             <div className="mt-10 space-y-6 text-lg leading-relaxed text-ink-muted">
               <p>
                 famile is a suite of AI-native and AI-enabled health products,
-                built for the long arc of staying well - metabolic, mental,
+                built for the long arc of staying well — metabolic, mental,
                 physical. Not single interventions. Continuous, adaptive,
                 human-scale care.
               </p>
               <p>
-                Every product shares one design ethos: calm enough to live
-                with, energising enough to act on. Restful by default, so it
-                never adds to the noise of care. Kinetic the moment it
-                matters, so the right action arrives in time.
+                Every product shares one design ethos: quiet to live with, and
+                present the moment it matters. Quiet by default, so it never
+                adds to the noise of care. Ready when a decision needs making,
+                so the right action arrives in time.
               </p>
               <p>
-                We surface what diverged. We trust the rest to run quietly.
-                Care teams see signal, never noise.
+                We surface what shifted. We trust the rest to run quietly. Care
+                teams see signal, never noise — and reach out because something
+                matters, not to check a box.
               </p>
             </div>
 

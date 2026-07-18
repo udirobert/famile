@@ -1,15 +1,17 @@
 import type { MetadataRoute } from "next";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://famile.xyz";
-  const now = new Date();
+const BASE = "https://famile.xyz";
 
+// Reflects the last real content change, not the build time. Bump this when
+// copy or routes change so crawlers re-fetch only what moved.
+const LAST_UPDATED = new Date("2026-07-18");
+
+export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    { url: `${base}/`, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    { url: `${base}/products/sukari`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/products/orbura`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${base}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}/dashboard`, lastModified: now, changeFrequency: "weekly", priority: 0.4 },
+    { url: `${BASE}/`, lastModified: LAST_UPDATED, changeFrequency: "monthly", priority: 1 },
+    { url: `${BASE}/products/sukari`, lastModified: LAST_UPDATED, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/products/orbura`, lastModified: LAST_UPDATED, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/about`, lastModified: LAST_UPDATED, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/contact`, lastModified: LAST_UPDATED, changeFrequency: "monthly", priority: 0.6 },
   ];
 }

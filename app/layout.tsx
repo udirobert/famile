@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
+import { JsonLd } from "@/components/JsonLd";
+import { siteGraphSchema } from "@/lib/schema";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +25,7 @@ const fraunces = Fraunces({
 });
 
 const description =
-  "famile is a suite of AI-native and AI-enabled health products built for continuous, human-scale care. Meet Sukari - the AI adherence engine for metabolic health - and Orbura - recovery intelligence from biometric signal.";
+  "famile is a suite of AI-native and AI-enabled health products built for the long arc of staying well. Meet Sukari — a daily companion for metabolic care — and Orbura — recovery intelligence for people and the teams around them.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://famile.xyz"),
@@ -99,6 +101,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-canvas text-ink">
+        <JsonLd data={siteGraphSchema()} />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

@@ -42,8 +42,8 @@ export function CTA() {
             variants={fadeUp}
             className="mx-auto mt-6 max-w-md text-lg text-ink-muted"
           >
-            Meet Sukari and Orbura. Two products, one calmer kind of care -
-            calm enough to live with, energising enough to act on.
+            Meet Sukari and Orbura. Two products, one calmer kind of care —
+            quiet to live with, ready the moment it matters.
           </motion.p>
           <motion.div
             variants={fadeUp}

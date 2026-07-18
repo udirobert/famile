@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ProductDetail } from "@/components/app/product-detail";
+import { JsonLd } from "@/components/JsonLd";
 import { getProduct } from "@/lib/products";
+import { productSchema, breadcrumbSchema } from "@/lib/schema";
 
 export function generateMetadata(): Metadata {
   const product = getProduct("orbura");
@@ -22,5 +24,18 @@ export function generateMetadata(): Metadata {
 }
 
 export default function OrburaPage() {
-  return <ProductDetail product={getProduct("orbura")} />;
+  const product = getProduct("orbura");
+  return (
+    <>
+      <JsonLd data={productSchema(product)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Suite", path: "/#suite" },
+          { name: product.name, path: `/products/${product.slug}` },
+        ])}
+      />
+      <ProductDetail product={product} />
+    </>
+  );
 }
