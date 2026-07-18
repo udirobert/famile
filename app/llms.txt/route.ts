@@ -12,19 +12,17 @@ export function GET() {
     )
     .join("\n");
 
-  const names = products.map((p) => p.name).join(", ");
-
   const body = `# famile
 
-> famile is a compass for health and wellness. Leave wiser. Apps optional.
+> famile is a warm place to peruse — or just be. Mira keeps company. Apps in the family are optional and not the point of the visit.
 
-## Products
+## Also in the family
 ${productLines}
 
 ## Site
-- [Home](https://famile.xyz/): Suite overview — ${names}.
-- [Ask](https://famile.xyz/ask): Orientation with Mira. Not medical advice.
-- [About](https://famile.xyz/about): Compass, not storefront.
+- [Home](https://famile.xyz/): A warm space. Atmosphere, principles, Mira.
+- [Mira](https://famile.xyz/ask): Sit with Mira. Not medical advice.
+- [About](https://famile.xyz/about): You are the story; this is space around you.
 - [Contact](https://famile.xyz/contact): Partnerships and walkthroughs.
 
 ## Machine-readable
@@ -34,7 +32,7 @@ ${productLines}
 
 ## Legal
 - [Privacy Policy](https://famile.xyz/privacy): How famile handles information. /ask queries are not stored; input is sent to the AI provider (Anthropic). Not medical advice.
-- [Terms of Use](https://famile.xyz/terms): Terms for using the site and the /ask agent. Informational only, not medical advice.
+- [Terms of Use](https://famile.xyz/terms): Terms for using the site and Mira. Informational only, not medical advice.
 `;
 
   return new Response(body, {

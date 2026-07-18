@@ -22,13 +22,12 @@ export default function NotFound() {
           <span className="text-aurora-gradient text-luminous">here.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-md text-ink-muted">
-          This route is quiet - maybe too quiet. Let us guide you back to
-          something useful.
+          This corner is empty. The rest of the space is still here.
         </p>
         <div className="mt-10 flex justify-center gap-3">
-          <Button href="/">Back to site</Button>
+          <Button href="/">Home</Button>
           <Button href="/ask" variant="secondary">
-            Ask
+            Ask Mira
           </Button>
         </div>
       </Container>

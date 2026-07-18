@@ -28,7 +28,7 @@ export function CTA() {
           />
           <TextReveal
             as="h2"
-            text="Leave with something useful."
+            text="Mira is here, if you'd like company."
             className="font-display text-4xl tracking-tight sm:text-5xl"
             stagger={0.06}
           />
@@ -38,12 +38,9 @@ export function CTA() {
           >
             <Magnetic strength={0.3} className="inline-flex">
               <Button href="/ask" size="lg">
-                Ask
+                Ask Mira
               </Button>
             </Magnetic>
-            <Button href="/contact" size="lg" variant="secondary">
-              Contact
-            </Button>
           </motion.div>
         </motion.div>
       </Container>

@@ -1,68 +1,50 @@
-# Famile vision — the compass
+# Famile vision — a warm space
 
 ## Purpose
 
-**Famile (famile.xyz) is a compass**, not a storefront and not a fourth clinical product.
+**famile.xyz is a warm place to peruse — or just be.** Not a storefront. Not a fourth clinical product.
 
-Its job is to help someone orient: name their situation, learn a useful health or wellness takeaway, and leave wiser — even if they never open another app.
+You are the story. This site is space around you. Mira keeps company if you'd like it. Sukari, Orbura, and Ardum live in the family; they may or may not be useful to someone visiting — they are not why the space exists.
 
-The deeper products — Sukari, Orbura, and Ardum — deliver continuous, personalized care and practice. Famile points toward them only when the insight clearly maps. Clicking through is never required for the experience to succeed.
-
-## Primary gift vs secondary outcome
+## Primary gift vs secondary presence
 
 | Priority | Outcome |
 |----------|---------|
-| **Primary** | Orientation + insight. A takeaway the person can use today. |
-| **Secondary** | Soft match to a product when continuity would clearly help. |
+| **Primary** | Atmosphere and company. Permission to stay without a task. |
+| **Secondary** | Soft awareness that family apps exist (About, footer, Mira if asked). |
 
-Conversion is an outcome of accurate, kind orientation — not the north-star metric.
+**Success sounds like:** “I felt welcome. I didn’t feel sold to.”
 
-**Success sounds like:** “I understand myself better.”
-
-**North-star copy rule:** Never make someone feel they failed the experience by not opening Sukari, Orbura, or Ardum.
+**North-star copy rule:** Never make someone feel they failed by not opening an app — or by not “checking in.”
 
 ## Division of labor
 
 ```text
 Person
-  → Famile (compass): orientation, insight, optional soft match
-       → takeaway (done — no click required)
-       ⇢ Sukari / Orbura / Ardum (earned, optional continuity)
+  → famile.xyz (warm space): peruse, be, sit with Mira
+       ⇢ Sukari / Orbura / Ardum (family apps — only if ever useful)
 ```
 
 | Layer | Owns |
 |-------|------|
-| **Famile** | Naming the situation, teaching the signal, leaving someone wiser |
-| **Sukari / Orbura / Ardum** | Daily companion loops, personalization, care-team or practice continuity |
+| **famile.xyz** | Atmosphere, Mira’s company, quiet orientation |
+| **Sukari / Orbura / Ardum** | Continuous care and practice — elsewhere |
 
-Famile must not overpromise what only the product apps can do. Trying to match their customization here either dilutes those products or misleads the visitor.
+## Mira
 
-## Mira on the suite site
+Mira is Famile’s agentic persona. On this site she is **company**, not a funnel:
 
-Mira is Famile’s shared agent identity across products. On famile.xyz she is **orientation-only**:
+- No medical advice or diagnosis
+- No implied cross-product memory
+- No product pitch as the default ending
 
-- No medical advice, diagnosis, or treatment recommendations
-- No implied cross-product memory or access
-- Default end state is a takeaway; product mentions are quiet and optional
+## What famile.xyz is not
 
-## What Famile is not
-
-- A marketplace organized around SKUs
-- An AI doctor or symptom chatbot
+- A marketplace or suite landing page first
 - An urgency or conversion engine
-- A second care-delivery app competing with the suite products
+- A clinical “check-in”
 - A place that silently converts curiosity into permission
 
 ## Measures
 
-Optimize for:
-
-- Clarity gained in one visit
-- Takeaways that stand alone
-- Soft matches that feel earned, not pushed
-- Trust demonstrated by never punishing non-conversion
-
-Do not optimize for:
-
-- Click-through rate as the primary KPI
-- “Enter the suite” as the only successful ending
+Optimize for warmth, clarity, and non-pressure. Do not optimize for click-through to apps.

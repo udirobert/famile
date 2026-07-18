@@ -17,13 +17,13 @@ export function ProductSuite() {
         <div className="mx-auto max-w-3xl text-center">
           <TextReveal
             as="p"
-            text="THE SUITE"
+            text="WHAT'S HERE"
             className="mb-4 text-xs uppercase tracking-[0.25em] text-ink-dim"
             stagger={0.04}
           />
           <TextReveal
             as="h2"
-            text="Three deeper paths."
+            text="Care and practice, when useful."
             className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
             stagger={0.06}
           />

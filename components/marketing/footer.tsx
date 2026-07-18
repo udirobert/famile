@@ -17,14 +17,14 @@ export function Footer() {
             famile
           </NextLink>
           <p className="mt-4 text-sm text-ink-muted">
-            Leave wiser. Apps optional.
+            A warm place to peruse — or just be.
           </p>
         </div>
 
         <div className="grid grid-cols-2 gap-12 sm:grid-cols-3 sm:gap-16">
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
-              Suite
+              Also here
             </p>
             <ul className="space-y-3 text-sm">
               {products.map((p) => (
@@ -37,19 +37,11 @@ export function Footer() {
                   </NextLink>
                 </li>
               ))}
-              <li>
-                <NextLink
-                  href="/dashboard"
-                  className="text-ink-muted transition-colors hover:text-ink"
-                >
-                  Dashboard
-                </NextLink>
-              </li>
             </ul>
           </div>
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
-              Company
+              Space
             </p>
             <ul className="space-y-3 text-sm">
               <li>
@@ -57,7 +49,7 @@ export function Footer() {
                   href="/ask"
                   className="text-ink-muted transition-colors hover:text-ink"
                 >
-                  Ask
+                  Mira
                 </NextLink>
               </li>
               <li>
@@ -104,7 +96,7 @@ export function Footer() {
         </div>
       </Container>
       <Container className="flex flex-col items-center justify-between gap-4 border-t border-line py-8 text-xs text-ink-dim sm:flex-row">
-        <p>© {new Date().getFullYear()} famile. Orientation first.</p>
+        <p>© {new Date().getFullYear()} famile.</p>
         <p>famile.xyz</p>
       </Container>
     </footer>

@@ -99,21 +99,20 @@ export function Ask() {
           <div className="flex items-center gap-3">
             <span className="h-2 w-2 animate-pulse rounded-full bg-aurora-mint" />
             <span className="font-display text-lg tracking-tight">Mira</span>
-            <span className="text-xs text-ink-dim">orientation</span>
           </div>
           <span className="text-[10px] uppercase tracking-[0.16em] text-ink-dim">
             {live === null
-              ? "ready"
+              ? "here"
               : live
-                ? "live reasoning"
-                : "sample answers · live needs a key"}
+                ? "live"
+                : "sample answers"}
           </span>
         </div>
 
         <div className="max-h-[44vh] min-h-[200px] overflow-y-auto px-6 py-6">
           {messages.length === 0 ? (
             <div className="space-y-4">
-              <p className="text-sm text-ink-muted">Try a question.</p>
+              <p className="text-sm text-ink-muted">Say whatever&apos;s on your mind.</p>
               <div className="flex flex-wrap gap-2">
                 {sampleQA.map((qa) => (
                   <button
@@ -174,7 +173,7 @@ export function Ask() {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask…"
+            placeholder="What’s on your mind…"
             className="flex-1 bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink-dim focus:outline-none"
             disabled={busy}
           />
@@ -188,7 +187,7 @@ export function Ask() {
         </form>
       </div>
       <p className="mt-4 text-center text-xs text-ink-dim">
-        Not medical advice. Don&apos;t share personal health details.
+        Not medical advice. Keep personal health details private.
       </p>
     </div>
   );

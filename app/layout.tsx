@@ -25,12 +25,12 @@ const fraunces = Fraunces({
 });
 
 const description =
-  "famile — a compass for health and wellness. Leave wiser. Apps optional.";
+  "famile — a warm place to peruse, or just be. Mira keeps company.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://famile.xyz"),
   title: {
-    default: "famile — orient. leave wiser.",
+    default: "famile",
     template: "%s · famile",
   },
   description,
@@ -64,12 +64,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://famile.xyz",
     siteName: "famile",
-    title: "famile — orient. leave wiser.",
+    title: "famile",
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "famile — orient. leave wiser.",
+    title: "famile",
     description,
     creator: "@famile",
   },

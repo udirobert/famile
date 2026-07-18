@@ -118,24 +118,20 @@ export const replayDashboardEvents: DashboardEvent[] = [
 
 export const sampleQA: SampleQA[] = [
   {
-    q: "How does Sukari decide?",
-    a: "One doable action from the day’s patterns — rehearse once, care team only if something shifted. Takeaway: adherence fails after intention, not from lack of advice.",
+    q: "What is this place?",
+    a: "famile is a warm space to peruse or just be. I'm Mira — company if you'd like it. A few apps live in the family too; they aren't why you're here.",
   },
   {
-    q: "What does Orbura do?",
-    a: "Reads signals before burnout or injury, then adapts the plan to the week that happened. Takeaway: recovery debt shows early — adapt before catch-up.",
+    q: "Who are you?",
+    a: "I'm Mira. I keep company here. I don't diagnose or dose, and I don't remember you across other Famile apps.",
   },
   {
-    q: "What is Ardum?",
-    a: "Intention first, inventory second. Mira asks one decision at a time; booking stays secondary until confidence is earned.",
+    q: "What's Sukari?",
+    a: "An app in the family for day-to-day metabolic care — one doable action at a time. Only if that ever feels useful to you.",
   },
   {
     q: "Is this medical advice?",
-    a: "No. Orientation only — simulated reasoning, not care. Real use stays with your clinician and the product apps.",
-  },
-  {
-    q: "Do I need an app?",
-    a: "No. Leaving wiser is enough. Sukari, Orbura, and Ardum are optional when you want continuity.",
+    a: "No. This is company and information, not care. Anything clinical stays with your clinician.",
   },
 ];
 
@@ -144,27 +140,33 @@ export function replayAnswer(query: string): string {
   if (q.includes("medical") || q.includes("advice") || q.includes("diagnos"))
     return sampleQA[3].a;
   if (
-    q.includes("need to open") ||
-    q.includes("have to") ||
-    q.includes("required") ||
-    q.includes("click")
+    q.includes("who are you") ||
+    q.includes("mira") ||
+    (q.includes("you") && q.includes("who"))
   )
-    return sampleQA[4].a;
+    return sampleQA[1].a;
+  if (
+    q.includes("what is this") ||
+    q.includes("what is famile") ||
+    q.includes("this place") ||
+    q.includes("need an app") ||
+    q.includes("have to")
+  )
+    return sampleQA[0].a;
   if (
     q.includes("ardum") ||
     q.includes("retreat") ||
     q.includes("intention") ||
-    q.includes("mira") ||
     q.includes("booking")
   )
-    return sampleQA[2].a;
+    return "Ardum is an app in the family for intentions that may become rest or practice. Booking stays secondary. Happy to say more — or we can talk about something else.";
   if (q.includes("orbura") || q.includes("recovery") || q.includes("burnout"))
-    return sampleQA[1].a;
-  if (q.includes("sukari") || q.includes("surface") || q.includes("decide") || q.includes("metabolic"))
-    return sampleQA[0].a;
+    return "Orbura is an app in the family for recovery signals — adapting to the week that happened. Only if that ever feels useful.";
+  if (q.includes("sukari") || q.includes("metabolic") || q.includes("surface"))
+    return sampleQA[2].a;
   if (q.includes("native") || q.includes("ai-native") || q.includes("enabled"))
-    return "AI-native: software that decides and reports, not just charts. AI-enabled: intelligence inside an existing workflow. This site stays orientation either way.";
-  return "Ask how Sukari, Orbura, or Ardum think — or whether you need an app at all.";
+    return "Some Famile apps are AI-native; some AI-enabled. This space itself is just company — not a product demo.";
+  return "I'm here. Ask about this place, about me, or about something in the family — or just say what's on your mind.";
 }
 
 export const provenance: Record<ProductSlug, ProvenanceEntry[]> = {

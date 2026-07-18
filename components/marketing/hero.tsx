@@ -26,29 +26,18 @@ export function Hero() {
             animate="visible"
             className="max-w-xl"
           >
-            <motion.p
-              variants={fadeUp}
-              className="mb-6 inline-flex items-center gap-2 rounded-full border border-line-strong bg-canvas-elevated/30 px-4 py-1.5 text-xs uppercase tracking-[0.18em] text-ink-muted backdrop-blur-md"
-            >
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-aurora-mint" />
-              health &amp; wellness compass
-            </motion.p>
-
             <motion.h1
               variants={fadeUp}
-              className="font-display text-5xl leading-[0.95] tracking-[-0.03em] sm:text-6xl lg:text-7xl"
+              className="font-display text-6xl italic leading-[0.95] tracking-[-0.03em] sm:text-7xl lg:text-8xl"
             >
-              Orient.{" "}
-              <span className="text-aurora-gradient text-luminous">
-                Leave wiser.
-              </span>
+              <span className="text-aurora-gradient text-luminous">famile</span>
             </motion.h1>
 
             <motion.p
               variants={fadeUp}
-              className="mt-7 max-w-sm text-lg leading-relaxed text-ink-muted"
+              className="mt-8 max-w-sm text-lg leading-relaxed text-ink-muted"
             >
-              Leave wiser. Apps only if you want them.
+              A warm place to peruse — or just be.
             </motion.p>
 
             <motion.div
@@ -57,12 +46,9 @@ export function Hero() {
             >
               <Magnetic strength={0.3} className="inline-flex">
                 <Button href="/ask" size="lg">
-                  Ask
+                  Ask Mira
                 </Button>
               </Magnetic>
-              <Button href="#suite" size="lg" variant="secondary">
-                Suite
-              </Button>
             </motion.div>
           </motion.div>
 

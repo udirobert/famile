@@ -9,23 +9,23 @@ import { fadeUp, viewportOnce } from "@/lib/motion";
 const principles = [
   {
     n: "01",
-    title: "Insight can stand alone.",
-    body: "A clearer thought is enough. Product paths are earned, not required.",
+    title: "Being here is enough.",
+    body: "No task to complete. Peruse, sit, talk with Mira — or leave. All of that counts.",
   },
   {
     n: "02",
-    title: "AI-native, not AI-decorated.",
-    body: "Software that decides, practices, and reports — not just charts.",
+    title: "You are the story.",
+    body: "famile is space around you, not a pitch. Mira keeps company; she doesn't own the plot.",
   },
   {
     n: "03",
-    title: "Exception-oriented.",
-    body: "Surface what shifted. Silence is the default.",
+    title: "Quiet by default.",
+    body: "Present when you want company. Never sharp for sharpness's sake.",
   },
   {
     n: "04",
-    title: "Quiet by default. Present when it matters.",
-    body: "Easy to live with. Ready when a decision needs making.",
+    title: "Apps stay in the family.",
+    body: "Sukari, Orbura, and Ardum live nearby. They aren't the reason this space exists.",
   },
 ];
 
@@ -45,7 +45,7 @@ export function Principles() {
           />
           <TextReveal
             as="h2"
-            text="How we build."
+            text="How this space feels."
             className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
             stagger={0.06}
           />

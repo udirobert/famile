@@ -60,7 +60,7 @@ export function ExperienceSection() {
 
           <div className="mx-auto mt-20 max-w-md">
             <p className="text-base text-ink-muted">
-              Quiet to learn from. Present when a product would help.
+              Quiet enough to stay. Present if you want company.
             </p>
           </div>
         </div>

@@ -6,12 +6,12 @@ import { JsonLd } from "@/components/JsonLd";
 import { webPageSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Ask",
-  description: "Ask Mira for a takeaway. Not medical advice.",
+  title: "Mira",
+  description: "Sit with Mira. Not medical advice.",
   alternates: { canonical: "/ask" },
   openGraph: {
-    title: "Ask Mira",
-    description: "Orientation first. Apps optional.",
+    title: "Ask Mira — famile",
+    description: "Company, if you'd like it.",
   },
 };
 
@@ -22,18 +22,20 @@ export default function AskPage() {
         data={webPageSchema({
           path: "/ask",
           name: "Ask Mira",
-          description: "Orientation guide for famile.",
+          description: "Sit with Mira on famile.",
         })}
       />
       <section className="py-32 sm:py-40">
         <Container>
           <div className="mx-auto mb-10 max-w-2xl text-center">
             <p className="text-xs uppercase tracking-[0.25em] text-ink-dim">
-              Ask
+              Mira
             </p>
             <h1 className="mt-4 font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl">
-              Orient with{" "}
-              <span className="text-aurora-gradient text-luminous">Mira.</span>
+              Company, if you&apos;d{" "}
+              <span className="text-aurora-gradient text-luminous">
+                like it.
+              </span>
             </h1>
           </div>
           <Ask />
