@@ -126,6 +126,10 @@ export const sampleQA: SampleQA[] = [
     a: "Mira. Conversation, not care delivery. I don't dose, and I don't carry memory across Famile apps.",
   },
   {
+    q: "Just sit with me for a minute.",
+    a: "I'm here.",
+  },
+  {
     q: "What's Sukari?",
     a: "A metabolic practice layer: one doable action from the day's patterns, with care-team signal by exception. Built for adherence over intensity.",
   },
@@ -138,7 +142,17 @@ export const sampleQA: SampleQA[] = [
 export function replayAnswer(query: string): string {
   const q = query.toLowerCase();
   if (q.includes("medical") || q.includes("advice") || q.includes("diagnos"))
-    return sampleQA[3].a;
+    return sampleQA[4].a;
+  if (
+    q.includes("just sit") ||
+    q.includes("sit with me") ||
+    q.includes("just be") ||
+    q.includes("breathe with") ||
+    q.includes("rest here") ||
+    q.includes("rest with") ||
+    (q.includes("a minute") && (q.includes("sit") || q.includes("rest") || q.includes("be")))
+  )
+    return sampleQA[2].a;
   if (
     q.includes("who are you") ||
     q.includes("mira") ||
@@ -163,7 +177,7 @@ export function replayAnswer(query: string): string {
   if (q.includes("orbura") || q.includes("recovery") || q.includes("burnout"))
     return "Orbura reads recovery signals early and adapts the plan to the week that happened — load, sleep, and capacity together.";
   if (q.includes("sukari") || q.includes("metabolic") || q.includes("surface"))
-    return sampleQA[2].a;
+    return sampleQA[3].a;
   if (q.includes("native") || q.includes("ai-native") || q.includes("enabled"))
     return "AI-native apps run a full decide–practice–report loop. AI-enabled ones add intelligence inside an existing workflow. Either way, claims stay bounded.";
   return "Ask what you're noticing — or about Mira, Sukari, Orbura, or Ardum.";

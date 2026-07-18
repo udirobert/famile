@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Container } from "@/components/ui/container";
@@ -9,6 +9,7 @@ import { AuroraCanvas } from "@/components/motion/aurora-canvas";
 import { MorphBlob } from "@/components/motion/morph-blob";
 import { Magnetic } from "@/components/motion/magnetic-button";
 import { MiraConversation } from "@/components/agent/mira-conversation";
+import { EXHALE_MS, INHALE_MS, REST_MS } from "@/lib/agent/sit";
 import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -24,8 +25,10 @@ export function Hero() {
   const searchParams = useSearchParams();
   const reduced = useReducedMotion();
   const mira = searchParams.get("mira") === "1";
+  const [resting, setResting] = useState(false);
 
   const openMira = useCallback(() => {
+    setResting(false);
     // Hold scroll where it is (usually top of hero) through the URL update.
     const y = window.scrollY;
     router.replace("/?mira=1", { scroll: false });
@@ -35,6 +38,7 @@ export function Hero() {
   }, [router]);
 
   const closeMira = useCallback(() => {
+    setResting(false);
     const y = window.scrollY;
     router.replace("/", { scroll: false });
     requestAnimationFrame(() => {
@@ -42,12 +46,25 @@ export function Hero() {
     });
   }, [router]);
 
+  const endRest = useCallback(() => setResting(false), []);
+  const isResting = mira && resting;
+  const breathCycle = INHALE_MS + EXHALE_MS;
+
+  useEffect(() => {
+    if (!isResting) return;
+    const t = window.setTimeout(endRest, REST_MS);
+    return () => window.clearTimeout(t);
+  }, [isResting, endRest]);
+
   return (
     <section
       id="hero"
       className="relative flex min-h-[100svh] items-center overflow-x-clip pt-24 pb-16"
     >
-      <AuroraCanvas className="absolute inset-0 -z-10" intensity={mira ? 1.12 : 1} />
+      <AuroraCanvas
+        className="absolute inset-0 -z-10"
+        intensity={isResting ? 0.82 : mira ? 1.12 : 1}
+      />
       <div className="absolute inset-0 -z-10 bg-canvas/20" aria-hidden />
       <div
         className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-b from-transparent to-canvas"
@@ -120,9 +137,17 @@ export function Hero() {
                   <MiraConversation
                     autoFocus
                     onClose={closeMira}
+                    onSit={() => setResting(true)}
+                    resting={isResting}
+                    onReturn={endRest}
                     className="min-h-0 flex-1"
                   />
-                  <p className="mt-3 shrink-0 text-xs text-ink-dim">
+                  <p
+                    className={cn(
+                      "mt-3 shrink-0 text-xs text-ink-dim transition-opacity duration-500",
+                      isResting && "opacity-0",
+                    )}
+                  >
                     Not medical advice. Keep personal health details private.
                   </p>
                 </motion.div>
@@ -130,25 +155,41 @@ export function Hero() {
             </AnimatePresence>
           </div>
 
-          {/* Orb stays put — only a quiet presence shift when Mira opens */}
+          {/* Orb stays put — quiet presence; slows into a breath when resting */}
           <div className="relative mx-auto w-full max-w-[480px]">
             <motion.div
               className="relative mx-auto aspect-square w-full"
               animate={
                 reduced
-                  ? undefined
-                  : mira
-                    ? { scale: 1.04 }
-                    : { scale: 1 }
+                  ? { scale: isResting || mira ? 1.04 : 1 }
+                  : isResting
+                    ? {
+                        scale: [1.02, 1.12, 1.02],
+                        transition: {
+                          duration: breathCycle / 1000,
+                          times: [0, INHALE_MS / breathCycle, 1],
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                        },
+                      }
+                    : mira
+                      ? { scale: 1.04 }
+                      : { scale: 1 }
               }
-              transition={{ duration: DUR.slow, ease: EASE.soft }}
+              transition={
+                isResting && !reduced
+                  ? undefined
+                  : { duration: DUR.slow, ease: EASE.soft }
+              }
             >
               <div
                 className={cn(
                   "absolute rounded-full blur-[80px] transition-all duration-700",
-                  mira
-                    ? "inset-6 bg-aurora-mint/30"
-                    : "inset-10 bg-aurora-iris/30",
+                  isResting
+                    ? "inset-4 bg-aurora-mint/25"
+                    : mira
+                      ? "inset-6 bg-aurora-mint/30"
+                      : "inset-10 bg-aurora-iris/30",
                 )}
                 aria-hidden
               />
@@ -156,8 +197,8 @@ export function Hero() {
                 <MorphBlob
                   from="#c4b0ff"
                   to="#7ee8c8"
-                  speed={mira ? 1.55 : 1.4}
-                  distort={mira ? 0.45 : 0.42}
+                  speed={isResting ? 0.55 : mira ? 1.55 : 1.4}
+                  distort={isResting ? 0.28 : mira ? 0.45 : 0.42}
                   className="absolute inset-0"
                 />
               </div>
@@ -165,9 +206,9 @@ export function Hero() {
             <p
               className={cn(
                 "mt-3 text-center text-xs uppercase tracking-[0.2em] text-ink-dim transition-opacity duration-500",
-                mira ? "opacity-100" : "opacity-0",
+                mira && !isResting ? "opacity-100" : "opacity-0",
               )}
-              aria-hidden={!mira}
+              aria-hidden={!mira || isResting}
             >
               Mira
             </p>
