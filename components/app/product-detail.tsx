@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MorphBlob } from "@/components/motion/morph-blob";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { ProvenanceAffordance } from "@/components/agent/provenance";
 import type { Product } from "@/lib/products";
 
 export function ProductDetail({ product }: { product: Product }) {
@@ -47,6 +48,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 <p className="mt-1 text-xs uppercase tracking-[0.14em] text-ink-dim">
                   {m.label}
                 </p>
+                <ProvenanceAffordance slug={product.slug} claim={m.value} />
               </div>
             ))}
           </div>

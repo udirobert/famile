@@ -15,6 +15,7 @@ export function GET() {
 
 ## Site
 - [Home](https://famile.xyz/): The suite overview — Sukari and Orbura, the design principles, and the experience.
+- [Ask the agent](https://famile.xyz/ask): A grounded demonstration of how Sukari and Orbura reason. Not medical advice.
 - [About](https://famile.xyz/about): Why famile builds health products that disappear into care.
 - [Contact](https://famile.xyz/contact): Partnerships, care-team integrations, and guided walkthroughs.
 

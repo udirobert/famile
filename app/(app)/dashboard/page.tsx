@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
+import { AgentDashboard } from "@/components/agent/agent-dashboard";
 import { products } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -27,26 +28,7 @@ export default function DashboardPage() {
       </header>
 
       <section className="mb-16">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { label: "Active products", value: "2" },
-            { label: "Today's missions", value: "1" },
-            { label: "Exceptions", value: "0" },
-            { label: "Care-team load", value: "low" },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="rounded-[var(--radius-lg)] border border-line bg-canvas-elevated/30 p-5 backdrop-blur-xl"
-            >
-              <p className="text-xs uppercase tracking-[0.18em] text-ink-dim">
-                {s.label}
-              </p>
-              <p className="mt-2 font-display text-3xl tracking-tight text-ink">
-                {s.value}
-              </p>
-            </div>
-          ))}
-        </div>
+        <AgentDashboard />
       </section>
 
       <section>

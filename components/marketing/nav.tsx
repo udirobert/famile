@@ -13,6 +13,7 @@ const links = [
   { href: "/#sukari", label: "Sukari" },
   { href: "/#orbura", label: "Orbura" },
   { href: "/#principles", label: "Principles" },
+  { href: "/ask", label: "Ask" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];

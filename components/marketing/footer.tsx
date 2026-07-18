@@ -55,6 +55,14 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li>
                 <NextLink
+                  href="/ask"
+                  className="text-ink-muted transition-colors hover:text-ink"
+                >
+                  Ask the agent
+                </NextLink>
+              </li>
+              <li>
+                <NextLink
                   href="/about"
                   className="text-ink-muted transition-colors hover:text-ink"
                 >

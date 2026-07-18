@@ -1,6 +1,7 @@
 import { MarketingShell } from "@/components/marketing/shell";
 import { Hero } from "@/components/marketing/hero";
 import { ProductSuite } from "@/components/marketing/product-suite";
+import { SignalDesk } from "@/components/agent/signal-desk";
 import { ExperienceSection } from "@/components/marketing/experience-section";
 import { Principles } from "@/components/marketing/principles";
 import { CTA } from "@/components/marketing/cta";
@@ -21,6 +22,7 @@ export default function Home() {
       <JsonLd data={productListSchema()} />
       <Hero />
       <ProductSuite />
+      <SignalDesk />
       <ExperienceSection />
       <Principles />
       <CTA />
