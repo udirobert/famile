@@ -54,9 +54,14 @@ export function Hero() {
               variants={fadeUp}
               className="mt-7 max-w-md text-lg leading-relaxed text-ink-muted"
             >
-              famile is a suite of AI-native and AI-enabled health products
-              built for the long arc of care. Calm enough to live with.
-              Energising enough to act on.
+              Health products for the people living with chronic conditions,
+              the teams who care for them, and the systems that support both.
+            </motion.p>
+            <motion.p
+              variants={fadeUp}
+              className="mt-3 max-w-md text-sm leading-relaxed text-ink-dim"
+            >
+              Quiet when life is loud. Present when it matters.
             </motion.p>
 
             <motion.div

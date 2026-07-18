@@ -9,22 +9,22 @@ const principles = [
   {
     n: "01",
     title: "AI-native, not AI-decorated.",
-    body: "Models that decide, rehearse, and report. Not dashboards that wait for a human to notice.",
+    body: "Software that does the thinking, not just the charting. It decides, practices, and reports — so a human doesn't have to watch a dashboard to know when to act.",
   },
   {
     n: "02",
     title: "Exception-oriented.",
-    body: "Surface what diverged. Trust the rest to run quietly. Care teams see signal, not noise.",
+    body: "Surface what shifted. Trust the rest to run quietly. Care teams see signal, not noise — and reach out because something matters, not to check a box.",
   },
   {
     n: "03",
-    title: "Calm by default, energising on demand.",
-    body: "Restful to live with day-to-day. Sharp and kinetic the moment a decision needs to be made.",
+    title: "Quiet by default. Present when it matters.",
+    body: "Easy to live alongside every day. Ready the moment a decision needs making — never sharp for sharpness's sake.",
   },
   {
     n: "04",
-    title: "Built for the care continuum.",
-    body: "Not a single intervention. The long arc of staying well - metabolic, mental, physical.",
+    title: "Built for the long arc.",
+    body: "Not a single intervention. The long work of staying well — metabolic, mental, physical — across years, not weeks.",
   },
 ];
 

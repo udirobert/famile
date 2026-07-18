@@ -60,9 +60,9 @@ export function ExperienceSection() {
 
           <div className="mx-auto mt-20 max-w-xl">
             <p className="text-lg leading-relaxed text-ink-muted">
-              Every famile product is shaped by this tension. Restful by
-              default, so it never adds to the noise of care. Kinetic the
-              moment it matters, so the right action arrives in time.
+              Every famile product holds this tension. Quiet by default, so
+              it never adds to the noise of care. Present the moment it
+              matters, so the right action arrives in time.
             </p>
           </div>
         </div>

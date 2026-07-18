@@ -102,12 +102,12 @@ export function ProductDetail({ product }: { product: Product }) {
               </p>
               <p className="mt-2 font-display text-lg text-ink">
                 {product.slug === "sukari"
-                  ? "Today's mission ready for rehearsal."
-                  : "Recovery trending positive. No exceptions."}
+                  ? "One thing worth doing today."
+                  : "Recovery trending well. Nothing to flag."}
               </p>
               <p className="mt-2 text-xs text-ink-muted">
                 {product.slug === "sukari"
-                  ? "Tap to rehearse before it counts."
+                  ? "Tap to try it before it counts."
                   : "Next adaptive update in 4h."}
               </p>
             </div>

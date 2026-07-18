@@ -18,43 +18,43 @@ export const products: Product[] = [
   {
     slug: "sukari",
     name: "Sukari",
-    tagline: "The adherence layer for continuous metabolic care.",
+    tagline: "A daily companion for metabolic care that has to last.",
     description:
-      "An AI adherence engine for at-home metabolic programmes - type 2 diabetes, prediabetes, GLP-1-supported lifestyle care.",
+      "Sukari helps people managing type 2 diabetes, prediabetes, or GLP-1-supported care stay with it day to day — and gives care teams the signal that matters, not the noise that doesn't.",
     longDescription:
-      "Sukari turns biomarker patterns into one daily mission, rehearses the decision in a short practice, measures the response, and sends the care team an exception-oriented summary - not another dashboard.",
+      "Living with a metabolic condition is daily, unglamorous work. Sukari reads the biomarker patterns, settles on one thing worth doing today, lets you try it before it counts, and tells your care team only what shifted. Built for the person at home, the clinician remote, and the programme in between.",
     category: "Metabolic Care",
     status: "AI-native",
     glyph: { from: "#c4b0ff", to: "#7ee8c8" },
     accent: "#7ee8c8",
     features: [
       {
-        title: "One daily mission",
-        body: "Biomarker patterns collapse into a single, rehearseable action - never a wall of metrics.",
+        title: "One thing today",
+        body: "Biomarker patterns collapse into a single, doable action — never a wall of metrics to interpret first.",
       },
       {
-        title: "Rehearse before you act",
-        body: "A short practice run primes the decision before it counts, building adherence through repetition.",
+        title: "Try it before it counts",
+        body: "A short practice run primes the decision before it's live, so adherence is built by repetition, not willpower alone.",
       },
       {
-        title: "Exception-oriented summary",
-        body: "Care teams see what diverged and why - not another dashboard to babysit.",
+        title: "Only what shifted",
+        body: "Care teams see what diverged and why — a note, not another screen to watch.",
       },
     ],
     metric: [
-      { label: "Adherence lift", value: "+38%" },
-      { label: "Mission rehearsal", value: "90s" },
-      { label: "Care-team load", value: "-52%" },
+      { label: "Daily focus", value: "1 action" },
+      { label: "Practice before live", value: "90s" },
+      { label: "Care-team signal", value: "By exception" },
     ],
   },
   {
     slug: "orbura",
     name: "Orbura",
-    tagline: "Recovery intelligence from lifestyle and biometric signal.",
+    tagline: "Recovery intelligence for people, and the teams around them.",
     description:
-      "Turns lifestyle and biometric data into recovery intelligence for people, teams, and care providers.",
+      "Orbura reads lifestyle and biometric signal to flag the early signs of burnout, injury, and plateau — then shapes a recovery plan that fits how people actually live.",
     longDescription:
-      "Orbura reads the signals that precede burnout, injury, and plateau - then shapes a recovery plan that adapts to how you actually live. Built for individuals, squads, and the clinicians who support them.",
+      "Recovery isn't a phase you reach; it's the work between the work. Orbura reads the signals that precede burnout, injury, and plateau, then adapts a recovery plan to how someone actually lives. Built for individuals, squads, and the clinicians and coaches in their corner.",
     category: "Recovery Intelligence",
     status: "AI-enabled",
     glyph: { from: "#ffb8e0", to: "#ffc581" },
@@ -62,21 +62,21 @@ export const products: Product[] = [
     features: [
       {
         title: "Signal, not noise",
-        body: "Recovery intelligence distilled from lifestyle and biometric streams you already own.",
+        body: "Recovery intelligence drawn from the lifestyle and biometric streams you already own — distilled, not dumped.",
       },
       {
-        title: "For people and teams",
-        body: "From an individual athlete to squad-level load management, Orbura scales with the unit of care.",
+        title: "Scales with the unit of care",
+        body: "From one person to a whole squad's load management, Orbura grows with whoever's responsible.",
       },
       {
-        title: "Care-provider ready",
-        body: "Clinicians and coaches receive context in their language - no translation layer required.",
+        title: "In the clinician's language",
+        body: "Coaches and clinicians receive context they can act on — no translation layer, no second system.",
       },
     ],
     metric: [
-      { label: "Burnout flags", value: "5d ahead" },
-      { label: "Plan adaptivity", value: "live" },
-      { label: "Squad coverage", value: "unlimited" },
+      { label: "Early warning", value: "Days ahead" },
+      { label: "Plan adaptivity", value: "Live" },
+      { label: "Unit of care", value: "1 → squad" },
     ],
   },
 ];

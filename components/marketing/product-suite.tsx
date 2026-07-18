@@ -28,7 +28,7 @@ export function ProductSuite() {
           />
           <TextReveal
             as="p"
-            text="Each product is AI-native or AI-enabled. Each is calm to live with and energising to act on."
+            text="Each is AI-native or AI-enabled. Each is quiet to live with — and ready the moment it matters."
             className="mt-6 text-lg text-ink-muted"
             stagger={0.03}
           />
