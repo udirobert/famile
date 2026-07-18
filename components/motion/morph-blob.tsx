@@ -39,8 +39,8 @@ function Blob({
   });
 
   return (
-    <Float speed={1.2} rotationIntensity={0.4} floatIntensity={0.6}>
-      <mesh ref={mesh} scale={1.6}>
+    <Float speed={1.2} rotationIntensity={0.35} floatIntensity={0.45}>
+      <mesh ref={mesh} scale={1.12}>
         <icosahedronGeometry args={[1, 24]} />
         <MeshDistortMaterial
           color={fromColor}
@@ -85,11 +85,12 @@ export function MorphBlob({
   return (
     <div ref={ref} className={className} aria-hidden>
       <Canvas
-        camera={{ position: [0, 0, 4.2], fov: 38 }}
+        camera={{ position: [0, 0, 4.6], fov: 36 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
         frameloop={inView ? "always" : "never"}
         style={{ width: "100%", height: "100%" }}
+        className="!overflow-visible"
       >
         <ambientLight intensity={0.4} />
         <directionalLight position={[3, 4, 5]} intensity={1.2} color="#c4b0ff" />

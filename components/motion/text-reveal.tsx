@@ -20,11 +20,10 @@ const wordParent: Variants = {
 };
 
 const wordChild: Variants = {
-  hidden: { opacity: 0, y: "0.6em", rotateX: -45, filter: "blur(8px)" },
+  hidden: { opacity: 0, y: "0.55em", filter: "blur(6px)" },
   visible: {
     opacity: 1,
     y: 0,
-    rotateX: 0,
     filter: "blur(0px)",
     transition: { duration: DUR.base, ease: EASE.soft },
   },
@@ -44,7 +43,6 @@ export function TextReveal({
   return (
     <MotionTag
       className={className}
-      style={{ perspective: 800 }}
       variants={wordParent}
       custom={stagger}
       initial="hidden"
@@ -53,9 +51,13 @@ export function TextReveal({
       transition={{ delay }}
     >
       {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden align-bottom">
+        // Generous clip pad so italic descenders / blur never get shaved
+        <span
+          key={i}
+          className="inline-block overflow-hidden align-bottom py-[0.18em] [-webkit-box-decoration-break:clone] [box-decoration-break:clone]"
+        >
           <motion.span
-            className={`inline-block ${wordClassName ?? ""}`}
+            className={`inline-block will-change-transform ${wordClassName ?? ""}`}
             variants={wordChild}
           >
             {word}

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 
 const links = [
-  { href: "/ask", label: "Mira" },
+  { href: "/?mira=1", label: "Mira" },
   { href: "/#principles", label: "Principles" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -67,7 +67,7 @@ export function Nav() {
 
           <div className="hidden md:inline-flex">
             <Magnetic strength={0.35}>
-              <Button href="/ask" size="sm" variant="secondary">
+              <Button href="/?mira=1" size="sm" variant="secondary">
                 Ask Mira
               </Button>
             </Magnetic>
@@ -132,7 +132,7 @@ export function Nav() {
               ))}
               <motion.div variants={fadeUp} className="mt-6">
                 <Button
-                  href="/ask"
+                  href="/?mira=1"
                   size="lg"
                   className="w-full"
                   onClick={() => setOpen(false)}

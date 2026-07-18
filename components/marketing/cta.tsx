@@ -16,10 +16,10 @@ export function CTA() {
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="relative overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-12 text-center backdrop-blur-xl sm:p-16"
+          className="relative rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 px-10 py-14 text-center backdrop-blur-xl sm:px-16 sm:py-20"
         >
           <div
-            className="absolute inset-0 -z-10 opacity-60"
+            className="absolute inset-0 -z-10 rounded-[var(--radius-xl)] opacity-60"
             style={{
               background:
                 "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(196,176,255,0.22), transparent 60%), radial-gradient(ellipse 60% 40% at 50% 100%, rgba(126,232,200,0.14), transparent 70%)",
@@ -29,7 +29,7 @@ export function CTA() {
           <TextReveal
             as="h2"
             text="Mira is here, if you'd like company."
-            className="font-display text-4xl tracking-tight sm:text-5xl"
+            className="font-display text-4xl leading-[1.2] tracking-tight sm:text-5xl"
             stagger={0.06}
           />
           <motion.div
@@ -37,7 +37,7 @@ export function CTA() {
             className="mt-10 flex flex-wrap justify-center gap-3"
           >
             <Magnetic strength={0.3} className="inline-flex">
-              <Button href="/ask" size="lg">
+              <Button href="/?mira=1" size="lg">
                 Ask Mira
               </Button>
             </Magnetic>

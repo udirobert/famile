@@ -43,18 +43,22 @@ export function ExperienceSection() {
       <Container className="relative z-10">
         <div className="mx-auto max-w-3xl text-center">
           <ParallaxLayer speed={-0.15}>
-            <p className="font-display text-5xl leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl">
+            <p className="font-display text-5xl leading-[1.15] tracking-tight sm:text-7xl lg:text-8xl">
               Calm enough to{" "}
-              <span className="text-aurora-gradient text-luminous">live with.</span>
+              <span className="text-aurora-gradient text-luminous inline-block px-0.5">
+                live with.
+              </span>
             </p>
           </ParallaxLayer>
 
           <div className="my-16 h-px w-full bg-gradient-to-r from-transparent via-line-strong to-transparent" />
 
           <ParallaxLayer speed={0.15}>
-            <p className="font-display text-5xl leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl">
+            <p className="font-display text-5xl leading-[1.15] tracking-tight sm:text-7xl lg:text-8xl">
               Energising enough to{" "}
-              <span className="text-aurora-gradient text-luminous">act on.</span>
+              <span className="text-aurora-gradient text-luminous inline-block px-0.5">
+                act on.
+              </span>
             </p>
           </ParallaxLayer>
 

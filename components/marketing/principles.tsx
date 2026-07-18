@@ -46,7 +46,7 @@ export function Principles() {
           <TextReveal
             as="h2"
             text="How this space feels."
-            className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
+            className="font-display text-4xl leading-[1.2] tracking-tight sm:text-5xl"
             stagger={0.06}
           />
         </div>
