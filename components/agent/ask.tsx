@@ -33,6 +33,18 @@ export function Ask() {
         body: JSON.stringify({ query }),
         signal: ctrl.signal,
       });
+      if (!res.ok) {
+        const msg =
+          res.status === 429
+            ? "Too many questions — wait a moment and try again."
+            : "The agent couldn't respond right now. Try again.";
+        setMessages((m) => {
+          const copy = m.slice();
+          copy[copy.length - 1] = { role: "agent", text: msg };
+          return copy;
+        });
+        return;
+      }
       setLive(res.headers.get("X-Famile-Live") === "true");
       if (!res.body) throw new Error("no body");
       const reader = res.body.getReader();
@@ -164,6 +176,9 @@ export function Ask() {
       <p className="mt-4 text-center text-xs text-ink-dim">
         Not medical advice. A demonstration of how the products reason;
         supervised by a clinician in real use.
+      </p>
+      <p className="mt-1 text-center text-xs text-ink-dim">
+        Don&apos;t share personal health information — it leaves this page.
       </p>
     </div>
   );
