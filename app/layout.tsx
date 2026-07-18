@@ -25,12 +25,12 @@ const fraunces = Fraunces({
 });
 
 const description =
-  "famile is a suite of AI-native and AI-enabled health products built for the long arc of staying well. Meet Sukari — a daily companion for metabolic care — and Orbura — recovery intelligence for people and the teams around them.";
+  "famile is a compass for health and wellness — orientation and insight first, with optional paths into Sukari, Orbura, and Ardum for continuous care and practice. Leave wiser even if you never open another app.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://famile.xyz"),
   title: {
-    default: "famile - a suite of health products, AI-native and AI-enabled",
+    default: "famile — a compass for health and wellness",
     template: "%s · famile",
   },
   description,
@@ -40,12 +40,15 @@ export const metadata: Metadata = {
   publisher: "famile",
   keywords: [
     "famile",
+    "health compass",
     "health AI",
     "metabolic care",
     "adherence",
     "recovery intelligence",
+    "practice continuity",
     "Sukari",
     "Orbura",
+    "Ardum",
     "AI-native health",
     "AI-enabled care",
     "continuous care",
@@ -61,12 +64,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://famile.xyz",
     siteName: "famile",
-    title: "famile - a suite of health products",
+    title: "famile — a compass for health and wellness",
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "famile - a suite of health products",
+    title: "famile — a compass for health and wellness",
     description,
     creator: "@famile",
   },

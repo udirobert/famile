@@ -12,6 +12,7 @@ import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 const links = [
   { href: "/#sukari", label: "Sukari" },
   { href: "/#orbura", label: "Orbura" },
+  { href: "/#ardum", label: "Ardum" },
   { href: "/#principles", label: "Principles" },
   { href: "/ask", label: "Ask" },
   { href: "/about", label: "About" },
@@ -69,13 +70,8 @@ export function Nav() {
 
           <div className="hidden md:inline-flex">
             <Magnetic strength={0.35}>
-              <Button
-                href="/dashboard"
-                size="sm"
-                variant="secondary"
-                transitionTypes={["nav-forward"]}
-              >
-                Enter suite
+              <Button href="/ask" size="sm" variant="secondary">
+                Ask
               </Button>
             </Magnetic>
           </div>
@@ -139,12 +135,12 @@ export function Nav() {
               ))}
               <motion.div variants={fadeUp} className="mt-6">
                 <Button
-                  href="/dashboard"
+                  href="/ask"
                   size="lg"
                   className="w-full"
-                  transitionTypes={["nav-forward"]}
+                  onClick={() => setOpen(false)}
                 >
-                  Enter the suite
+                  Ask for orientation
                 </Button>
               </motion.div>
             </motion.nav>

@@ -6,14 +6,14 @@ import { JsonLd } from "@/components/JsonLd";
 import { webPageSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Ask the agent",
+  title: "Ask",
   description:
-    "Ask how famile's products reason. A grounded, on-domain demonstration of the reasoning behind Sukari and Orbura. Not medical advice.",
+    "Ask Mira for orientation — takeaways that stand alone, or how Sukari, Orbura, and Ardum reason. Not medical advice. Opening an app is never required.",
   alternates: { canonical: "/ask" },
   openGraph: {
-    title: "Ask the famile agent",
+    title: "Ask Mira — famile orientation",
     description:
-      "A grounded demonstration of how Sukari and Orbura reason. Not medical advice.",
+      "Takeaway-first orientation. Soft product mentions only when clearly mapped. Not medical advice.",
   },
 };
 
@@ -23,24 +23,26 @@ export default function AskPage() {
       <JsonLd
         data={webPageSchema({
           path: "/ask",
-          name: "Ask the famile agent",
+          name: "Ask Mira — famile orientation",
           description:
-            "A grounded demonstration of how Sukari and Orbura reason.",
+            "Orientation guide: insight first, soft paths into suite products when earned.",
         })}
       />
       <section className="py-32 sm:py-40">
         <Container>
           <div className="mx-auto mb-12 max-w-2xl text-center">
             <p className="text-xs uppercase tracking-[0.25em] text-ink-dim">
-              Agent in the open
+              Compass
             </p>
             <h1 className="mt-4 font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl">
-              Ask how it{" "}
-              <span className="text-aurora-gradient text-luminous">reasons.</span>
+              Ask for{" "}
+              <span className="text-aurora-gradient text-luminous">
+                orientation.
+              </span>
             </h1>
             <p className="mt-6 text-lg text-ink-muted">
-              The famile agent answers from the product context, in the open. It
-              refuses to give medical advice, and stays on-domain.
+              Leave with a clearer thought. Soft mentions of Sukari, Orbura, or
+              Ardum only when they clearly help — never required.
             </p>
           </div>
           <Ask />

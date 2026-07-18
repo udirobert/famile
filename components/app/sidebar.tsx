@@ -8,6 +8,7 @@ const nav = [
   { href: "/dashboard", label: "Dashboard", glyph: "◆" },
   { href: "/products/sukari", label: "Sukari", glyph: "✦" },
   { href: "/products/orbura", label: "Orbura", glyph: "◐" },
+  { href: "/products/ardum", label: "Ardum", glyph: "◎" },
 ];
 
 export function Sidebar() {

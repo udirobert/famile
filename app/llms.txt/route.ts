@@ -5,18 +5,26 @@ import { products } from "@/lib/products";
 export const dynamic = "force-static";
 
 export function GET() {
+  const productLines = products
+    .map(
+      (p) =>
+        `- [${p.name}](https://famile.xyz/products/${p.slug}): ${p.description}${p.urlStatus === "soon" ? " (app coming soon)" : ` — app: ${p.url}`}`,
+    )
+    .join("\n");
+
+  const names = products.map((p) => p.name).join(", ");
+
   const body = `# famile
 
-> famile is a suite of AI-native and AI-enabled health products, built for the long arc of staying well. Quiet by default, present when it matters.
+> famile is a compass for health and wellness: orientation and insight first, with optional paths into continuous care and practice apps. Quiet by default, present when it matters. Leaving wiser without opening another app is a successful visit.
 
 ## Products
-- [Sukari](https://famile.xyz/products/sukari): ${products[0].description}
-- [Orbura](https://famile.xyz/products/orbura): ${products[1].description}
+${productLines}
 
 ## Site
-- [Home](https://famile.xyz/): The suite overview — Sukari and Orbura, the design principles, and the experience.
-- [Ask the agent](https://famile.xyz/ask): A grounded demonstration of how Sukari and Orbura reason. Not medical advice.
-- [About](https://famile.xyz/about): Why famile builds health products that disappear into care.
+- [Home](https://famile.xyz/): Orientation overview — ${names}, design principles, and how the products reason.
+- [Ask](https://famile.xyz/ask): An orientation guide. Takeaway-first; soft product mentions only when clearly mapped. Not medical advice.
+- [About](https://famile.xyz/about): Why famile exists as a compass, not a storefront.
 - [Contact](https://famile.xyz/contact): Partnerships, care-team integrations, and guided walkthroughs.
 
 ## Machine-readable

@@ -37,16 +37,16 @@ export function Hero() {
               className="mb-6 inline-flex items-center gap-2 rounded-full border border-line-strong bg-canvas-elevated/30 px-4 py-1.5 text-xs uppercase tracking-[0.18em] text-ink-muted backdrop-blur-md"
             >
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-aurora-mint" />
-              a suite of health products
+              a compass for health &amp; wellness
             </motion.p>
 
             <motion.h1
               variants={fadeUp}
               className="font-display text-5xl leading-[0.95] tracking-[-0.03em] sm:text-6xl lg:text-7xl"
             >
-              Care, in{" "}
+              Orient.{" "}
               <span className="text-aurora-gradient text-luminous">
-                continuous motion.
+                Leave wiser.
               </span>
             </motion.h1>
 
@@ -54,8 +54,9 @@ export function Hero() {
               variants={fadeUp}
               className="mt-7 max-w-md text-lg leading-relaxed text-ink-muted"
             >
-              Health products for the people living with chronic conditions,
-              the teams who care for them, and the systems that support both.
+              Insight and orientation first — so you can name what you need.
+              Deeper care and practice apps are there if you want them; never
+              required.
             </motion.p>
             <motion.p
               variants={fadeUp}
@@ -69,16 +70,12 @@ export function Hero() {
               className="mt-10 flex flex-wrap items-center gap-3"
             >
               <Magnetic strength={0.3} className="inline-flex">
-                <Button
-                  href="/dashboard"
-                  size="lg"
-                  transitionTypes={["nav-forward"]}
-                >
-                  Enter the suite
+                <Button href="/ask" size="lg">
+                  Ask for orientation
                 </Button>
               </Magnetic>
               <Button href="#suite" size="lg" variant="secondary">
-                Meet the products
+                Explore the suite
               </Button>
             </motion.div>
           </motion.div>

@@ -17,8 +17,8 @@ export function Footer() {
             famile
           </NextLink>
           <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-            A suite of AI-native and AI-enabled health products, built for the
-            long arc of staying well.
+            A compass for health and wellness — leave wiser, with optional paths
+            into continuous care and practice when you want them.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export function Footer() {
         </div>
       </Container>
       <Container className="flex flex-col items-center justify-between gap-4 border-t border-line py-8 text-xs text-ink-dim sm:flex-row">
-        <p>© {new Date().getFullYear()} famile. Care, in continuous motion.</p>
+        <p>© {new Date().getFullYear()} famile. Orientation first.</p>
         <p>famile.xyz</p>
       </Container>
     </footer>

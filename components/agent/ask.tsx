@@ -3,8 +3,18 @@
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { sampleQA } from "@/lib/agent/replay";
+import {
+  products,
+  type Product,
+  type ProductSlug,
+} from "@/lib/products";
 
 type Msg = { role: "user" | "agent"; text: string };
+
+function softMatches(text: string): Product[] {
+  const lower = text.toLowerCase();
+  return products.filter((p) => lower.includes(p.name.toLowerCase()));
+}
 
 export function Ask() {
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -78,16 +88,18 @@ export function Ask() {
     }
   }
 
+  const lastAgent = [...messages].reverse().find((m) => m.role === "agent");
+  const chips =
+    !busy && lastAgent?.text ? softMatches(lastAgent.text) : [];
+
   return (
     <div className="mx-auto max-w-2xl">
       <div className="overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 backdrop-blur-xl">
-        {/* header */}
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <div className="flex items-center gap-3">
             <span className="h-2 w-2 animate-pulse rounded-full bg-aurora-mint" />
-            <span className="font-display text-lg tracking-tight">
-              famile agent
-            </span>
+            <span className="font-display text-lg tracking-tight">Mira</span>
+            <span className="text-xs text-ink-dim">orientation</span>
           </div>
           <span className="text-[10px] uppercase tracking-[0.16em] text-ink-dim">
             {live === null
@@ -98,13 +110,13 @@ export function Ask() {
           </span>
         </div>
 
-        {/* transcript */}
         <div className="max-h-[44vh] min-h-[200px] overflow-y-auto px-6 py-6">
           {messages.length === 0 ? (
             <div className="space-y-4">
               <p className="text-sm text-ink-muted">
-                Ask how Sukari or Orbura reason. This is a demonstration of the
-                reasoning, not the products giving care.
+                Ask for orientation — a takeaway that stands alone, or how
+                Sukari, Orbura, or Ardum reason. Opening an app is never
+                required.
               </p>
               <div className="flex flex-wrap gap-2">
                 {sampleQA.map((qa) => (
@@ -145,11 +157,17 @@ export function Ask() {
                   </motion.div>
                 ))}
               </AnimatePresence>
+              {chips.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {chips.map((p) => (
+                    <SoftChip key={p.slug} product={p} />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
 
-        {/* input */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -160,7 +178,7 @@ export function Ask() {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask how it reasons…"
+            placeholder="Ask for a takeaway or how a product reasons…"
             className="flex-1 bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink-dim focus:outline-none"
             disabled={busy}
           />
@@ -174,13 +192,49 @@ export function Ask() {
         </form>
       </div>
       <p className="mt-4 text-center text-xs text-ink-dim">
-        Not medical advice. A demonstration of how the products reason;
-        supervised by a clinician in real use.
+        Orientation only — not medical advice. Real care stays with your
+        clinician and the product apps.
       </p>
       <p className="mt-1 text-center text-xs text-ink-dim">
         Don&apos;t share personal health information — it leaves this page.
       </p>
     </div>
+  );
+}
+
+function SoftChip({ product }: { product: Product }) {
+  const href =
+    product.urlStatus === "live"
+      ? product.url
+      : (`/products/${product.slug}` satisfies `/products/${ProductSlug}`);
+  const external = product.urlStatus === "live";
+  const label =
+    product.urlStatus === "live"
+      ? `Learn more about ${product.name}`
+      : `About ${product.name}`;
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="rounded-full border border-line px-3 py-1 text-[11px] text-ink-dim transition-colors hover:border-line-strong hover:text-ink-muted"
+        style={{ borderColor: `${product.accent}44` }}
+      >
+        {label} →
+      </a>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      className="rounded-full border border-line px-3 py-1 text-[11px] text-ink-dim transition-colors hover:border-line-strong hover:text-ink-muted"
+      style={{ borderColor: `${product.accent}44` }}
+    >
+      {label} →
+    </a>
   );
 }
 

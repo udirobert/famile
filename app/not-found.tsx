@@ -26,15 +26,9 @@ export default function NotFound() {
           something useful.
         </p>
         <div className="mt-10 flex justify-center gap-3">
-          <Button href="/" transitionTypes={["nav-back"]}>
-            Back to site
-          </Button>
-          <Button
-            href="/dashboard"
-            variant="secondary"
-            transitionTypes={["nav-forward"]}
-          >
-            Enter suite
+          <Button href="/">Back to site</Button>
+          <Button href="/ask" variant="secondary">
+            Ask for orientation
           </Button>
         </div>
       </Container>

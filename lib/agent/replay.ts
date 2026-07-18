@@ -4,13 +4,14 @@ import type {
   ProvenanceEntry,
   SampleQA,
 } from "./types";
+import type { ProductSlug } from "@/lib/products";
 
 // Honestly-labeled replay data. These are authored traces that demonstrate how
 // the products reason. UI surfaces must label them as a recorded session /
 // simulated signal. When LLM_API_KEY is present the live engine takes over
 // and the same surfaces stream real reasoning on the same simulated input.
 
-export const replayTraces: Record<"sukari" | "orbura", AgentTrace> = {
+export const replayTraces: Record<ProductSlug, AgentTrace> = {
   sukari: {
     product: "sukari",
     steps: [
@@ -71,10 +72,38 @@ export const replayTraces: Record<"sukari" | "orbura", AgentTrace> = {
       },
     ],
   },
+  ardum: {
+    product: "ardum",
+    steps: [
+      {
+        kind: "input",
+        label: "intention in",
+        text: "“I need a quiet week before October — solitude more than novelty. Budget flexible. Two friends might join, not sure.”",
+      },
+      {
+        kind: "observe",
+        label: "observed",
+        text: "The job is rest and reconnection, not a destination. Timing before October and solitude outrank group size.",
+      },
+      {
+        kind: "reason",
+        label: "reasoning",
+        text: "Ask only the tradeoff that matters: if timing and solitude conflict, which wins? Hold inventory secondary until that preference is clear.",
+      },
+      {
+        kind: "decide",
+        label: "one decision",
+        text: "Is timing or solitude more important if both cannot be perfect?",
+      },
+      {
+        kind: "report",
+        label: "episode note",
+        text: "Intention held. No booking. Monitoring conditions until confidence is high enough for a non-binding hold — only with explicit grant.",
+      },
+    ],
+  },
 };
 
-// Events the dashboard appends over time to feel stateful. Each is honest
-// about being a recorded session.
 export const replayDashboardEvents: DashboardEvent[] = [
   { product: "sukari", kind: "signal", text: "Sukari: fasting glucose trending up over 7 days." },
   { product: "sukari", kind: "action", text: "One thing today: anchor metformin to your morning brush." },
@@ -82,42 +111,63 @@ export const replayDashboardEvents: DashboardEvent[] = [
   { product: "orbura", kind: "signal", text: "Orbura: HRV down 22%, sleep latency up 40 min." },
   { product: "orbura", kind: "action", text: "One thing today: pull Thursday to zone 2, protect sleep." },
   { product: "orbura", kind: "report", text: "Coach notified: recovery debt flagged, plan adapted." },
+  { product: "ardum", kind: "signal", text: "Ardum: intention held — quiet week before October." },
+  { product: "ardum", kind: "action", text: "One decision: timing vs solitude if both cannot be perfect." },
+  { product: "ardum", kind: "report", text: "Episode note: no booking; monitoring until a hold is granted." },
 ];
 
 export const sampleQA: SampleQA[] = [
   {
     q: "How does Sukari decide what to surface?",
-    a: "Sukari reads the biomarker patterns for the day and collapses them into one doable action — never a wall of metrics. It settles on the cheapest move with the most leverage, lets you rehearse it once before it counts, and only tells the care team what shifted. The rest runs quietly.",
+    a: "Sukari collapses the day's biomarker patterns into one doable action — never a wall of metrics. Cheapest move with the most leverage, a short rehearsal before it counts, care team only when something shifted. Useful takeaway even here: adherence often fails in the small moment after intention, not from lack of advice.",
   },
   {
-    q: "What does Orbura do with my recovery data?",
-    a: "Orbura reads the lifestyle and biometric signals that precede burnout, injury, and plateau, then adapts a recovery plan to how you actually live. It scales from one person to a whole squad's load, and sends clinicians and coaches context in their own language — no second system to translate into.",
+    q: "What does Orbura do with recovery data?",
+    a: "Orbura reads the signals that precede burnout, injury, and plateau, then adapts a plan to the week that happened. Useful takeaway: recovery debt accumulates before it becomes injury — early adaptation beats heroic catch-up. If you want that loop day to day, Orbura goes deeper; you're also fine leaving with just this.",
+  },
+  {
+    q: "What is Ardum for?",
+    a: "Ardum begins with what you are trying to make space for — rest, reconnection, practice — not a catalog of places. Mira asks one decision at a time and keeps booking secondary until confidence is earned. Useful takeaway: intention before inventory often removes half the stress of planning.",
   },
   {
     q: "Is this medical advice?",
-    a: "No. famile products support care decisions; they don't replace your clinician. What you're seeing here is a demonstration of how the products reason on a simulated signal. Real use is supervised by your care team.",
+    a: "No. This surface is orientation only — a demonstration of how Famile products reason on simulated signals. It does not diagnose, dose, or replace your clinician. Real care stays with your care team and the product apps.",
   },
   {
-    q: "What does AI-native mean here?",
-    a: "It means the software does the thinking, not just the charting. It decides, practices, and reports — so a human doesn't have to watch a dashboard to know when to act. AI-enabled, by contrast, brings intelligence to an existing workflow without running the loop end to end.",
+    q: "Do I need to open an app?",
+    a: "No. Leaving wiser is a successful visit. Sukari, Orbura, and Ardum are optional paths when you want continuous care or practice — never required for the compass to have done its job.",
   },
 ];
 
-// Keyword matcher for the replay conversational fallback.
 export function replayAnswer(query: string): string {
   const q = query.toLowerCase();
   if (q.includes("medical") || q.includes("advice") || q.includes("diagnos"))
-    return sampleQA[2].a;
-  if (q.includes("orbura") || q.includes("recovery"))
-    return sampleQA[1].a;
-  if (q.includes("native") || q.includes("ai-native") || q.includes("enabled"))
     return sampleQA[3].a;
-  if (q.includes("sukari") || q.includes("surface") || q.includes("decide"))
+  if (
+    q.includes("need to open") ||
+    q.includes("have to") ||
+    q.includes("required") ||
+    q.includes("click")
+  )
+    return sampleQA[4].a;
+  if (
+    q.includes("ardum") ||
+    q.includes("retreat") ||
+    q.includes("intention") ||
+    q.includes("mira") ||
+    q.includes("booking")
+  )
+    return sampleQA[2].a;
+  if (q.includes("orbura") || q.includes("recovery") || q.includes("burnout"))
+    return sampleQA[1].a;
+  if (q.includes("sukari") || q.includes("surface") || q.includes("decide") || q.includes("metabolic"))
     return sampleQA[0].a;
-  return "I can show how Sukari and Orbura reason on a simulated signal, and how famile thinks about AI-native care. Ask how Sukari decides what to surface, what Orbura does with recovery data, or whether this is medical advice. (Live reasoning needs a key — this is a recorded answer.)";
+  if (q.includes("native") || q.includes("ai-native") || q.includes("enabled"))
+    return "AI-native means the software does the thinking, not just the charting — decide, practice, report. AI-enabled brings intelligence into an existing workflow without owning the whole loop. Either way, this site stays orientation: insight first, product apps optional.";
+  return "I can help you orient — how Sukari, Orbura, or Ardum reason, or a takeaway that stands alone. Ask about one product, whether you need an app at all, or whether this is medical advice. (Live reasoning needs a key — this is a recorded answer.)";
 }
 
-export const provenance: Record<"sukari" | "orbura", ProvenanceEntry[]> = {
+export const provenance: Record<ProductSlug, ProvenanceEntry[]> = {
   sukari: [
     {
       claim: "1 action",
@@ -156,6 +206,26 @@ export const provenance: Record<"sukari" | "orbura", ProvenanceEntry[]> = {
       source: "Orbura product spec: unit of care",
       reasoning:
         "Recovery intelligence is useful at the individual and the squad level. Scaling the unit of care means one clinician can oversee many people without losing individual context.",
+    },
+  ],
+  ardum: [
+    {
+      claim: "Episode",
+      source: "Ardum product vision: living episode",
+      reasoning:
+        "The episode — intention, constraints, holds, commitments — is the spine. A recommendation or booking belongs to the episode; none of them is the product itself.",
+    },
+    {
+      claim: "One at a time",
+      source: "Ardum interaction contract",
+      reasoning:
+        "Every state presents one primary human decision. Asking for more recreates the filter-and-compare burden the product exists to remove.",
+    },
+    {
+      claim: "Secondary",
+      source: "Ardum product vision: booking is implementation",
+      reasoning:
+        "People want rest, reconnection, or change — not logistics first. Booking is a terminal grant of authority, not the story of the journey.",
     },
   ],
 };

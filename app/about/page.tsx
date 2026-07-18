@@ -4,17 +4,17 @@ import { MarketingShell } from "@/components/marketing/shell";
 import { Container } from "@/components/ui/container";
 import { JsonLd } from "@/components/JsonLd";
 import { webPageSchema } from "@/lib/schema";
-import { products } from "@/lib/products";
+import { productOpenLabel, products } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "We build health products that disappear into care. The famile ethos: AI-native and AI-enabled, quiet to live with, present when it matters.",
+    "famile is a compass for health and wellness — orientation and insight first, with optional paths into Sukari, Orbura, and Ardum.",
   alternates: { canonical: "/about" },
   openGraph: {
-    title: "About famile - health products that disappear into care",
+    title: "About famile — a compass for health and wellness",
     description:
-      "A suite of AI-native and AI-enabled health products, built for the long arc of staying well.",
+      "Insight first. Soft paths into continuous care and practice when they clearly help.",
   },
 };
 
@@ -26,7 +26,7 @@ export default function AboutPage() {
           path: "/about",
           name: "About famile",
           description:
-            "Why famile builds health products that disappear into care.",
+            "Why famile exists as a compass — orientation first, products optional.",
         })}
       />
       <section className="py-32 sm:py-40">
@@ -36,32 +36,30 @@ export default function AboutPage() {
               About
             </p>
             <h1 className="mt-4 font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl">
-              We build health products that{" "}
+              A compass, not a{" "}
               <span className="text-aurora-gradient text-luminous">
-                disappear into care.
+                storefront.
               </span>
             </h1>
             <div className="mt-10 space-y-6 text-lg leading-relaxed text-ink-muted">
               <p>
-                famile is a suite of AI-native and AI-enabled health products,
-                built for the long arc of staying well — metabolic, mental,
-                physical. Not single interventions. Continuous, adaptive,
-                human-scale care.
+                famile helps you orient: name your situation, learn a useful
+                health or wellness takeaway, and leave wiser — even if you never
+                open another app.
               </p>
               <p>
-                Every product shares one design ethos: quiet to live with, and
-                present the moment it matters. Quiet by default, so it never
-                adds to the noise of care. Ready when a decision needs making,
-                so the right action arrives in time.
+                Sukari, Orbura, and Ardum deliver the continuous, personalized
+                care and practice. This site points toward them only when the
+                insight clearly maps. Clicking through is never required for the
+                visit to succeed.
               </p>
               <p>
-                We surface what shifted. We trust the rest to run quietly. Care
-                teams see signal, never noise — and reach out because something
-                matters, not to check a box.
+                Quiet by default. Present when it matters. Never make someone
+                feel they failed by staying with the takeaway.
               </p>
             </div>
 
-            <div className="mt-16 grid gap-px overflow-hidden rounded-[var(--radius-xl)] border border-line bg-line sm:grid-cols-2">
+            <div className="mt-16 grid gap-px overflow-hidden rounded-[var(--radius-xl)] border border-line bg-line sm:grid-cols-3">
               {products.map((p) => (
                 <div
                   key={p.slug}
@@ -73,29 +71,43 @@ export default function AboutPage() {
                   >
                     {p.status}
                   </p>
-                  <h3 className="mt-3 font-display text-3xl tracking-tight">
+                  <h3 className="mt-3 font-display text-2xl tracking-tight">
                     {p.name}
                   </h3>
-                  <p className="mt-2 text-sm text-ink-muted">
-                    {p.description}
-                  </p>
-                  <Link
-                    href={`/products/${p.slug}`}
-                    transitionTypes={["nav-forward"]}
-                    className="mt-6 inline-block text-sm text-ink transition-opacity hover:opacity-80"
-                  >
-                    Explore {p.name} →
-                  </Link>
+                  <p className="mt-2 text-sm text-ink-muted">{p.description}</p>
+                  <div className="mt-6 flex flex-col gap-2">
+                    <Link
+                      href={`/products/${p.slug}`}
+                      transitionTypes={["nav-forward"]}
+                      className="inline-block text-sm text-ink transition-opacity hover:opacity-80"
+                    >
+                      Learn about {p.name} →
+                    </Link>
+                    {p.urlStatus === "live" ? (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-ink-muted underline-offset-4 hover:underline"
+                      >
+                        {productOpenLabel(p)}
+                      </a>
+                    ) : (
+                      <span className="text-xs uppercase tracking-[0.14em] text-ink-dim">
+                        App coming soon
+                      </span>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
 
             <div className="mt-16 text-center">
               <Link
-                href="/contact"
+                href="/ask"
                 className="text-sm text-ink-muted underline-offset-4 hover:underline"
               >
-                Talk to the team →
+                Ask for orientation →
               </Link>
             </div>
           </div>

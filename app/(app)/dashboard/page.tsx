@@ -5,9 +5,9 @@ import { AgentDashboard } from "@/components/agent/agent-dashboard";
 import { products } from "@/lib/products";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "Suite map",
   description:
-    "Overview of your famile health product suite - Sukari and Orbura, status and signals at a glance.",
+    "Map of the famile suite — Sukari, Orbura, and Ardum. Orientation here; continuous care in the product apps.",
   alternates: { canonical: "/dashboard" },
   robots: { index: false, follow: false },
 };
@@ -17,13 +17,14 @@ export default function DashboardPage() {
     <Container className="py-4">
       <header className="mb-12">
         <p className="text-xs uppercase tracking-[0.2em] text-ink-dim">
-          Overview
+          Suite map
         </p>
         <h1 className="mt-2 font-display text-5xl tracking-tight sm:text-6xl">
-          Good morning.
+          Three deeper paths.
         </h1>
         <p className="mt-4 max-w-md text-lg text-ink-muted">
-          Two products in your suite. Both quiet. Both ready when you are.
+          Optional continuity when you want it. The compass on the main site
+          remains the place for orientation.
         </p>
       </header>
 
@@ -45,7 +46,7 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-3">
           {products.map((p) => (
             <Link
               key={p.slug}
@@ -65,16 +66,14 @@ export default function DashboardPage() {
                   style={{ background: p.accent }}
                 />
                 <span className="text-xs uppercase tracking-[0.18em] text-ink-dim">
-                  {p.status}
+                  {p.urlStatus === "soon" ? "Soon" : p.status}
                 </span>
               </div>
               <h3 className="mt-6 font-display text-3xl tracking-tight">
                 {p.name}
               </h3>
               <p className="mt-2 text-sm text-ink-muted">{p.tagline}</p>
-              <p className="mt-6 text-sm text-ink">
-                Open {p.name} →
-              </p>
+              <p className="mt-6 text-sm text-ink">Learn about {p.name} →</p>
             </Link>
           ))}
         </div>

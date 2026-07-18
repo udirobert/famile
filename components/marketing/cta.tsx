@@ -30,11 +30,11 @@ export function CTA() {
             variants={fadeUp}
             className="text-xs uppercase tracking-[0.25em] text-ink-dim"
           >
-            Begin
+            Takeaway
           </motion.p>
           <TextReveal
             as="h2"
-            text="Start the care arc."
+            text="Leave with something useful."
             className="mt-4 font-display text-4xl tracking-tight sm:text-6xl"
             stagger={0.06}
           />
@@ -42,20 +42,17 @@ export function CTA() {
             variants={fadeUp}
             className="mx-auto mt-6 max-w-md text-lg text-ink-muted"
           >
-            Meet Sukari and Orbura. Two products, one calmer kind of care —
-            quiet to live with, ready the moment it matters.
+            Ask a question, learn a clearer way to think about care or practice.
+            Sukari, Orbura, and Ardum are optional deeper paths — only if you
+            want continuity.
           </motion.p>
           <motion.div
             variants={fadeUp}
             className="mt-10 flex flex-wrap justify-center gap-3"
           >
             <Magnetic strength={0.3} className="inline-flex">
-              <Button
-                href="/dashboard"
-                size="lg"
-                transitionTypes={["nav-forward"]}
-              >
-                Enter the suite
+              <Button href="/ask" size="lg">
+                Ask for orientation
               </Button>
             </Magnetic>
             <Button href="/contact" size="lg" variant="secondary">

@@ -5,12 +5,10 @@ import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Container } from "@/components/ui/container";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { getProduct } from "@/lib/products";
+import { getProduct, products, type ProductSlug } from "@/lib/products";
 import { replayTraces } from "@/lib/agent/replay";
 import type { StepKind } from "@/lib/agent/types";
 import { viewportOnce } from "@/lib/motion";
-
-type Product = "sukari" | "orbura";
 
 const kindColor: Record<StepKind, string> = {
   input: "#8b7fe8",
@@ -26,19 +24,21 @@ const stepDelay = (kind: StepKind, i: number) => {
   return 1500;
 };
 
+const cycle: ProductSlug[] = products.map((p) => p.slug);
+
 export function SignalDesk() {
-  const [product, setProduct] = useState<Product>("sukari");
+  const [productIdx, setProductIdx] = useState(0);
   const [visible, setVisible] = useState(1);
   const reduced = useReducedMotion();
 
+  const product = cycle[productIdx];
   const trace = replayTraces[product];
   const steps = trace.steps;
   const meta = getProduct(product);
-  // Reduced motion: show the full trace (derived, so no setState-in-effect).
   const shown = reduced ? steps.length : Math.min(visible, steps.length);
 
   const switchProduct = useCallback(() => {
-    setProduct((p) => (p === "sukari" ? "orbura" : "sukari"));
+    setProductIdx((i) => (i + 1) % cycle.length);
     setVisible(1);
   }, []);
 
@@ -67,19 +67,19 @@ export function SignalDesk() {
         <div className="mx-auto mb-16 max-w-3xl text-center">
           <TextReveal
             as="p"
-            text="AGENT IN THE OPEN"
+            text="HOW THE PRODUCTS REASON"
             className="mb-4 text-xs uppercase tracking-[0.25em] text-ink-dim"
             stagger={0.04}
           />
           <TextReveal
             as="h2"
-            text="See how it reasons."
+            text="See how they reason."
             className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
             stagger={0.06}
           />
           <TextReveal
             as="p"
-            text="Not a claim — a trace. The decide, practice, and report loop, running in the open on a simulated signal."
+            text="Not a funnel — a trace. How each product thinks on a simulated signal, in the open."
             className="mt-6 text-lg text-ink-muted"
             stagger={0.03}
           />
@@ -197,12 +197,22 @@ export function SignalDesk() {
           {/* progress: which product in the loop */}
           <div className="flex items-center justify-between border-t border-line px-6 py-3 text-[10px] uppercase tracking-[0.16em] text-ink-dim sm:px-8">
             <span>{meta.category}</span>
-            <span className="flex items-center gap-2">
-              <ProductDot active={product === "sukari"} color="#7ee8c8" />
-              Sukari
-              <span className="mx-1 text-ink-dim/40">/</span>
-              <ProductDot active={product === "orbura"} color="#ffb8e0" />
-              Orbura
+            <span className="flex flex-wrap items-center gap-2">
+              {cycle.map((slug, i) => {
+                const p = getProduct(slug);
+                return (
+                  <span key={slug} className="flex items-center gap-1.5">
+                    {i > 0 && (
+                      <span className="mx-0.5 text-ink-dim/40">/</span>
+                    )}
+                    <ProductDot
+                      active={product === slug}
+                      color={p.accent}
+                    />
+                    {p.name}
+                  </span>
+                );
+              })}
             </span>
           </div>
         </motion.div>

@@ -6,7 +6,7 @@ import { MorphBlob } from "@/components/motion/morph-blob";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { Magnetic } from "@/components/motion/magnetic-button";
 import { Button } from "@/components/ui/button";
-import { products, type Product } from "@/lib/products";
+import { products, productOpenLabel, type Product } from "@/lib/products";
 import { stagger, fadeUp, viewportOnce } from "@/lib/motion";
 
 export function ProductSuite() {
@@ -22,19 +22,19 @@ export function ProductSuite() {
           />
           <TextReveal
             as="h2"
-            text="Two products. One care continuum."
+            text="Three deeper paths. One compass."
             className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
             stagger={0.06}
           />
           <TextReveal
             as="p"
-            text="Each is AI-native or AI-enabled. Each is quiet to live with — and ready the moment it matters."
+            text="Each product is quiet to live with and ready when continuity matters. Explore here; open the app only if you want to go further."
             className="mt-6 text-lg text-ink-muted"
             stagger={0.03}
           />
         </div>
 
-        <div className="mt-20 grid gap-6 lg:grid-cols-2">
+        <div className="mt-20 grid gap-6 lg:grid-cols-3">
           {products.map((p, i) => (
             <ProductCard key={p.slug} product={p} index={i} />
           ))}
@@ -52,7 +52,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="group relative overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl sm:p-10"
+      className="group relative flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl sm:p-10"
     >
       <div
         className="absolute -inset-px -z-10 rounded-[var(--radius-xl)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -71,60 +71,77 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
         </span>
       </motion.div>
 
-      <div className="grid gap-8 sm:grid-cols-[0.9fr_1.1fr] sm:items-center">
-        <motion.div
-          variants={fadeUp}
-          className="relative mx-auto aspect-square w-full max-w-[280px]"
-        >
-          <div
-            className="absolute inset-6 rounded-full opacity-40 blur-[60px]"
-            style={{ background: `radial-gradient(circle, ${product.accent}55, transparent 70%)` }}
-            aria-hidden
-          />
-          <MorphBlob
-            from={product.glyph.from}
-            to={product.glyph.to}
-            speed={1.2 + index * 0.2}
-            distort={0.38 + index * 0.06}
-            className="absolute inset-0"
-          />
-        </motion.div>
+      <motion.div
+        variants={fadeUp}
+        className="relative mx-auto mb-8 aspect-square w-full max-w-[200px]"
+      >
+        <div
+          className="absolute inset-6 rounded-full opacity-40 blur-[60px]"
+          style={{
+            background: `radial-gradient(circle, ${product.accent}55, transparent 70%)`,
+          }}
+          aria-hidden
+        />
+        <MorphBlob
+          from={product.glyph.from}
+          to={product.glyph.to}
+          speed={1.2 + index * 0.2}
+          distort={0.38 + index * 0.06}
+          className="absolute inset-0"
+        />
+      </motion.div>
 
-        <motion.div variants={fadeUp} className="flex flex-col">
-          <h3 className="font-display text-4xl tracking-tight">{product.name}</h3>
-          <p className="mt-3 text-base text-ink">{product.tagline}</p>
-          <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-            {product.longDescription}
-          </p>
+      <motion.div variants={fadeUp} className="flex flex-1 flex-col">
+        <h3 className="font-display text-3xl tracking-tight lg:text-4xl">
+          {product.name}
+        </h3>
+        <p className="mt-3 text-base text-ink">{product.tagline}</p>
+        <p className="mt-4 text-sm leading-relaxed text-ink-muted">
+          {product.description}
+        </p>
 
-          <ul className="mt-6 space-y-2">
-            {product.features.map((f) => (
-              <li key={f.title} className="flex items-start gap-3 text-sm">
-                <span
-                  className="mt-1.5 h-1 w-3 flex-shrink-0 rounded-full"
-                  style={{ background: product.accent }}
-                />
-                <span className="text-ink-muted">
-                  <span className="text-ink">{f.title}.</span> {f.body}
-                </span>
-              </li>
-            ))}
-          </ul>
+        <ul className="mt-6 space-y-2">
+          {product.features.map((f) => (
+            <li key={f.title} className="flex items-start gap-3 text-sm">
+              <span
+                className="mt-1.5 h-1 w-3 flex-shrink-0 rounded-full"
+                style={{ background: product.accent }}
+              />
+              <span className="text-ink-muted">
+                <span className="text-ink">{f.title}.</span> {f.body}
+              </span>
+            </li>
+          ))}
+        </ul>
 
-          <div className="mt-8 flex items-center gap-3">
-            <Magnetic strength={0.3} className="inline-flex">
-              <Button
-                href={`/products/${product.slug}`}
-                variant="secondary"
-                size="md"
-                transitionTypes={["nav-forward"]}
-              >
-                Explore {product.name}
-              </Button>
-            </Magnetic>
-          </div>
-        </motion.div>
-      </div>
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Magnetic strength={0.3} className="inline-flex">
+            <Button
+              href={`/products/${product.slug}`}
+              variant="secondary"
+              size="md"
+              transitionTypes={["nav-forward"]}
+            >
+              Learn about {product.name}
+            </Button>
+          </Magnetic>
+          {product.urlStatus === "live" ? (
+            <Button
+              href={product.url}
+              variant="ghost"
+              size="md"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {productOpenLabel(product)} →
+            </Button>
+          ) : (
+            <span className="text-xs uppercase tracking-[0.16em] text-ink-dim">
+              App soon
+            </span>
+          )}
+        </div>
+      </motion.div>
 
       <motion.div
         variants={fadeUp}

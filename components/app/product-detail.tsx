@@ -3,9 +3,29 @@ import { MorphBlob } from "@/components/motion/morph-blob";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { ProvenanceAffordance } from "@/components/agent/provenance";
-import type { Product } from "@/lib/products";
+import { productOpenLabel, type Product } from "@/lib/products";
+
+const liveSignal: Record<
+  Product["slug"],
+  { title: string; hint: string }
+> = {
+  sukari: {
+    title: "One thing worth doing today.",
+    hint: "Tap to try it before it counts.",
+  },
+  orbura: {
+    title: "Recovery trending well. Nothing to flag.",
+    hint: "Next adaptive update in 4h.",
+  },
+  ardum: {
+    title: "Intention held. One decision when you’re ready.",
+    hint: "Booking stays secondary until confidence is earned.",
+  },
+};
 
 export function ProductDetail({ product }: { product: Product }) {
+  const signal = liveSignal[product.slug];
+
   return (
     <Container className="py-4">
       <Link
@@ -13,7 +33,7 @@ export function ProductDetail({ product }: { product: Product }) {
         transitionTypes={["nav-back"]}
         className="mb-8 inline-flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
       >
-        ← Dashboard
+        ← Suite map
       </Link>
 
       <div className="grid gap-12 lg:grid-cols-[1fr_0.8fr]">
@@ -26,6 +46,11 @@ export function ProductDetail({ product }: { product: Product }) {
               <span className="h-1 w-1 rounded-full bg-aurora-mint" />
               {product.status}
             </span>
+            {product.urlStatus === "soon" && (
+              <span className="inline-flex items-center rounded-full border border-line-strong px-3 py-1 text-xs uppercase tracking-[0.18em] text-ink-dim">
+                App soon
+              </span>
+            )}
           </div>
 
           <h1 className="font-display text-5xl tracking-tight sm:text-6xl">
@@ -70,14 +95,32 @@ export function ProductDetail({ product }: { product: Product }) {
             </ul>
           </div>
 
-          <div className="mt-10 flex gap-3">
-            <Button size="md" transitionTypes={["nav-forward"]}>
-              Begin a session
+          <div className="mt-10 flex flex-wrap gap-3">
+            {product.urlStatus === "live" ? (
+              <Button
+                href={product.url}
+                size="md"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {productOpenLabel(product)}
+              </Button>
+            ) : (
+              <Button size="md" disabled>
+                {productOpenLabel(product)}
+              </Button>
+            )}
+            <Button href="/ask" variant="secondary" size="md">
+              Ask about this
             </Button>
-            <Button href="/contact" variant="secondary" size="md">
-              Talk to care
+            <Button href="/contact" variant="ghost" size="md">
+              Talk to us
             </Button>
           </div>
+          <p className="mt-4 max-w-md text-xs text-ink-dim">
+            Orientation lives here. Continuous care and practice live in the
+            product app — only if you want that continuity.
+          </p>
         </div>
 
         <div className="relative">
@@ -100,18 +143,10 @@ export function ProductDetail({ product }: { product: Product }) {
             </div>
             <div className="mt-8 rounded-[var(--radius-lg)] border border-line bg-canvas-elevated/30 p-5 backdrop-blur-xl">
               <p className="text-xs uppercase tracking-[0.18em] text-ink-dim">
-                Live signal
+                How it feels in product
               </p>
-              <p className="mt-2 font-display text-lg text-ink">
-                {product.slug === "sukari"
-                  ? "One thing worth doing today."
-                  : "Recovery trending well. Nothing to flag."}
-              </p>
-              <p className="mt-2 text-xs text-ink-muted">
-                {product.slug === "sukari"
-                  ? "Tap to try it before it counts."
-                  : "Next adaptive update in 4h."}
-              </p>
+              <p className="mt-2 font-display text-lg text-ink">{signal.title}</p>
+              <p className="mt-2 text-xs text-ink-muted">{signal.hint}</p>
             </div>
           </div>
         </div>

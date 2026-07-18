@@ -14,9 +14,9 @@ export default function Home() {
       <JsonLd
         data={webPageSchema({
           path: "/",
-          name: "famile - a suite of health products",
+          name: "famile - a compass for health and wellness",
           description:
-            "AI-native and AI-enabled health products for the people living with chronic conditions, the teams who care for them, and the systems that support both.",
+            "Orientation and insight first, with optional paths into Sukari, Orbura, and Ardum for continuous care and practice.",
         })}
       />
       <JsonLd data={productListSchema()} />

@@ -8,23 +8,23 @@ import { stagger, fadeUp, viewportOnce } from "@/lib/motion";
 const principles = [
   {
     n: "01",
+    title: "Insight can stand alone.",
+    body: "Orientation is a complete visit. Soft paths into Sukari, Orbura, or Ardum are earned — never a failure if you leave with only a clearer thought.",
+  },
+  {
+    n: "02",
     title: "AI-native, not AI-decorated.",
     body: "Software that does the thinking, not just the charting. It decides, practices, and reports — so a human doesn't have to watch a dashboard to know when to act.",
   },
   {
-    n: "02",
+    n: "03",
     title: "Exception-oriented.",
     body: "Surface what shifted. Trust the rest to run quietly. Care teams see signal, not noise — and reach out because something matters, not to check a box.",
   },
   {
-    n: "03",
+    n: "04",
     title: "Quiet by default. Present when it matters.",
     body: "Easy to live alongside every day. Ready the moment a decision needs making — never sharp for sharpness's sake.",
-  },
-  {
-    n: "04",
-    title: "Built for the long arc.",
-    body: "Not a single intervention. The long work of staying well — metabolic, mental, physical — across years, not weeks.",
   },
 ];
 

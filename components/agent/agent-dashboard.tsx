@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { getProduct } from "@/lib/products";
+import { getProduct, products, type ProductSlug } from "@/lib/products";
 import { replayTraces, replayDashboardEvents } from "@/lib/agent/replay";
 import type { DashboardEvent } from "@/lib/agent/types";
-
-type Product = "sukari" | "orbura";
 
 const feedColor: Record<DashboardEvent["kind"], string> = {
   signal: "#8b7fe8",
@@ -14,7 +12,7 @@ const feedColor: Record<DashboardEvent["kind"], string> = {
   report: "#7ee8c8",
 };
 
-const focusProducts: Product[] = ["sukari", "orbura"];
+const focusProducts: ProductSlug[] = products.map((p) => p.slug);
 
 export function AgentDashboard() {
   const reduced = useReducedMotion();
