@@ -6,11 +6,11 @@ import { webPageSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Mira",
-  description: "Sit with Mira. Not medical advice.",
+  description: "Conversation with Mira. Not medical advice.",
   alternates: { canonical: "/ask" },
   openGraph: {
-    title: "Ask Mira — famile",
-    description: "Company, if you'd like it.",
+    title: "Mira — famile",
+    description: "Attention, evidence, continuity.",
   },
 };
 
@@ -21,7 +21,7 @@ export default function AskPage() {
         data={webPageSchema({
           path: "/ask",
           name: "Ask Mira",
-          description: "Sit with Mira on famile.",
+          description: "Attention, evidence, and continuity for staying well.",
         })}
       />
       <AskExperience />

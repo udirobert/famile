@@ -6,26 +6,26 @@ import { TextReveal } from "@/components/motion/text-reveal";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { fadeUp, viewportOnce } from "@/lib/motion";
 
-const principles = [
+const notes = [
   {
     n: "01",
-    title: "Being here is enough.",
-    body: "No task to complete. Peruse, sit, talk with Mira — or leave. All of that counts.",
+    title: "Attention before action.",
+    body: "What is noticed with care can be met with care. Most systems fail by rushing past the signal.",
   },
   {
     n: "02",
-    title: "You are the story.",
-    body: "famile is space around you, not a pitch. Mira keeps company; she doesn't own the plot.",
+    title: "Stillness is data.",
+    body: "Contemplative practice and clinical observation agree: the body often speaks before the crisis. Listening is empirical work.",
   },
   {
     n: "03",
-    title: "Quiet by default.",
-    body: "Present when you want company. Never sharp for sharpness's sake.",
+    title: "One move, then the next.",
+    body: "Adherence research favors small, repeatable acts over walls of advice. Complexity is usually the enemy of return.",
   },
   {
     n: "04",
-    title: "Apps stay in the family.",
-    body: "Sukari, Orbura, and Ardum live nearby. They aren't the reason this space exists.",
+    title: "Continuity over intensity.",
+    body: "Outcomes compound in ordinary days. Drama is optional; showing up again is not.",
   },
 ];
 
@@ -39,13 +39,13 @@ export function Principles() {
         <div className="mx-auto max-w-3xl text-center">
           <TextReveal
             as="p"
-            text="PRINCIPLES"
+            text="NOTES"
             className="mb-4 text-xs uppercase tracking-[0.25em] text-ink-dim"
             stagger={0.04}
           />
           <TextReveal
             as="h2"
-            text="How this space feels."
+            text="Measure. Attend. Return."
             className="font-display text-4xl leading-[1.2] tracking-tight sm:text-5xl"
             stagger={0.06}
           />
@@ -59,7 +59,7 @@ export function Principles() {
           className="mx-auto mt-16 max-w-2xl rounded-[var(--radius-xl)] border border-line bg-canvas-elevated/40 px-6 py-2 backdrop-blur-xl sm:px-8"
         >
           <Accordion>
-            {principles.map((p) => (
+            {notes.map((p) => (
               <AccordionItem
                 key={p.n}
                 title={

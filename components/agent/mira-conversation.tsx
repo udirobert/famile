@@ -40,7 +40,9 @@ export function MiraConversation({
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (autoFocus) inputRef.current?.focus();
+    if (!autoFocus) return;
+    // preventScroll: focusing the input was yanking the page mid-viewport on open
+    inputRef.current?.focus({ preventScroll: true });
   }, [autoFocus]);
 
   async function send(q: string) {
@@ -158,7 +160,7 @@ export function MiraConversation({
         {messages.length === 0 ? (
           <div className="space-y-4">
             <p className="text-sm leading-relaxed text-ink-muted">
-              Say whatever&apos;s on your mind.
+              What are you noticing?
             </p>
             <div className="flex flex-wrap gap-2">
               {sampleQA.map((qa) => (

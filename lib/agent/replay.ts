@@ -119,19 +119,19 @@ export const replayDashboardEvents: DashboardEvent[] = [
 export const sampleQA: SampleQA[] = [
   {
     q: "What is this place?",
-    a: "famile is a warm space to peruse or just be. I'm Mira — company if you'd like it. A few apps live in the family too; they aren't why you're here.",
+    a: "A field for attention — stillness meeting measure. I'm Mira. I can talk things through; I don't diagnose or replace a clinician.",
   },
   {
     q: "Who are you?",
-    a: "I'm Mira. I keep company here. I don't diagnose or dose, and I don't remember you across other Famile apps.",
+    a: "Mira. Conversation, not care delivery. I don't dose, and I don't carry memory across Famile apps.",
   },
   {
     q: "What's Sukari?",
-    a: "An app in the family for day-to-day metabolic care — one doable action at a time. Only if that ever feels useful to you.",
+    a: "A metabolic practice layer: one doable action from the day's patterns, with care-team signal by exception. Built for adherence over intensity.",
   },
   {
     q: "Is this medical advice?",
-    a: "No. This is company and information, not care. Anything clinical stays with your clinician.",
+    a: "No. Information and conversation only. Clinical judgment stays with your clinician.",
   },
 ];
 
@@ -159,14 +159,14 @@ export function replayAnswer(query: string): string {
     q.includes("intention") ||
     q.includes("booking")
   )
-    return "Ardum is an app in the family for intentions that may become rest or practice. Booking stays secondary. Happy to say more — or we can talk about something else.";
+    return "Ardum holds intentions that may become rest or practice — one decision at a time; booking stays secondary until confidence is earned.";
   if (q.includes("orbura") || q.includes("recovery") || q.includes("burnout"))
-    return "Orbura is an app in the family for recovery signals — adapting to the week that happened. Only if that ever feels useful.";
+    return "Orbura reads recovery signals early and adapts the plan to the week that happened — load, sleep, and capacity together.";
   if (q.includes("sukari") || q.includes("metabolic") || q.includes("surface"))
     return sampleQA[2].a;
   if (q.includes("native") || q.includes("ai-native") || q.includes("enabled"))
-    return "Some Famile apps are AI-native; some AI-enabled. This space itself is just company — not a product demo.";
-  return "I'm here. Ask about this place, about me, or about something in the family — or just say what's on your mind.";
+    return "AI-native apps run a full decide–practice–report loop. AI-enabled ones add intelligence inside an existing workflow. Either way, claims stay bounded.";
+  return "Ask what you're noticing — or about Mira, Sukari, Orbura, or Ardum.";
 }
 
 export const provenance: Record<ProductSlug, ProvenanceEntry[]> = {

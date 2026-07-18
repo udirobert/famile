@@ -55,18 +55,12 @@ export function ExperienceSection() {
 
           <ParallaxLayer speed={0.15}>
             <p className="font-display text-5xl leading-[1.15] tracking-tight sm:text-7xl lg:text-8xl">
-              Energising enough to{" "}
+              Clear enough to{" "}
               <span className="text-aurora-gradient text-luminous inline-block px-0.5">
                 act on.
               </span>
             </p>
           </ParallaxLayer>
-
-          <div className="mx-auto mt-20 max-w-md">
-            <p className="text-base text-ink-muted">
-              Quiet enough to stay. Present if you want company.
-            </p>
-          </div>
         </div>
       </Container>
     </section>

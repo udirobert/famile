@@ -25,7 +25,7 @@ const fraunces = Fraunces({
 });
 
 const description =
-  "famile — a warm place to peruse, or just be. Mira keeps company.";
+  "famile — attention, evidence, and continuity for the long arc of staying well.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://famile.xyz"),

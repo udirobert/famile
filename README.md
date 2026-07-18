@@ -1,6 +1,6 @@
 # famile
 
-A warm place to peruse — or just be. Mira keeps company. Apps in the family live nearby; they aren’t the point of the visit.
+Attention, evidence, and continuity for the long arc of staying well.
 
 ## Docs
 

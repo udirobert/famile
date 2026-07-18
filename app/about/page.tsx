@@ -8,11 +8,12 @@ import { productOpenLabel, products } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "famile is a warm place to peruse — or just be. Mira lives here too.",
+  description:
+    "famile builds for the long arc of staying well — attention, evidence, and continuity.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About famile",
-    description: "You are the story. We're a warm space around you.",
+    description: "Attention before action. Continuity over intensity.",
   },
 };
 
@@ -23,7 +24,8 @@ export default function AboutPage() {
         data={webPageSchema({
           path: "/about",
           name: "About famile",
-          description: "A warm place to peruse — or just be.",
+          description:
+            "Attention, evidence, and continuity for the long arc of staying well.",
         })}
       />
       <section className="py-32 sm:py-40">
@@ -32,21 +34,29 @@ export default function AboutPage() {
             <p className="text-xs uppercase tracking-[0.25em] text-ink-dim">
               About
             </p>
-            <h1 className="mt-4 font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl">
-              You are the story.{" "}
+            <h1 className="mt-4 font-display text-5xl leading-[1.12] tracking-tight sm:text-6xl">
+              Care that{" "}
               <span className="text-aurora-gradient text-luminous">
-                This is space around you.
+                compounds.
               </span>
             </h1>
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-muted">
-              famile.xyz is a warm place to peruse — or just be. Mira can keep
-              you company. A few apps live in the family too; they&apos;re here
-              if they ever feel useful, never the point of the visit.
-            </p>
+            <div className="mt-8 max-w-xl space-y-5 text-lg leading-relaxed text-ink-muted">
+              <p>
+                Health rarely fails for lack of information. It fails in the
+                gap between knowing and returning — the ordinary days where
+                attention slips and noise wins.
+              </p>
+              <p>
+                We draw from both stillness and measurement: contemplative
+                habits of noticing, and the empirical habit of asking what
+                actually changed. Mira is here for conversation. The apps below
+                hold longer arcs of practice and care.
+              </p>
+            </div>
 
             <div className="mt-16">
               <p className="mb-6 text-xs uppercase tracking-[0.2em] text-ink-dim">
-                Also in the family
+                Practice
               </p>
               <div className="grid gap-px overflow-hidden rounded-[var(--radius-xl)] border border-line bg-line sm:grid-cols-3">
                 {products.map((p) => (
@@ -88,7 +98,7 @@ export default function AboutPage() {
 
             <div className="mt-16 text-center">
               <Link
-                href="/ask"
+                href="/?mira=1"
                 className="text-sm text-ink-muted underline-offset-4 hover:underline"
               >
                 Ask Mira →

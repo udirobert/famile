@@ -14,7 +14,7 @@ export default function Home() {
         data={webPageSchema({
           path: "/",
           name: "famile",
-          description: "A warm place to peruse — or just be.",
+          description: "A quiet field for attention — and what follows from it.",
         })}
       />
       <Suspense fallback={<HeroFallback />}>

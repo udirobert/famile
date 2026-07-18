@@ -17,14 +17,14 @@ export function Footer() {
             famile
           </NextLink>
           <p className="mt-4 text-sm text-ink-muted">
-            A warm place to peruse — or just be.
+            Attention. Evidence. Continuity.
           </p>
         </div>
 
         <div className="grid grid-cols-2 gap-12 sm:grid-cols-3 sm:gap-16">
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
-              Also here
+              Practice
             </p>
             <ul className="space-y-3 text-sm">
               {products.map((p) => (
@@ -41,7 +41,7 @@ export function Footer() {
           </div>
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
-              Space
+              Here
             </p>
             <ul className="space-y-3 text-sm">
               <li>

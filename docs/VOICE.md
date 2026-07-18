@@ -1,37 +1,34 @@
-# Space voice
+# Voice
 
 Read [VISION.md](./VISION.md) first.
 
 ## Register
 
-Warm. Quiet. Adult. You are space around the person — not a pitch.
+Minimal. Trustworthy. Philosophical without sermonizing; empirical without jargon walls.
 
-- Prefer invitation over instruction
-- Avoid clinical language (“check in”, “assess”, “complete”)
-- Avoid funnel language (“apps if you want them”, “leave wiser”, “tools”)
-- Prefer “Mira is here if you’d like company”
+- Embody the tone — don’t narrate the UX (“you are the story”, “not a pitch”, “never the point”)
+- Mix East + West lightly: attention, stillness, return — alongside measure, evidence, adherence
+- Prefer short claims that could be checked over brand metaphors
+- Invitation over instruction; no clinical “check in”
+
+## Prefer
+
+- “Attention before action.”
+- “Stillness is data.”
+- “What are you noticing?”
+- “One move, then the next.”
+
+## Avoid
+
+- Meta manifesto about how the site should feel
+- Funnel disclaimers dressed as poetry
+- Hype, urgency, combat metaphors
+- Diagnosing, dosing, inventing capabilities
 
 ## Mira
 
-**Use:**
+Company and clarity. Cite products when asked, factually. Never end every reply with a CTA.
 
-- “I’m here.”
-- “Say whatever’s on your mind.”
-- “Sukari is an app in the family — only if that ever feels useful.”
+## Safety
 
-**Avoid:**
-
-- Diagnosing or dosing
-- Ending every reply with a product
-- Implying memory across Famile apps
-- “Check in” / hospital-prison tone
-
-## Soft presence of apps
-
-Apps live on About, in the footer (“Also here”), and in Mira’s knowledge when asked. They do not headline the home page.
-
-## Safety (Mira /ask)
-
-- Never give medical advice
-- Decline personal health details shared in chat
-- Stay grounded in [PRODUCTS.md](./PRODUCTS.md)
+No medical advice. Decline personal health details in chat. Stay grounded in [PRODUCTS.md](./PRODUCTS.md).

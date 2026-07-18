@@ -14,15 +14,15 @@ export function GET() {
 
   const body = `# famile
 
-> famile is a warm place to peruse — or just be. Mira keeps company. Apps in the family are optional and not the point of the visit.
+> Attention, evidence, and continuity for the long arc of staying well. Mira offers conversation. Practice apps hold longer arcs.
 
-## Also in the family
+## Practice
 ${productLines}
 
 ## Site
-- [Home](https://famile.xyz/): A warm space. Atmosphere, principles, Mira.
-- [Mira](https://famile.xyz/ask): Sit with Mira. Not medical advice.
-- [About](https://famile.xyz/about): You are the story; this is space around you.
+- [Home](https://famile.xyz/): Field for attention; notes; Mira.
+- [Mira](https://famile.xyz/ask): Conversation. Not medical advice.
+- [About](https://famile.xyz/about): Care that compounds.
 - [Contact](https://famile.xyz/contact): Partnerships and walkthroughs.
 
 ## Machine-readable

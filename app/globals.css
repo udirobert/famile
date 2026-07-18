@@ -131,6 +131,10 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    /* Room for italic overhang + last glyph under clip */
+    padding-inline: 0.02em 0.12em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
     animation: aurora-shift 12s var(--ease-soft) infinite;
   }
 

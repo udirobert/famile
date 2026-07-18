@@ -3,7 +3,7 @@ import { products, type Product } from "./products";
 const SITE = "https://famile.xyz";
 
 const ORG_DESCRIPTION =
-  "famile — a warm place to peruse, or just be. Mira keeps company.";
+  "famile — attention, evidence, and continuity for the long arc of staying well.";
 
 // Site-wide Organization + WebSite graph. Emitted once in the root layout so
 // every page inherits publisher/site identity for crawlers and AI agents.

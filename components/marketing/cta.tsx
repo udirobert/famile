@@ -28,7 +28,7 @@ export function CTA() {
           />
           <TextReveal
             as="h2"
-            text="Mira is here, if you'd like company."
+            text="A question, if you have one."
             className="font-display text-4xl leading-[1.2] tracking-tight sm:text-5xl"
             stagger={0.06}
           />
