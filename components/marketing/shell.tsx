@@ -26,7 +26,7 @@ function AmbientAurora() {
         }}
       />
       <div
-        className="absolute top-1/3 -right-32 h-[60vh] w-[60vh] rounded-full opacity-40 blur-[140px]"
+        className="absolute bottom-0 -right-32 h-[60vh] w-[60vh] rounded-full opacity-40 blur-[140px]"
         style={{
           background:
             "radial-gradient(circle, rgba(255,184,224,0.16), transparent 70%)",
@@ -37,6 +37,14 @@ function AmbientAurora() {
         style={{
           background:
             "radial-gradient(circle, rgba(126,232,200,0.12), transparent 70%)",
+        }}
+      />
+      {/* Warm amber dawn glow rising low - keeps the canvas calm, not cold */}
+      <div
+        className="absolute -bottom-[12%] left-1/2 h-[55vh] w-[72vw] -translate-x-1/2 rounded-full opacity-45 blur-[150px]"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255,197,129,0.20), transparent 70%)",
         }}
       />
     </div>

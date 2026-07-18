@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "AI-native and AI-enabled health products built for continuous, human-scale care.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0a0716",
-    theme_color: "#0a0716",
+    background_color: "#1a1438",
+    theme_color: "#1a1438",
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
     ],

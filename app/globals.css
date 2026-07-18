@@ -2,16 +2,16 @@
 
 /* ----------------------------------------------------------------------------
    famile.xyz design system
-   "Soft luminous" - a deep twilight canvas with aurora lavender + pink + mint.
-   The aurora is a living atmosphere, not a flat purple-on-white gradient.
+   "Soft luminous" - a warm dusk canvas with aurora lavender + pink + mint +
+   amber. The aurora is a living atmosphere, like the sky just after dawn.
 ---------------------------------------------------------------------------- */
 
 @theme {
-  /* Canvas - deep twilight, like predawn sky */
-  --color-canvas: #0a0716;
-  --color-canvas-elevated: #120c24;
-  --color-canvas-overlay: #1a1230;
-  --color-canvas-glass: rgba(26, 18, 48, 0.55);
+  /* Canvas - warm dusk, lifted from near-black to feel calm not foreboding */
+  --color-canvas: #1a1438;
+  --color-canvas-elevated: #251c4d;
+  --color-canvas-overlay: #2e2360;
+  --color-canvas-glass: rgba(46, 35, 96, 0.55);
 
   /* Aurora - the luminous mesh */
   --color-aurora-lavender: #c4b0ff;

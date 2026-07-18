@@ -13,7 +13,7 @@ export default function OGImage() {
           height: "100%",
           display: "flex",
           position: "relative",
-          background: "#0a0716",
+          background: "#1a1438",
           fontFamily: "sans-serif",
         }}
       >
@@ -49,6 +49,18 @@ export default function OGImage() {
             height: "100%",
             background:
               "radial-gradient(ellipse 40% 30% at 50% 50%, rgba(255,184,224,0.22), transparent 70%)",
+          }}
+        />
+        {/* Warm amber dawn glow low - keeps the canvas calm, not cold */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background:
+              "radial-gradient(ellipse 70% 35% at 50% 100%, rgba(255,197,129,0.26), transparent 70%)",
           }}
         />
 
@@ -141,8 +153,8 @@ export default function OGImage() {
                 lineHeight: 1.4,
               }}
             >
-              A suite of AI-native and AI-enabled health products. Calm enough
-              to live with, energising enough to act on.
+              A suite of AI-native and AI-enabled health products. Quiet to
+              live with, present when it matters.
             </div>
           </div>
 
