@@ -22,7 +22,7 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-12 sm:gap-16">
+        <div className="grid grid-cols-2 gap-12 sm:grid-cols-3 sm:gap-16">
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
               Suite
@@ -75,6 +75,29 @@ export function Footer() {
                   className="text-ink-muted transition-colors hover:text-ink"
                 >
                   Contact
+                </NextLink>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
+              Legal
+            </p>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <NextLink
+                  href="/privacy"
+                  className="text-ink-muted transition-colors hover:text-ink"
+                >
+                  Privacy Policy
+                </NextLink>
+              </li>
+              <li>
+                <NextLink
+                  href="/terms"
+                  className="text-ink-muted transition-colors hover:text-ink"
+                >
+                  Terms of Use
                 </NextLink>
               </li>
             </ul>

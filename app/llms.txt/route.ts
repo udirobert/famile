@@ -31,6 +31,10 @@ ${productLines}
 - [Sitemap](https://famile.xyz/sitemap.xml)
 - [Robots](https://famile.xyz/robots.txt)
 - [Manifest](https://famile.xyz/manifest.webmanifest)
+
+## Legal
+- [Privacy Policy](https://famile.xyz/privacy): How famile handles information. /ask queries are not stored; input is sent to the AI provider (Anthropic). Not medical advice.
+- [Terms of Use](https://famile.xyz/terms): Terms for using the site and the /ask agent. Informational only, not medical advice.
 `;
 
   return new Response(body, {
