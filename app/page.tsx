@@ -14,9 +14,8 @@ export default function Home() {
       <JsonLd
         data={webPageSchema({
           path: "/",
-          name: "famile - a compass for health and wellness",
-          description:
-            "Orientation and insight first, with optional paths into Sukari, Orbura, and Ardum for continuous care and practice.",
+          name: "famile",
+          description: "A compass for health and wellness. Leave wiser. Apps optional.",
         })}
       />
       <JsonLd data={productListSchema()} />

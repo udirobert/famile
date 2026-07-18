@@ -113,11 +113,7 @@ export function Ask() {
         <div className="max-h-[44vh] min-h-[200px] overflow-y-auto px-6 py-6">
           {messages.length === 0 ? (
             <div className="space-y-4">
-              <p className="text-sm text-ink-muted">
-                Ask for orientation — a takeaway that stands alone, or how
-                Sukari, Orbura, or Ardum reason. Opening an app is never
-                required.
-              </p>
+              <p className="text-sm text-ink-muted">Try a question.</p>
               <div className="flex flex-wrap gap-2">
                 {sampleQA.map((qa) => (
                   <button
@@ -178,7 +174,7 @@ export function Ask() {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask for a takeaway or how a product reasons…"
+            placeholder="Ask…"
             className="flex-1 bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink-dim focus:outline-none"
             disabled={busy}
           />
@@ -192,11 +188,7 @@ export function Ask() {
         </form>
       </div>
       <p className="mt-4 text-center text-xs text-ink-dim">
-        Orientation only — not medical advice. Real care stays with your
-        clinician and the product apps.
-      </p>
-      <p className="mt-1 text-center text-xs text-ink-dim">
-        Don&apos;t share personal health information — it leaves this page.
+        Not medical advice. Don&apos;t share personal health details.
       </p>
     </div>
   );
@@ -210,7 +202,7 @@ function SoftChip({ product }: { product: Product }) {
   const external = product.urlStatus === "live";
   const label =
     product.urlStatus === "live"
-      ? `Learn more about ${product.name}`
+      ? product.name
       : `About ${product.name}`;
 
   if (external) {

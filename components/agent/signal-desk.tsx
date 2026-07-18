@@ -67,21 +67,15 @@ export function SignalDesk() {
         <div className="mx-auto mb-16 max-w-3xl text-center">
           <TextReveal
             as="p"
-            text="HOW THE PRODUCTS REASON"
+            text="REASONING"
             className="mb-4 text-xs uppercase tracking-[0.25em] text-ink-dim"
             stagger={0.04}
           />
           <TextReveal
             as="h2"
-            text="See how they reason."
+            text="See how they think."
             className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
             stagger={0.06}
-          />
-          <TextReveal
-            as="p"
-            text="Not a funnel — a trace. How each product thinks on a simulated signal, in the open."
-            className="mt-6 text-lg text-ink-muted"
-            stagger={0.03}
           />
         </div>
 
@@ -218,16 +212,14 @@ export function SignalDesk() {
         </motion.div>
 
         <p className="mx-auto mt-6 max-w-xl text-center text-xs text-ink-dim">
-          Simulated signal. Real reasoning. Not medical advice — a
-          demonstration of how the products reason, supervised by a clinician in
-          real use.
+          Simulated signal. Not medical advice.
         </p>
         <div className="mt-4 text-center">
           <Link
             href="/ask"
             className="text-sm text-ink-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
           >
-            Ask it a question →
+            Ask →
           </Link>
         </div>
       </Container>

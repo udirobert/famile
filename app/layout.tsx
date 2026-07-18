@@ -25,12 +25,12 @@ const fraunces = Fraunces({
 });
 
 const description =
-  "famile is a compass for health and wellness — orientation and insight first, with optional paths into Sukari, Orbura, and Ardum for continuous care and practice. Leave wiser even if you never open another app.";
+  "famile — a compass for health and wellness. Leave wiser. Apps optional.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://famile.xyz"),
   title: {
-    default: "famile — a compass for health and wellness",
+    default: "famile — orient. leave wiser.",
     template: "%s · famile",
   },
   description,
@@ -64,12 +64,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://famile.xyz",
     siteName: "famile",
-    title: "famile — a compass for health and wellness",
+    title: "famile — orient. leave wiser.",
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "famile — a compass for health and wellness",
+    title: "famile — orient. leave wiser.",
     description,
     creator: "@famile",
   },

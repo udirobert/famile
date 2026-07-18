@@ -20,11 +20,10 @@ export default function DashboardPage() {
           Suite map
         </p>
         <h1 className="mt-2 font-display text-5xl tracking-tight sm:text-6xl">
-          Three deeper paths.
+          Suite map.
         </h1>
         <p className="mt-4 max-w-md text-lg text-ink-muted">
-          Optional continuity when you want it. The compass on the main site
-          remains the place for orientation.
+          Three paths. Optional.
         </p>
       </header>
 

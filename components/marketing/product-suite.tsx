@@ -6,6 +6,7 @@ import { MorphBlob } from "@/components/motion/morph-blob";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { Magnetic } from "@/components/motion/magnetic-button";
 import { Button } from "@/components/ui/button";
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { products, productOpenLabel, type Product } from "@/lib/products";
 import { stagger, fadeUp, viewportOnce } from "@/lib/motion";
 
@@ -22,15 +23,9 @@ export function ProductSuite() {
           />
           <TextReveal
             as="h2"
-            text="Three deeper paths. One compass."
+            text="Three deeper paths."
             className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
             stagger={0.06}
-          />
-          <TextReveal
-            as="p"
-            text="Each product is quiet to live with and ready when continuity matters. Explore here; open the app only if you want to go further."
-            className="mt-6 text-lg text-ink-muted"
-            stagger={0.03}
           />
         </div>
 
@@ -65,15 +60,11 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
         <span className="inline-flex items-center rounded-full border border-line-strong px-3 py-1 text-xs uppercase tracking-[0.18em] text-ink-muted">
           {product.category}
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-aurora-mint/30 bg-aurora-mint/10 px-3 py-1 text-xs uppercase tracking-[0.18em] text-aurora-mint">
-          <span className="h-1 w-1 rounded-full bg-aurora-mint" />
-          {product.status}
-        </span>
       </motion.div>
 
       <motion.div
         variants={fadeUp}
-        className="relative mx-auto mb-8 aspect-square w-full max-w-[200px]"
+        className="relative mx-auto mb-8 aspect-square w-full max-w-[160px]"
       >
         <div
           className="absolute inset-6 rounded-full opacity-40 blur-[60px]"
@@ -95,26 +86,21 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
         <h3 className="font-display text-3xl tracking-tight lg:text-4xl">
           {product.name}
         </h3>
-        <p className="mt-3 text-base text-ink">{product.tagline}</p>
-        <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-          {product.description}
-        </p>
+        <p className="mt-3 text-base text-ink-muted">{product.tagline}</p>
 
-        <ul className="mt-6 space-y-2">
-          {product.features.map((f) => (
-            <li key={f.title} className="flex items-start gap-3 text-sm">
-              <span
-                className="mt-1.5 h-1 w-3 flex-shrink-0 rounded-full"
-                style={{ background: product.accent }}
-              />
-              <span className="text-ink-muted">
-                <span className="text-ink">{f.title}.</span> {f.body}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <Accordion className="mt-6 border-t border-line pt-1">
+          <AccordionItem title="What it does">
+            <ul className="space-y-3">
+              {product.features.map((f) => (
+                <li key={f.title}>
+                  <span className="text-ink">{f.title}.</span> {f.body}
+                </li>
+              ))}
+            </ul>
+          </AccordionItem>
+        </Accordion>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3">
           <Magnetic strength={0.3} className="inline-flex">
             <Button
               href={`/products/${product.slug}`}
@@ -122,7 +108,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
               size="md"
               transitionTypes={["nav-forward"]}
             >
-              Learn about {product.name}
+              Details
             </Button>
           </Magnetic>
           {product.urlStatus === "live" ? (
@@ -137,7 +123,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
             </Button>
           ) : (
             <span className="text-xs uppercase tracking-[0.16em] text-ink-dim">
-              App soon
+              Soon
             </span>
           )}
         </div>
@@ -145,17 +131,17 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
 
       <motion.div
         variants={fadeUp}
-        className="mt-8 grid grid-cols-3 gap-4 border-t border-line pt-6"
+        className="mt-8 grid grid-cols-3 gap-3 border-t border-line pt-6"
       >
         {product.metric.map((m) => (
           <div key={m.label}>
             <p
-              className="font-display text-2xl tracking-tight"
+              className="font-display text-xl tracking-tight sm:text-2xl"
               style={{ color: product.accent }}
             >
               {m.value}
             </p>
-            <p className="mt-1 text-xs uppercase tracking-[0.14em] text-ink-dim">
+            <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-ink-dim">
               {m.label}
             </p>
           </div>

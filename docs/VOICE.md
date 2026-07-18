@@ -32,6 +32,12 @@ Mira is orientation, not care.
 - Ending every answer with a product CTA
 - “Enter the suite” / “Start the care arc” as the only successful ending
 
+## Voice on the site
+
+Short by default. One job per section. Nuance lives behind disclosure (“What it does”, “More”, principles accordion) or on product pages — not repeated in every block.
+
+Hero line: *Leave wiser. Apps only if you want them.*
+
 ## Soft-handoff patterns
 
 Default end state: a takeaway.

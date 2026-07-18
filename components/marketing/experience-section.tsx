@@ -58,11 +58,9 @@ export function ExperienceSection() {
             </p>
           </ParallaxLayer>
 
-          <div className="mx-auto mt-20 max-w-xl">
-            <p className="text-lg leading-relaxed text-ink-muted">
-              The compass holds this tension too. Quiet enough to learn from —
-              present when a deeper product would actually help. Routing is
-              earned; insight never requires a click.
+          <div className="mx-auto mt-20 max-w-md">
+            <p className="text-base text-ink-muted">
+              Quiet to learn from. Present when a product would help.
             </p>
           </div>
         </div>

@@ -3,28 +3,29 @@
 import { motion } from "motion/react";
 import { Container } from "@/components/ui/container";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { stagger, fadeUp, viewportOnce } from "@/lib/motion";
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
+import { fadeUp, viewportOnce } from "@/lib/motion";
 
 const principles = [
   {
     n: "01",
     title: "Insight can stand alone.",
-    body: "Orientation is a complete visit. Soft paths into Sukari, Orbura, or Ardum are earned — never a failure if you leave with only a clearer thought.",
+    body: "A clearer thought is enough. Product paths are earned, not required.",
   },
   {
     n: "02",
     title: "AI-native, not AI-decorated.",
-    body: "Software that does the thinking, not just the charting. It decides, practices, and reports — so a human doesn't have to watch a dashboard to know when to act.",
+    body: "Software that decides, practices, and reports — not just charts.",
   },
   {
     n: "03",
     title: "Exception-oriented.",
-    body: "Surface what shifted. Trust the rest to run quietly. Care teams see signal, not noise — and reach out because something matters, not to check a box.",
+    body: "Surface what shifted. Silence is the default.",
   },
   {
     n: "04",
     title: "Quiet by default. Present when it matters.",
-    body: "Easy to live alongside every day. Ready the moment a decision needs making — never sharp for sharpness's sake.",
+    body: "Easy to live with. Ready when a decision needs making.",
   },
 ];
 
@@ -44,44 +45,38 @@ export function Principles() {
           />
           <TextReveal
             as="h2"
-            text="How famile products are made."
+            text="How we build."
             className="font-display text-4xl leading-tight tracking-tight sm:text-5xl"
             stagger={0.06}
           />
         </div>
 
         <motion.div
-          variants={stagger}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="mt-20 grid gap-px overflow-hidden rounded-[var(--radius-xl)] border border-line bg-line sm:grid-cols-2"
+          variants={fadeUp}
+          className="mx-auto mt-16 max-w-2xl rounded-[var(--radius-xl)] border border-line bg-canvas-elevated/40 px-6 py-2 backdrop-blur-xl sm:px-8"
         >
-          {principles.map((p) => (
-            <motion.div
-              key={p.n}
-              variants={fadeUp}
-              className="group relative bg-canvas-elevated/40 p-8 backdrop-blur-xl transition-colors duration-500 hover:bg-canvas-elevated/70 sm:p-10"
-            >
-              <div className="flex items-baseline gap-4">
-                <span className="font-mono text-sm text-aurora-mint/70">
-                  {p.n}
-                </span>
-                <div className="flex-1">
-                  <h3 className="font-display text-2xl tracking-tight text-ink sm:text-3xl">
-                    {p.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                    {p.body}
-                  </p>
-                </div>
-              </div>
-              <div
-                className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-aurora-lavender via-aurora-pink to-aurora-mint transition-all duration-700 group-hover:w-full"
-                aria-hidden
-              />
-            </motion.div>
-          ))}
+          <Accordion>
+            {principles.map((p) => (
+              <AccordionItem
+                key={p.n}
+                title={
+                  <span className="flex items-baseline gap-3">
+                    <span className="font-mono text-xs text-aurora-mint/70">
+                      {p.n}
+                    </span>
+                    <span className="font-display text-xl tracking-tight sm:text-2xl">
+                      {p.title}
+                    </span>
+                  </span>
+                }
+              >
+                {p.body}
+              </AccordionItem>
+            ))}
+          </Accordion>
         </motion.div>
       </Container>
     </section>

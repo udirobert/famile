@@ -16,9 +16,8 @@ export function Footer() {
           >
             famile
           </NextLink>
-          <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-            A compass for health and wellness — leave wiser, with optional paths
-            into continuous care and practice when you want them.
+          <p className="mt-4 text-sm text-ink-muted">
+            Leave wiser. Apps optional.
           </p>
         </div>
 
@@ -58,7 +57,7 @@ export function Footer() {
                   href="/ask"
                   className="text-ink-muted transition-colors hover:text-ink"
                 >
-                  Ask the agent
+                  Ask
                 </NextLink>
               </li>
               <li>

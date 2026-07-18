@@ -16,7 +16,7 @@ export function CTA() {
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="relative overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-12 text-center backdrop-blur-xl sm:p-20"
+          className="relative overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-12 text-center backdrop-blur-xl sm:p-16"
         >
           <div
             className="absolute inset-0 -z-10 opacity-60"
@@ -26,37 +26,23 @@ export function CTA() {
             }}
             aria-hidden
           />
-          <motion.p
-            variants={fadeUp}
-            className="text-xs uppercase tracking-[0.25em] text-ink-dim"
-          >
-            Takeaway
-          </motion.p>
           <TextReveal
             as="h2"
             text="Leave with something useful."
-            className="mt-4 font-display text-4xl tracking-tight sm:text-6xl"
+            className="font-display text-4xl tracking-tight sm:text-5xl"
             stagger={0.06}
           />
-          <motion.p
-            variants={fadeUp}
-            className="mx-auto mt-6 max-w-md text-lg text-ink-muted"
-          >
-            Ask a question, learn a clearer way to think about care or practice.
-            Sukari, Orbura, and Ardum are optional deeper paths — only if you
-            want continuity.
-          </motion.p>
           <motion.div
             variants={fadeUp}
             className="mt-10 flex flex-wrap justify-center gap-3"
           >
             <Magnetic strength={0.3} className="inline-flex">
               <Button href="/ask" size="lg">
-                Ask for orientation
+                Ask
               </Button>
             </Magnetic>
             <Button href="/contact" size="lg" variant="secondary">
-              Talk to us
+              Contact
             </Button>
           </motion.div>
         </motion.div>

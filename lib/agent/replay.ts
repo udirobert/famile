@@ -118,24 +118,24 @@ export const replayDashboardEvents: DashboardEvent[] = [
 
 export const sampleQA: SampleQA[] = [
   {
-    q: "How does Sukari decide what to surface?",
-    a: "Sukari collapses the day's biomarker patterns into one doable action — never a wall of metrics. Cheapest move with the most leverage, a short rehearsal before it counts, care team only when something shifted. Useful takeaway even here: adherence often fails in the small moment after intention, not from lack of advice.",
+    q: "How does Sukari decide?",
+    a: "One doable action from the day’s patterns — rehearse once, care team only if something shifted. Takeaway: adherence fails after intention, not from lack of advice.",
   },
   {
-    q: "What does Orbura do with recovery data?",
-    a: "Orbura reads the signals that precede burnout, injury, and plateau, then adapts a plan to the week that happened. Useful takeaway: recovery debt accumulates before it becomes injury — early adaptation beats heroic catch-up. If you want that loop day to day, Orbura goes deeper; you're also fine leaving with just this.",
+    q: "What does Orbura do?",
+    a: "Reads signals before burnout or injury, then adapts the plan to the week that happened. Takeaway: recovery debt shows early — adapt before catch-up.",
   },
   {
-    q: "What is Ardum for?",
-    a: "Ardum begins with what you are trying to make space for — rest, reconnection, practice — not a catalog of places. Mira asks one decision at a time and keeps booking secondary until confidence is earned. Useful takeaway: intention before inventory often removes half the stress of planning.",
+    q: "What is Ardum?",
+    a: "Intention first, inventory second. Mira asks one decision at a time; booking stays secondary until confidence is earned.",
   },
   {
     q: "Is this medical advice?",
-    a: "No. This surface is orientation only — a demonstration of how Famile products reason on simulated signals. It does not diagnose, dose, or replace your clinician. Real care stays with your care team and the product apps.",
+    a: "No. Orientation only — simulated reasoning, not care. Real use stays with your clinician and the product apps.",
   },
   {
-    q: "Do I need to open an app?",
-    a: "No. Leaving wiser is a successful visit. Sukari, Orbura, and Ardum are optional paths when you want continuous care or practice — never required for the compass to have done its job.",
+    q: "Do I need an app?",
+    a: "No. Leaving wiser is enough. Sukari, Orbura, and Ardum are optional when you want continuity.",
   },
 ];
 
@@ -163,8 +163,8 @@ export function replayAnswer(query: string): string {
   if (q.includes("sukari") || q.includes("surface") || q.includes("decide") || q.includes("metabolic"))
     return sampleQA[0].a;
   if (q.includes("native") || q.includes("ai-native") || q.includes("enabled"))
-    return "AI-native means the software does the thinking, not just the charting — decide, practice, report. AI-enabled brings intelligence into an existing workflow without owning the whole loop. Either way, this site stays orientation: insight first, product apps optional.";
-  return "I can help you orient — how Sukari, Orbura, or Ardum reason, or a takeaway that stands alone. Ask about one product, whether you need an app at all, or whether this is medical advice. (Live reasoning needs a key — this is a recorded answer.)";
+    return "AI-native: software that decides and reports, not just charts. AI-enabled: intelligence inside an existing workflow. This site stays orientation either way.";
+  return "Ask how Sukari, Orbura, or Ardum think — or whether you need an app at all.";
 }
 
 export const provenance: Record<ProductSlug, ProvenanceEntry[]> = {

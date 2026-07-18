@@ -1,25 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { MorphBlob } from "@/components/motion/morph-blob";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { ProvenanceAffordance } from "@/components/agent/provenance";
 import { productOpenLabel, type Product } from "@/lib/products";
 
-const liveSignal: Record<
-  Product["slug"],
-  { title: string; hint: string }
-> = {
+const liveSignal: Record<Product["slug"], { title: string; hint: string }> = {
   sukari: {
     title: "One thing worth doing today.",
-    hint: "Tap to try it before it counts.",
+    hint: "Try it before it counts.",
   },
   orbura: {
-    title: "Recovery trending well. Nothing to flag.",
-    hint: "Next adaptive update in 4h.",
+    title: "Recovery trending well.",
+    hint: "Nothing to flag.",
   },
   ardum: {
-    title: "Intention held. One decision when you’re ready.",
-    hint: "Booking stays secondary until confidence is earned.",
+    title: "Intention held.",
+    hint: "One decision when you’re ready.",
   },
 };
 
@@ -42,13 +42,9 @@ export function ProductDetail({ product }: { product: Product }) {
             <span className="inline-flex items-center rounded-full border border-line-strong px-3 py-1 text-xs uppercase tracking-[0.18em] text-ink-muted">
               {product.category}
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-aurora-mint/30 bg-aurora-mint/10 px-3 py-1 text-xs uppercase tracking-[0.18em] text-aurora-mint">
-              <span className="h-1 w-1 rounded-full bg-aurora-mint" />
-              {product.status}
-            </span>
             {product.urlStatus === "soon" && (
               <span className="inline-flex items-center rounded-full border border-line-strong px-3 py-1 text-xs uppercase tracking-[0.18em] text-ink-dim">
-                App soon
+                Soon
               </span>
             )}
           </div>
@@ -56,10 +52,22 @@ export function ProductDetail({ product }: { product: Product }) {
           <h1 className="font-display text-5xl tracking-tight sm:text-6xl">
             {product.name}
           </h1>
-          <p className="mt-4 max-w-md text-lg text-ink">{product.tagline}</p>
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-ink-muted">
-            {product.longDescription}
-          </p>
+          <p className="mt-4 max-w-md text-lg text-ink-muted">{product.tagline}</p>
+
+          <Accordion className="mt-8 max-w-md border-t border-line">
+            <AccordionItem title="More">
+              {product.longDescription}
+            </AccordionItem>
+            <AccordionItem title="Capabilities">
+              <ul className="space-y-3">
+                {product.features.map((f) => (
+                  <li key={f.title}>
+                    <span className="text-ink">{f.title}.</span> {f.body}
+                  </li>
+                ))}
+              </ul>
+            </AccordionItem>
+          </Accordion>
 
           <div className="mt-10 grid grid-cols-3 gap-6 rounded-[var(--radius-lg)] border border-line p-6">
             {product.metric.map((m) => (
@@ -78,23 +86,6 @@ export function ProductDetail({ product }: { product: Product }) {
             ))}
           </div>
 
-          <div className="mt-10 space-y-4">
-            <h2 className="text-xs uppercase tracking-[0.2em] text-ink-dim">
-              Capabilities
-            </h2>
-            <ul className="space-y-3">
-              {product.features.map((f) => (
-                <li
-                  key={f.title}
-                  className="rounded-[var(--radius-md)] border border-line p-4"
-                >
-                  <p className="text-sm text-ink">{f.title}</p>
-                  <p className="mt-1 text-sm text-ink-muted">{f.body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           <div className="mt-10 flex flex-wrap gap-3">
             {product.urlStatus === "live" ? (
               <Button
@@ -111,16 +102,9 @@ export function ProductDetail({ product }: { product: Product }) {
               </Button>
             )}
             <Button href="/ask" variant="secondary" size="md">
-              Ask about this
-            </Button>
-            <Button href="/contact" variant="ghost" size="md">
-              Talk to us
+              Ask
             </Button>
           </div>
-          <p className="mt-4 max-w-md text-xs text-ink-dim">
-            Orientation lives here. Continuous care and practice live in the
-            product app — only if you want that continuity.
-          </p>
         </div>
 
         <div className="relative">
@@ -143,7 +127,7 @@ export function ProductDetail({ product }: { product: Product }) {
             </div>
             <div className="mt-8 rounded-[var(--radius-lg)] border border-line bg-canvas-elevated/30 p-5 backdrop-blur-xl">
               <p className="text-xs uppercase tracking-[0.18em] text-ink-dim">
-                How it feels in product
+                In product
               </p>
               <p className="mt-2 font-display text-lg text-ink">{signal.title}</p>
               <p className="mt-2 text-xs text-ink-muted">{signal.hint}</p>

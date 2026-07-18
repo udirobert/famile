@@ -3,7 +3,7 @@ import { products, type Product } from "./products";
 const SITE = "https://famile.xyz";
 
 const ORG_DESCRIPTION =
-  "famile is a compass for health and wellness — orientation and insight first, with optional paths into Sukari, Orbura, and Ardum for continuous care and practice.";
+  "famile — a compass for health and wellness. Leave wiser. Apps optional.";
 
 // Site-wide Organization + WebSite graph. Emitted once in the root layout so
 // every page inherits publisher/site identity for crawlers and AI agents.

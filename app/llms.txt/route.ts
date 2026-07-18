@@ -16,16 +16,16 @@ export function GET() {
 
   const body = `# famile
 
-> famile is a compass for health and wellness: orientation and insight first, with optional paths into continuous care and practice apps. Quiet by default, present when it matters. Leaving wiser without opening another app is a successful visit.
+> famile is a compass for health and wellness. Leave wiser. Apps optional.
 
 ## Products
 ${productLines}
 
 ## Site
-- [Home](https://famile.xyz/): Orientation overview — ${names}, design principles, and how the products reason.
-- [Ask](https://famile.xyz/ask): An orientation guide. Takeaway-first; soft product mentions only when clearly mapped. Not medical advice.
-- [About](https://famile.xyz/about): Why famile exists as a compass, not a storefront.
-- [Contact](https://famile.xyz/contact): Partnerships, care-team integrations, and guided walkthroughs.
+- [Home](https://famile.xyz/): Suite overview — ${names}.
+- [Ask](https://famile.xyz/ask): Orientation with Mira. Not medical advice.
+- [About](https://famile.xyz/about): Compass, not storefront.
+- [Contact](https://famile.xyz/contact): Partnerships and walkthroughs.
 
 ## Machine-readable
 - [Sitemap](https://famile.xyz/sitemap.xml)

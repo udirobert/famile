@@ -140,7 +140,7 @@ export function Nav() {
                   className="w-full"
                   onClick={() => setOpen(false)}
                 >
-                  Ask for orientation
+                  Ask
                 </Button>
               </motion.div>
             </motion.nav>
