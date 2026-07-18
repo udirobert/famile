@@ -1,0 +1,5 @@
+set -e
+echo "🔒 Secrets..."
+bash scripts/scan-secrets.sh
+echo "📐 Linting..."
+npx lint-staged

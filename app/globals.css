@@ -1,26 +1,247 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ----------------------------------------------------------------------------
+   famile.xyz design system
+   "Soft luminous" - a deep twilight canvas with aurora lavender + pink + mint.
+   The aurora is a living atmosphere, not a flat purple-on-white gradient.
+---------------------------------------------------------------------------- */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+@theme {
+  /* Canvas - deep twilight, like predawn sky */
+  --color-canvas: #0a0716;
+  --color-canvas-elevated: #120c24;
+  --color-canvas-overlay: #1a1230;
+  --color-canvas-glass: rgba(26, 18, 48, 0.55);
+
+  /* Aurora - the luminous mesh */
+  --color-aurora-lavender: #c4b0ff;
+  --color-aurora-iris: #8b7fe8;
+  --color-aurora-pink: #ffb8e0;
+  --color-aurora-mint: #7ee8c8;
+  --color-aurora-amber: #ffc581;
+  --color-aurora-deep: #4a3b8c;
+
+  /* Ink - text on canvas */
+  --color-ink: #f5edff;
+  --color-ink-muted: #b5a8d6;
+  --color-ink-dim: #6b5e8a;
+
+  /* Lines */
+  --color-line: rgba(196, 176, 255, 0.08);
+  --color-line-strong: rgba(196, 176, 255, 0.18);
+
+  /* Typography */
   --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-fraunces);
   --font-mono: var(--font-geist-mono);
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-energise: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-soft: 0 8px 32px rgba(139, 127, 232, 0.12);
+  --shadow-glow: 0 0 60px rgba(196, 176, 255, 0.24);
+  --shadow-aurora: 0 24px 80px -20px rgba(126, 232, 200, 0.18);
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-aurora-lavender);
+    color: var(--color-canvas);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-aurora-iris);
+    background-clip: padding-box;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-aurora-lavender);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 360;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .text-aurora-gradient {
+    background: linear-gradient(
+      100deg,
+      var(--color-aurora-pink) 0%,
+      var(--color-aurora-lavender) 35%,
+      var(--color-aurora-mint) 75%,
+      var(--color-aurora-amber) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: aurora-shift 12s var(--ease-soft) infinite;
+  }
+
+  .text-luminous {
+    text-shadow: 0 0 40px rgba(196, 176, 255, 0.35);
+  }
+
+  .surface-glass {
+    background: var(--color-canvas-glass);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  .surface-aurora {
+    background: radial-gradient(
+      120% 120% at 50% 0%,
+      rgba(196, 176, 255, 0.12) 0%,
+      rgba(139, 127, 232, 0.06) 35%,
+      transparent 70%
+    );
+  }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  .mask-fade-edges {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+}
+
+@keyframes aurora-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ----------------------------------------------------------------------------
+   View transitions - directional navigation between marketing and app
+---------------------------------------------------------------------------- */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+}
+
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    150ms ease-in both fade-out reverse,
+    320ms ease-in-out both slide-x reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    210ms ease-out 150ms both fade-out,
+    320ms ease-in-out both slide-x;
+}
+
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+  animation:
+    150ms ease-in both fade-out reverse,
+    320ms ease-in-out both slide-x reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+  animation:
+    210ms ease-out 150ms both fade-out,
+    320ms ease-in-out both slide-x;
+}
+
+::view-transition-group(site-header),
+::view-transition-group(site-footer) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header),
+::view-transition-old(site-footer) {
+  display: none;
+}
+::view-transition-new(site-header),
+::view-transition-new(site-footer) {
+  animation: none;
+}
+
+@keyframes slide-x {
+  from { translate: var(--slide-offset) 0; }
+  to { translate: 0 0; }
+}
+
+@keyframes fade-out {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }
