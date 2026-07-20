@@ -2,9 +2,32 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Environment } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { Component, useMemo, useRef, type ReactNode } from "react";
 import { useInView, useReducedMotion } from "motion/react";
 import * as THREE from "three";
+
+// The drei <Environment preset> fetches an HDR from a remote CDN. If that
+// fetch fails (network, CORS, CDN outage) it throws and would take the whole
+// page down via the root error boundary. The blob already has explicit lights,
+// so the environment map is purely decorative — drop it silently on failure.
+class SafeEnvironment extends Component<
+  { children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.warn("Environment preset failed to load, falling back to lights only", error);
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 type MorphBlobProps = {
   from: string;
@@ -95,7 +118,9 @@ export function MorphBlob({
         <ambientLight intensity={0.4} />
         <directionalLight position={[3, 4, 5]} intensity={1.2} color="#c4b0ff" />
         <pointLight position={[-4, -2, -3]} intensity={1.4} color="#ffb8e0" />
-        <Environment preset="warehouse" />
+        <SafeEnvironment>
+          <Environment files="/hdri/empty_warehouse_01_1k.hdr" />
+        </SafeEnvironment>
         <Blob from={from} to={to} speed={speed} distort={distort} />
       </Canvas>
     </div>
