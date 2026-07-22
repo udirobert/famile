@@ -98,7 +98,7 @@ export const products: Product[] = [
     category: "Practice Continuity",
     status: "AI-native",
     url: "https://ardum.famile.xyz",
-    urlStatus: "soon",
+    urlStatus: "live",
     glyph: { from: "#7ee8c8", to: "#ffc581" },
     accent: "#ffc581",
     features: [

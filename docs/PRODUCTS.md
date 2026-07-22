@@ -8,7 +8,7 @@ External apps (not this Next.js app) deliver continuous care and practice:
 |---------|-----|-----|--------|
 | **Sukari** | One doable metabolic action + care-team exceptions | https://sukari.famile.xyz | Live |
 | **Orbura** | Recovery / care-continuity — signal → one safe action | https://orbura.famile.xyz | Live |
-| **Ardum** | Intention → continuity (Mira / episodes); booking is secondary | https://ardum.famile.xyz | Soon |
+| **Ardum** | Intention → continuity (Mira / episodes); booking is secondary | https://ardum.famile.xyz | Live |
 
 In-suite pages at `/products/[slug]` explain and orient. Outbound CTAs open the live apps gently.
 
@@ -31,7 +31,7 @@ Match only when the insight clearly maps. Otherwise leave the person with a take
 
 ## Source of truth in code
 
-[`lib/products.ts`](../lib/products.ts) holds slug, copy, accent, external `url`, and `urlStatus` (`live` | `soon`). When Ardum DNS is live, flip `urlStatus` to `live` there.
+[`lib/products.ts`](../lib/products.ts) holds slug, copy, accent, external `url`, and `urlStatus` (`live` | `soon`). All three products are `live`.
 
 ## Deeper reading (sibling repos)
 

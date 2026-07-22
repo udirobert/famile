@@ -34,4 +34,4 @@ Phased build for the compass framing. See [VISION.md](./VISION.md).
 
 - [x] `/products/ardum` page
 - [x] OG / llms.txt / JSON-LD for three products
-- [ ] Flip Ardum `urlStatus` to `live` when DNS is ready (`lib/products.ts`)
+- [x] Flip Ardum `urlStatus` to `live` when DNS is ready (`lib/products.ts`)
