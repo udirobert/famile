@@ -23,6 +23,10 @@ East + West lightly: attention, stillness, return — alongside measure, evidenc
 
 Company and clarity. No medical advice. No funnel endings.
 
+The canonical network persona, posture vocabulary, orb spec, and tier
+transitions live in [MIRA.md](./MIRA.md). The implementation plan is
+[MIRA_IMPLEMENTATION_PLAN.md](./MIRA_IMPLEMENTATION_PLAN.md).
+
 ## What we avoid on the site
 
 - Meta manifesto (“you are the story”, “not a pitch”, “never the point”)
