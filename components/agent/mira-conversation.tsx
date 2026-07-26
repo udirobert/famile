@@ -29,6 +29,12 @@ type MiraConversationProps = {
   /** Parent-owned rest mode — dims the panel; Return stays interactive. */
   resting?: boolean;
   onReturn?: () => void;
+  /** Fired when the conversational posture changes. The orb uses this to
+   * react *during* the conversation, not after a 5-second poll. */
+  onPosture?: (posture: "inquiry" | "offering" | "steady") => void;
+  /** Fired once when prior turns hydrate from Base44 on mount. The orb
+   * uses this to bloom, signaling continuity without words. */
+  onMemory?: () => void;
 };
 
 export function MiraConversation({
@@ -38,6 +44,8 @@ export function MiraConversation({
   onSit,
   resting = false,
   onReturn,
+  onPosture,
+  onMemory,
 }: MiraConversationProps) {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -48,6 +56,44 @@ export function MiraConversation({
   const inputRef = useRef<HTMLInputElement>(null);
   const sitFiredRef = useRef(false);
   const reduced = useReducedMotion();
+
+  // Hydrate prior turns from the Base44 shared memory store on first mount.
+  // When Base44 is not configured (local dev, or 503), this silently no-ops
+  // and the conversation starts empty — the local engine path is stateless.
+  // When a ?session=<key> URL parameter is present (share link), it's passed
+  // to the history endpoint so the right conversation hydrates.
+  const hydratedRef = useRef(false);
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    hydratedRef.current = true;
+    let cancelled = false;
+    const sessionParam = new URLSearchParams(window.location.search).get("session");
+    const historyUrl = sessionParam
+      ? `/api/agent/history?session=${encodeURIComponent(sessionParam)}`
+      : "/api/agent/history";
+    (async () => {
+      try {
+        const res = await fetch(historyUrl, { method: "GET" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { turns?: { role: string; content: string }[] };
+        if (cancelled || !data.turns || data.turns.length === 0) return;
+        setMessages(
+          data.turns.map((t) => ({
+            role: t.role === "user" ? "user" : "agent",
+            text: t.content,
+          })),
+        );
+        // Signal the orb that memory hydrated — a warm bloom to say
+        // "I was here" without words.
+        onMemory?.();
+      } catch {
+        // Non-fatal: start with an empty conversation.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [onMemory]);
 
   useEffect(() => {
     if (!autoFocus || resting) return;
@@ -67,13 +113,19 @@ export function MiraConversation({
       { role: "agent", text: "" },
     ]);
     setBusy(true);
+    onPosture?.("inquiry");
     const ctrl = new AbortController();
     abortRef.current = ctrl;
     try {
+      // Include the session parameter from the URL when present (shared link),
+      // so new messages go to the right conversation even without a cookie.
+      const sessionParam = new URLSearchParams(window.location.search).get("session");
       const res = await fetch("/api/agent", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify(
+          sessionParam ? { query, session: sessionParam } : { query },
+        ),
         signal: ctrl.signal,
       });
       if (!res.ok) {
@@ -93,12 +145,17 @@ export function MiraConversation({
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       accRef.current = "";
+      let firstToken = true;
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         accRef.current =
           accRef.current + decoder.decode(value, { stream: true });
         const snapshot = accRef.current;
+        if (firstToken && snapshot) {
+          firstToken = false;
+          onPosture?.("offering");
+        }
         if (sit && snapshot && !sitFiredRef.current) {
           sitFiredRef.current = true;
           onSit?.();
@@ -123,6 +180,7 @@ export function MiraConversation({
       });
     } finally {
       setBusy(false);
+      onPosture?.("steady");
     }
   }
 

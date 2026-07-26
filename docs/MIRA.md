@@ -52,10 +52,30 @@ postures.
 
 ### Cross-product memory
 
-Today: **no cross-product memory.** Each Mira says "Mira in Sukari" if the
-boundary matters, never "Mira remembers from Ardum." This is a current
-contract, not a future promise. When a shared memory store lands, this section
-updates and every system prompt follows.
+A shared Mira memory store now exists, backed by Base44. The store holds
+`MiraSession`, `MiraTurn`, `PostureEvent`, and `CareTeamAlert` entities with
+row-level security scoped to `session_key` (the capability handle). See
+`../../base44/` for the backend project and `lib/agent/memory.ts` for the
+client wrapper.
+
+What this means for each product:
+
+- **Famile** (`/ask`): conversations persist across refresh. The orb reacts
+  to posture transitions in real time (inquiry when the person asks,
+  offering when Mira responds, steady at rest). A share link
+  (`?session=<key>`) lets the same conversation open in another tab or
+  browser.
+- **Sukari / Orbura / Ardum**: not yet wired to the shared store. Each
+  keeps its own Mira instance and local persistence. When a product adopts
+  the shared store, its system prompt updates to allow cross-surface
+  continuity (the system prompt on Famile already does).
+
+The system prompts have been updated: "Do not imply cross-product memory"
+is replaced with "You may reference what the person has shared earlier in
+this conversation. Do not claim memory across Famile products (Sukari,
+Orbura, Ardum) — you remember this conversation, not their visits to other
+products." This is the documented migration path: same-surface memory now,
+cross-surface memory when each product adopts the store.
 
 ---
 

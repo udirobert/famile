@@ -64,10 +64,16 @@ use 2nd person.
 
 ### Cross-product memory line
 
-- [ ] Every system prompt includes the current contract: "Do not imply
-      cross-product memory. Say 'Mira in {product}' if the boundary matters."
-- [ ] Track this as a single string in the shared contract so it updates in
-      one place when the shared memory store lands.
+- [x] Every system prompt includes the current contract. Famile's prompt
+      now reads: "You may reference what the person has shared earlier in
+      this conversation. Do not claim memory across Famile products." The
+      shared memory store is live on Famile (`lib/agent/memory.ts` → Base44
+      `miraAnswer` / `miraHistory` functions). Sibling products keep their
+      own prompts until they adopt the store.
+- [x] Track this as a single string in the shared contract so it updates in
+      one place when the shared memory store lands. Done: the system prompt
+      in `lib/agent/live.ts` and `base44/functions/miraAnswer/entry.ts`
+      carry the same continuity line.
 
 ---
 
@@ -132,11 +138,17 @@ canonical shape in the shared contract.
 - [ ] **Ardum** (reference): already has hero/standard/inline. Audit
       `MiraScene.tsx` against the canonical `MorphParams` field names. Add
       the tier-transition easing (600–900ms, seek-safe) if missing.
-- [ ] **Famile** `components/motion/morph-blob.tsx`: adopt posture-driven
+- [x] **Famile** `components/motion/morph-blob.tsx`: adopt posture-driven
       morph. Today it lerps colors only. Add `MorphParams` consumption:
       distortion from `bloom` + `pinch`, speed from `speed`, float from
       `asymmetry`. Add tier escalation: hero on `/ask`, standard on landing
       hero, inline in nav.
+
+      **Done** — the orb on `/ask` now reacts to conversational posture in
+      real time (inquiry / offering / steady) with dramatic color, speed,
+      and distortion shifts. Posture transitions are written to Base44
+      (`PostureEvent`) so they ripple across surfaces. See
+      `components/agent/ask-experience.tsx`.
 - [ ] **Orbura** `components/screens/DebtOrb.tsx`: keep the CSS blob as the
       inline tier. Add a `standard` tier (2D WebGL metaball) for the
       dashboard hero. Map `MorphParams` to CSS custom properties at inline,
