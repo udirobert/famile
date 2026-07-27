@@ -3,9 +3,10 @@
 // This module is the single seam between famile/web and the Base44 backend
 // in /base44. It exposes two operations:
 //
-//   - streamAnswer(args): proxy to the miraAnswer function, returning a
-//     streaming Response (text/plain) plus session/redaction headers.
-//   - loadHistory(args): fetch prior turns for client hydration on mount.
+//   - streamAnswer(args): call the miraAnswer function via direct fetch to
+//     the Base44 API endpoint (streaming text/plain response).
+//   - loadHistory(args): call the miraHistory function via the SDK's
+//     functions.invoke() (JSON response).
 //
 // When BASE44_APP_ID is unset (local dev, or Base44 is down), both functions
 // signal failure so the caller can fall back to the existing in-process
@@ -17,6 +18,8 @@
 // boundary: whoever holds it can read and append to this session. Real auth
 // is a post-competition concern; the RLS rules in MiraSession.json and
 // MiraTurn.json are written to enforce it natively once it lands.
+
+import { createClient } from "@base44/sdk";
 
 export type Surface = "famile" | "sukari" | "orbura" | "ardum";
 
@@ -47,21 +50,35 @@ export type StreamAnswerResult = {
 };
 
 const SURFACE: Surface = "famile";
+const BASE44_SERVER = "https://base44.app";
 
 export function base44Configured(): boolean {
   return Boolean(process.env.BASE44_APP_ID);
 }
 
-function functionUrl(name: "miraAnswer" | "miraHistory"): string {
-  const appId = process.env.BASE44_APP_ID;
-  if (!appId) throw new Error("BASE44_APP_ID not set");
-  // Base44 external function endpoint shape. Confirmed in
-  // https://docs.base44.com/developers/backend/resources/backend-functions/overview
-  return `https://${appId}.base44.app/functions/${name}`;
+let _client: ReturnType<typeof createClient> | null = null;
+
+function getClient(): ReturnType<typeof createClient> {
+  if (!_client) {
+    _client = createClient({
+      appId: process.env.BASE44_APP_ID!,
+    });
+  }
+  return _client;
+}
+
+/**
+ * Build the Base44 function API URL.
+ * Format: https://base44.app/api/apps/<appId>/functions/<name>
+ */
+function functionApiUrl(name: string): string {
+  const appId = process.env.BASE44_APP_ID!;
+  return `${BASE44_SERVER}/api/apps/${appId}/functions/${name}`;
 }
 
 /**
  * Proxy a Mira query to the Base44 miraAnswer function.
+ * Uses direct fetch to the Base44 API for streaming response support.
  * Returns the streaming Response on success, or { ok: false } on failure
  * so the caller can fall back to the local engine.
  */
@@ -72,12 +89,12 @@ export async function streamAnswer(
     return { ok: false, error: "BASE44_APP_ID not set" };
   }
   try {
-    const res = await fetch(functionUrl("miraAnswer"), {
+    const appId = process.env.BASE44_APP_ID!;
+    const res = await fetch(functionApiUrl("miraAnswer"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Base44 external calls have no authenticated user; the function uses
-        // asServiceRole and session_key scoping.
+        "X-App-Id": appId,
       },
       body: JSON.stringify({
         session_key: args.sessionKey,
@@ -99,9 +116,8 @@ export async function streamAnswer(
 }
 
 /**
- * Load prior turns for a session. Used on /ask mount to restore a
- * conversation after refresh. Returns null when the session doesn't exist
- * yet (first visit) so the caller can skip hydration.
+ * Load prior turns for a session. Uses SDK functions.invoke() for JSON response.
+ * Returns null when the session doesn't exist yet (first visit) or on error.
  */
 export async function loadHistory(
   sessionKey: string,
@@ -110,15 +126,15 @@ export async function loadHistory(
 ): Promise<HistoryResult | null> {
   if (!base44Configured()) return null;
   try {
-    const url = new URL(functionUrl("miraHistory"));
-    url.searchParams.set("session_key", sessionKey);
-    url.searchParams.set("surface", surface);
-    url.searchParams.set("limit", String(limit));
-    const res = await fetch(url.toString(), { method: "GET" });
-    if (res.status === 404) return null;
-    if (!res.ok) return null;
-    const data = (await res.json()) as HistoryResult;
-    return data;
+    const client = getClient();
+    const result = await client.functions.invoke("miraHistory", {
+      session_key: sessionKey,
+      surface,
+      limit,
+    });
+    // SDK invoke() returns an axios response; extract .data
+    const data = (result as { data?: HistoryResult })?.data ?? result;
+    return data as HistoryResult;
   } catch {
     return null;
   }

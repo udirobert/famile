@@ -204,9 +204,17 @@ Deno.serve(async (req) => {
   //    and VENICE_MODEL. Venice's API is identical to OpenAI's chat completions
   //    API, just a different base URL and model name. Falls back to a static
   //    message if no key is configured.
-  const apiKey = Deno.env.get("VENICE_API_KEY");
-  const baseUrl = Deno.env.get("VENICE_BASE_URL") ?? "https://api.venice.ai/api/v1";
-  const model = Deno.env.get("VENICE_MODEL") ?? "zai-org-glm-5-1";
+  //    Provider priority: OG_COMPUTE_API_KEY (0G Router) > VENICE_API_KEY.
+  //    Both are OpenAI-compatible; only the base URL and model differ.
+  const ogKey = Deno.env.get("OG_COMPUTE_API_KEY");
+  const veniceKey = Deno.env.get("VENICE_API_KEY");
+  const apiKey = ogKey ?? veniceKey;
+  const baseUrl = ogKey
+    ? (Deno.env.get("OG_BASE_URL") ?? "https://router-api.0g.ai/v1")
+    : (Deno.env.get("VENICE_BASE_URL") ?? "https://api.venice.ai/api/v1");
+  const model = ogKey
+    ? (Deno.env.get("OG_MODEL") ?? "zai-org/GLM-5-FP8")
+    : (Deno.env.get("VENICE_MODEL") ?? "zai-org-glm-5-1");
 
   const encoder = new TextEncoder();
   let agentText = "";

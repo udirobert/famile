@@ -1,9 +1,9 @@
 // Mira history function — read a session's turns for client hydration.
 //
 // Contract: GET ?session_key=<key>&surface=<surface>&limit=<n>
-//   -> 200 [{ role, content, created_date, redacted }, ...]
-//   -> 400 on bad input, 404 if no session, 200 with [] if session exists
-//      but has no turns.
+//        or POST { session_key, surface, limit }
+//   -> 200 { session_id, surface, turns: [{ role, content, created_date, redacted }] }
+//   -> 400 on bad input, 404 if no session
 //
 // Used by famile/web on /ask mount to restore a conversation after refresh,
 // and by sibling surfaces (orbura, ardum, sukari) to read shared Mira state
@@ -20,14 +20,29 @@ const MAX_LIMIT = 50;
 const DEFAULT_LIMIT = 20;
 
 Deno.serve(async (req: Request) => {
-  if (req.method !== "GET") {
+  // Accept both GET (query params) and POST (JSON body). The SDK's
+  // functions.invoke() sends POST; direct HTTP calls use GET.
+  let session_key: string | null = null;
+  let surface: string | null = null;
+  let limitRaw: string | null = null;
+
+  if (req.method === "POST") {
+    try {
+      const body = await req.json();
+      session_key = body.session_key ?? null;
+      surface = body.surface ?? null;
+      limitRaw = body.limit != null ? String(body.limit) : null;
+    } catch {
+      return Response.json({ error: "Invalid JSON" }, { status: 400 });
+    }
+  } else if (req.method === "GET") {
+    const url = new URL(req.url);
+    session_key = url.searchParams.get("session_key");
+    surface = url.searchParams.get("surface");
+    limitRaw = url.searchParams.get("limit");
+  } else {
     return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
-
-  const url = new URL(req.url);
-  const session_key = url.searchParams.get("session_key");
-  const surface = url.searchParams.get("surface");
-  const limitRaw = url.searchParams.get("limit");
 
   if (
     !session_key ||

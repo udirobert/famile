@@ -41,7 +41,7 @@ type NetworkSnapshot = {
 function functionUrl(name: "miraNetwork"): string {
   const appId = process.env.NEXT_PUBLIC_BASE44_APP_ID;
   if (!appId) throw new Error("NEXT_PUBLIC_BASE44_APP_ID not set");
-  return `https://${appId}.base44.app/functions/${name}`;
+  return `https://base44.app/api/apps/${appId}/functions/${name}`;
 }
 
 /**
@@ -67,7 +67,12 @@ export function useNetworkRealtime(maxEvents = 20): {
     const poll = async () => {
       if (cancelled) return;
       try {
-        const res = await fetch(functionUrl("miraNetwork"), { method: "GET" });
+        const res = await fetch(functionUrl("miraNetwork"), {
+          method: "GET",
+          headers: {
+            "X-App-Id": process.env.NEXT_PUBLIC_BASE44_APP_ID!,
+          },
+        });
         if (res.ok) {
           const data = (await res.json()) as NetworkSnapshot;
           if (!cancelled) {
