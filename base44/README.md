@@ -74,10 +74,9 @@ ardum      ──┘               ├──▶  Automations (follow-up, digest,
 - [x] **Backend Functions** — six Deno serverless functions:
   `miraAnswer`, `miraHistory`, `miraPosture`, `miraNetwork`,
   `miraFollowUp`, `miraDigest`, `miraEscalation`
-- [x] **AI Integrations** — OpenAI via the Base44 AI integration (API key
-  stored as a project secret `OPENAI_API_KEY`). The `miraAnswer` function
-  calls the OpenAI-compatible API directly with the canonical Mira system
-  prompt.
+- [x] **AI Integrations** — Venice AI (OpenAI-compatible) via the Base44
+  secrets `VENICE_API_KEY` and `VENICE_MODEL`. The `miraAnswer` function
+  calls the Venice API directly with the canonical Mira system prompt.
 - [x] **Automations** — three automation types:
   - Scheduled (simple): `miraFollowUp` hourly
   - Scheduled (weekly): `miraDigest` every Monday 09:00 UTC
@@ -113,10 +112,10 @@ npm install -g base44@latest
 base44 login
 base44 link       # link this directory to your Base44 project
 
-# Set the OpenAI API key as a project secret (Base44 stores it securely):
-base44 secrets set OPENAI_API_KEY sk-...
-# Optional: override the default model (defaults to gpt-4o-mini):
-base44 secrets set MIRA_MODEL gpt-4o
+# Set the Venice API key as a project secret (Base44 stores it securely):
+base44 secrets set VENICE_API_KEY <your-venice-key>
+# Optional: override the default model (defaults to zai-org-glm-5-1):
+base44 secrets set VENICE_MODEL zai-org-glm-5-1
 
 base44 dev        # run entities + functions locally
 ```
@@ -212,9 +211,9 @@ base44/
   auth is a post-competition concern. The RLS rules are written to enforce
   it natively when it lands.
 - Not all three LLM providers on Base44. The `miraAnswer` function uses
-  OpenAI via the Base44 AI integration (API key as a project secret).
-  famile/web keeps its Venice -> 0G -> Anthropic failover chain as the
-  fallback path when Base44 is unreachable.
+  Venice AI (OpenAI-compatible) via Base44 secrets. famile/web keeps its
+  Venice -> 0G -> Anthropic failover chain as the fallback path when Base44
+  is unreachable.
 
 ## Submission feedback (for the Base44 team)
 
@@ -234,8 +233,9 @@ Built for the Dev Build-Off. Notes for the feedback form:
   `miraEscalation` function firing on `PostureEvent` create is exactly the
   "agent that acts, not a chatbot" pattern. The atomic deploy (function +
   automations together) is well-designed.
-- Streaming an OpenAI response through a Deno function back to an external
-  client required manual SSE parsing and ReadableStream wrapping. A helper
+- Streaming a Venice AI (OpenAI-compatible) response through a Deno function
+  back to an external client required manual SSE parsing and ReadableStream
+  wrapping. A helper
   for "stream AI response through function to external client" would reduce
   boilerplate.
 - Connector automations requiring trigger conditions for Slack is a good

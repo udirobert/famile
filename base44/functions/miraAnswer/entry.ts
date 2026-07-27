@@ -200,12 +200,13 @@ Deno.serve(async (req) => {
   // 5. Stream the reply. We collect the full text so we can persist the agent
   //    turn after the stream completes.
   //
-  //    The Base44 AI integration stores the provider's API key as a secret
-  //    (e.g., OPENAI_API_KEY). We call the OpenAI-compatible API directly,
-  //    the same pattern the docs show for Stripe connectors. This avoids
-  //    depending on an SDK method that may not exist.
-  const apiKey = Deno.env.get("OPENAI_API_KEY");
-  const model = Deno.env.get("MIRA_MODEL") ?? "gpt-4o-mini";
+  //    Uses Venice AI (OpenAI-compatible) via the Base44 secrets VENICE_API_KEY
+  //    and VENICE_MODEL. Venice's API is identical to OpenAI's chat completions
+  //    API, just a different base URL and model name. Falls back to a static
+  //    message if no key is configured.
+  const apiKey = Deno.env.get("VENICE_API_KEY");
+  const baseUrl = Deno.env.get("VENICE_BASE_URL") ?? "https://api.venice.ai/api/v1";
+  const model = Deno.env.get("VENICE_MODEL") ?? "zai-org-glm-5-1";
 
   const encoder = new TextEncoder();
   let agentText = "";
@@ -221,7 +222,7 @@ Deno.serve(async (req) => {
         return;
       }
       try {
-        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+        const res = await fetch(`${baseUrl}/chat/completions`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${apiKey}`,
@@ -236,7 +237,7 @@ Deno.serve(async (req) => {
         });
 
         if (!res.ok || !res.body) {
-          throw new Error(`OpenAI ${res.status}`);
+          throw new Error(`Venice ${res.status}`);
         }
 
         const reader = res.body.getReader();

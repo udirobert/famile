@@ -5,5 +5,8 @@
   "enableFacebookLogin": false,
   "enableAppleLogin": false,
   "googleOAuthMode": "default",
-  "googleOAuthClientId": null
+  "googleOAuthClientId": null,
+  "enableSSOLogin": false,
+  "useWorkspaceSSO": false,
+  "ssoProviderName": ""
 }

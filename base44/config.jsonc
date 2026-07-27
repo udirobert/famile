@@ -1,0 +1,13 @@
+// Base44 project configuration for the Famile shared Mira memory store.
+// This backend powers cross-product Mira memory: one persona, one store,
+// surfaced across famile.xyz, Sukari, Orbura, and Ardum.
+{
+  "name": "famile-mira-backend",
+  "description": "Shared Mira memory store, realtime posture sync, automated follow-ups, and care-team escalation for the Famile product suite.",
+
+  "entitiesDir": "./entities",
+  "functionsDir": "./functions",
+  "agentsDir": "./agents",
+  "connectorsDir": "./connectors",
+  "authDir": "./auth",
+}
