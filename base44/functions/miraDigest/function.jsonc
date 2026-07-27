@@ -1,0 +1,19 @@
+{
+  "name": "miraDigest",
+  "entry": "entry.ts",
+  "automations": [
+    {
+      "type": "scheduled",
+      "name": "weekly_digest",
+      "description": "Every Monday at 09:00 UTC, compile a weekly digest of posture transitions and shifts for each active session. This is the 'compile a weekly digest' agentic behavior from docs/MIRA.md (Always lane).",
+      "function_args": { "mode": "weekly_digest" },
+      "is_active": true,
+      "schedule_mode": "recurring",
+      "schedule_type": "simple",
+      "repeat_unit": "weeks",
+      "repeat_interval": 1,
+      "start_time": "09:00",
+      "repeat_on_days": [1]
+    }
+  ]
+}

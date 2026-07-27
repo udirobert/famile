@@ -38,7 +38,7 @@ Phased build for the compass framing. See [VISION.md](./VISION.md).
 
 ## Phase 5 — Shared Mira memory store (Base44)
 
-The shared backend that `docs/MIRA.md` calls for. Lives in `../../base44/`.
+The shared backend that `docs/MIRA.md` calls for. Lives in `../base44/`.
 
 - [x] Base44 entities: `MiraSession`, `MiraTurn`, `PostureEvent`,
       `CareTeamAlert` (with RLS scoped to `session_key`)

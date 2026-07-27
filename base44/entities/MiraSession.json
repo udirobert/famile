@@ -1,0 +1,50 @@
+{
+  "name": "MiraSession",
+  "type": "object",
+  "title": "Mira Session",
+  "description": "One persistent Mira conversation per person per surface. The session_key is the durable handle (an httpOnly cookie value on famile.xyz); it scopes MiraTurn reads and writes without requiring a login. When a real auth layer lands, the session_key becomes the bridge to an authenticated identity.",
+  "properties": {
+    "session_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "description": "Opaque random identifier minted by the client surface. Treated as a capability: whoever holds it can read and append to this session."
+    },
+    "surface": {
+      "type": "string",
+      "enum": ["famile", "sukari", "orbura", "ardum"],
+      "description": "Which Famile surface originated this session. Mira may acknowledge the surface in voice; she never claims memory across surfaces until a shared identity exists."
+    },
+    "last_posture": {
+      "type": "string",
+      "enum": ["steady", "offering", "holding", "watching", "completed", "inquiry", "gathering", "resolving", "adapting", "arriving"],
+      "default": "steady",
+      "description": "Operational posture projected from product state, per docs/MIRA.md. Never inferred from chat sentiment."
+    },
+    "valence": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1,
+      "default": 0,
+      "description": "Scalar -1 (settled) to 1 (disrupted). Modulates the same posture; never invents a new shape name."
+    },
+    "turn_count": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Denormalized count of MiraTurn rows for this session, for cheap hydration."
+    },
+    "last_turn_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the most recent MiraTurn was written. Drives session expiry and LRU pruning."
+    }
+  },
+  "required": ["session_key", "surface"],
+  "rls": {
+    "create": true,
+    "read": { "data.session_key": "{{user.data.session_key}}" },
+    "update": { "data.session_key": "{{user.data.session_key}}" },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}

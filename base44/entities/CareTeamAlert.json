@@ -1,0 +1,62 @@
+{
+  "name": "CareTeamAlert",
+  "type": "object",
+  "title": "Care Team Alert",
+  "description": "An exception escalation to a care team member. Created by the miraEscalation automation when a session shows sustained disruption (valence spike, repeated resolving posture, or explicit distress signal). Each alert carries the operational context (not PHI) and a delivery status for the Slack/email connector. Care team members authenticate via Base44 auth (Google login) and see alerts scoped to them.",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "MiraSession.id that triggered this alert."
+    },
+    "session_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "description": "Denormalized session_key for traceability."
+    },
+    "surface": {
+      "type": "string",
+      "enum": ["famile", "sukari", "orbura", "ardum"],
+      "description": "Surface that originated the escalation."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["watch", "follow_up", "escalate"],
+      "default": "watch",
+      "description": "watch = monitoring; follow_up = Mira will follow up; escalate = care team should reach out."
+    },
+    "reason": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Operational reason for the alert. Not PHI; derived from posture and valence, not chat content."
+    },
+    "delivery_status": {
+      "type": "string",
+      "enum": ["pending", "sent", "failed", "acknowledged"],
+      "default": "pending",
+      "description": "Status of the Slack/email delivery. Care team acknowledges through the dashboard."
+    },
+    "delivery_channel": {
+      "type": "string",
+      "enum": ["slack", "email", "dashboard_only"],
+      "default": "dashboard_only",
+      "description": "Where the alert was sent. Slack connector when configured; dashboard_only as fallback."
+    },
+    "acknowledged_by": {
+      "type": "string",
+      "description": "Email of the care team member who acknowledged this alert. Null until acknowledged."
+    },
+    "acknowledged_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the alert was acknowledged."
+    }
+  },
+  "required": ["session_id", "session_key", "surface", "severity", "reason"],
+  "rls": {
+    "create": { "user_condition": { "role": "admin" } },
+    "read": { "user_condition": { "role": "admin" } },
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}

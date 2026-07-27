@@ -1,0 +1,58 @@
+{
+  "name": "PostureEvent",
+  "type": "object",
+  "title": "Posture Event",
+  "description": "A posture transition in the Mira network. Every time Mira's posture changes on any surface (famile, sukari, orbura, ardum), a PostureEvent is written. This entity is the realtime feed: the dashboard subscribes to it via base44.entities.PostureEvent.subscribe() and the orb components read it to sync posture across products. It is also the audit log for posture transitions.",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "MiraSession.id that emitted this event."
+    },
+    "session_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "description": "Denormalized session_key for RLS scoping."
+    },
+    "surface": {
+      "type": "string",
+      "enum": ["famile", "sukari", "orbura", "ardum"],
+      "description": "Surface that emitted this posture change."
+    },
+    "posture": {
+      "type": "string",
+      "enum": ["steady", "offering", "holding", "watching", "completed", "inquiry", "gathering", "resolving", "adapting", "arriving"],
+      "description": "The new posture Mira projected."
+    },
+    "previous_posture": {
+      "type": "string",
+      "enum": ["steady", "offering", "holding", "watching", "completed", "inquiry", "gathering", "resolving", "adapting", "arriving"],
+      "description": "The posture before this transition. Null on the first event."
+    },
+    "valence": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1,
+      "default": 0,
+      "description": "Valence at the time of the transition. -1 settled, 1 disrupted."
+    },
+    "reaction": {
+      "type": "string",
+      "enum": ["settle", "bloom", "pinch", "relief", ""],
+      "default": "",
+      "description": "One-shot morph pulse if this event carried a reaction. Empty string for plain transitions."
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 280,
+      "description": "Optional human-readable context for the transition. Not PHI; operational signal only."
+    }
+  },
+  "required": ["session_id", "session_key", "surface", "posture"],
+  "rls": {
+    "create": true,
+    "read": true,
+    "update": { "user_condition": { "role": "admin" } },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}

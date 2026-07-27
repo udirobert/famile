@@ -1,0 +1,16 @@
+// Shared Slack Bot connector for care-team escalation.
+//
+// Used by the miraEscalation function to post exception alerts to the
+// care-team Slack channel when severity is 'escalate'. Care team members
+// see only operational signal (posture, valence, surface) — never chat
+// content or PHI.
+//
+// To authorize: run `base44 connectors push` and complete the OAuth flow.
+// The bot needs chat:write scope to post to the configured channel.
+{
+  "type": "slackbot",
+  "scopes": [
+    "chat:write",
+    "channels:read"
+  ]
+}

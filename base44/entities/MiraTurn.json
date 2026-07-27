@@ -1,0 +1,57 @@
+{
+  "name": "MiraTurn",
+  "type": "object",
+  "title": "Mira Turn",
+  "description": "A single message in a Mira conversation. User turns and agent turns are both stored. Personal health information is scrubbed server-side before persist: PHI-bearing user turns are stored with role='user' and content set to the literal '[redacted — personal health detail]' marker, so the conversation shape is preserved for context without retaining the sensitive text. See the miraAnswer function for the scrub.",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "MiraSession.id this turn belongs to. Indexed for fast session hydration."
+    },
+    "session_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "description": "Denormalized session_key for RLS. Matches the parent MiraSession.session_key; kept here so reads can be scoped without a join."
+    },
+    "surface": {
+      "type": "string",
+      "enum": ["famile", "sukari", "orbura", "ardum"],
+      "description": "Surface that originated this turn. Matches the parent session."
+    },
+    "role": {
+      "type": "string",
+      "enum": ["user", "agent"],
+      "description": "Who said this turn. 'user' for the person, 'agent' for Mira."
+    },
+    "content": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 4000,
+      "description": "Turn text. Capped at 4000 chars to bound storage. User turns are capped and PHI-scrubbed before write."
+    },
+    "posture": {
+      "type": "string",
+      "enum": ["steady", "offering", "holding", "watching", "completed", "inquiry", "gathering", "resolving", "adapting", "arriving"],
+      "default": "steady",
+      "description": "Posture Mira projected when emitting this turn (agent turns only). Stored for replay and audit."
+    },
+    "live": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this turn was produced by a live model. False for recorded/replay fallback turns."
+    },
+    "redacted": {
+      "type": "boolean",
+      "default": false,
+      "description": "True if the original user content was replaced with a redaction marker because it matched a PHI pattern."
+    }
+  },
+  "required": ["session_id", "session_key", "surface", "role", "content"],
+  "rls": {
+    "create": true,
+    "read": { "data.session_key": "{{user.data.session_key}}" },
+    "update": { "data.session_key": "{{user.data.session_key}}" },
+    "delete": { "user_condition": { "role": "admin" } }
+  }
+}

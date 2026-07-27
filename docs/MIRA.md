@@ -55,7 +55,7 @@ postures.
 A shared Mira memory store now exists, backed by Base44. The store holds
 `MiraSession`, `MiraTurn`, `PostureEvent`, and `CareTeamAlert` entities with
 row-level security scoped to `session_key` (the capability handle). See
-`../../base44/` for the backend project and `lib/agent/memory.ts` for the
+`../base44/` for the backend project and `lib/agent/memory.ts` for the
 client wrapper.
 
 What this means for each product:
