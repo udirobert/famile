@@ -1,15 +1,4 @@
 {
   "name": "miraEscalation",
-  "entry": "entry.ts",
-  "automations": [
-    {
-      "type": "entity",
-      "name": "on_posture_disruption",
-      "description": "Triggers when a PostureEvent is created with valence >= 0.6 (disrupted) or posture 'resolving'. Creates a CareTeamAlert and, if severity is 'escalate', posts to the care-team Slack channel via the shared Slack connector. This is the exception-oriented care-team signal from PRODUCTS.md: 'Care teams see only what shifted.'",
-      "function_args": { "mode": "on_event" },
-      "is_active": true,
-      "entity_name": "PostureEvent",
-      "event_types": ["create"]
-    }
-  ]
+  "entry": "entry.ts"
 }

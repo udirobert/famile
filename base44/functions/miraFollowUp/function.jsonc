@@ -1,17 +1,4 @@
 {
   "name": "miraFollowUp",
-  "entry": "entry.ts",
-  "automations": [
-    {
-      "type": "scheduled",
-      "name": "holding_follow_up",
-      "description": "Every hour, find sessions in 'holding' posture that haven't had a turn in 24h and post a gentle follow-up turn. Mira follows up once on a deferred promise — this is the canonical agentic behavior from docs/MIRA.md.",
-      "function_args": { "mode": "holding_follow_up" },
-      "is_active": true,
-      "schedule_mode": "recurring",
-      "schedule_type": "simple",
-      "repeat_unit": "hours",
-      "repeat_interval": 1
-    }
-  ]
+  "entry": "entry.ts"
 }
