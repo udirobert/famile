@@ -313,7 +313,7 @@ export function MiraConversation({
             <button
               type="button"
               onClick={voice.listening ? voice.stop : voice.start}
-              disabled={busy || resting}
+              disabled={busy || resting || voice.finalizing}
               aria-label={voice.listening ? "Stop voice input" : "Start voice input"}
               aria-pressed={voice.listening}
               className={cn(
@@ -323,7 +323,7 @@ export function MiraConversation({
                   : "border-line-strong text-ink-dim hover:border-aurora-lavender/40 hover:text-ink",
               )}
             >
-              {voice.listening ? "Stop" : "Speak"}
+              {voice.finalizing ? "Finishing" : voice.listening ? "Stop" : "Speak"}
             </button>
           )}
           <button
@@ -342,6 +342,14 @@ export function MiraConversation({
             {voice.mode === "websocket"
               ? "Listening. Audio is being sent to the configured transcription service; Famile does not save it."
               : "Listening. Nothing is saved. Stop when you are finished."}
+          </p>
+        )}
+        {voice.finalizing && (
+          <p
+            className="border-t border-line px-5 py-2 text-xs text-ink-dim sm:px-6"
+            role="status"
+          >
+            Finishing your transcript…
           </p>
         )}
         {voice.error && !voice.listening && (

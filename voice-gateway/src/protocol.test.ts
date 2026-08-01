@@ -24,4 +24,8 @@ test("normalizes partial and final Speechmatics transcripts", () => {
     ),
     { type: "transcript", text: "hello there", final: true },
   );
+  assert.deepEqual(
+    speechmaticsEvent(JSON.stringify({ message: "EndOfTranscript" })),
+    { type: "ended" },
+  );
 });

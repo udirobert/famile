@@ -97,7 +97,10 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const workletRef = useRef<AudioWorkletNode | null>(null);
+  const finalizeTimerRef = useRef<number | null>(null);
+  const finalizingRef = useRef(false);
   const [listening, setListening] = useState(false);
+  const [finalizing, setFinalizing] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<ExplicitVoiceMode>("browser");
@@ -108,6 +111,10 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
   );
 
   const cleanupExplicit = useCallback(() => {
+    if (finalizeTimerRef.current !== null) {
+      window.clearTimeout(finalizeTimerRef.current);
+      finalizeTimerRef.current = null;
+    }
     workletRef.current?.disconnect();
     sourceRef.current?.disconnect();
     streamRef.current?.getTracks().forEach((track) => track.stop());
@@ -118,13 +125,33 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
     streamRef.current = null;
     socketRef.current = null;
     audioContextRef.current = null;
+    finalizingRef.current = false;
+    setFinalizing(false);
   }, []);
 
   const stop = useCallback(() => {
+    if (socketRef.current) {
+      const socket = socketRef.current;
+      if (finalizing) return;
+      workletRef.current?.disconnect();
+      sourceRef.current?.disconnect();
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      setListening(false);
+      finalizingRef.current = true;
+      setFinalizing(true);
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: "stop" }));
+        finalizeTimerRef.current = window.setTimeout(() => {
+          cleanupExplicit();
+        }, 5_000);
+      } else {
+        cleanupExplicit();
+      }
+      return;
+    }
     recognitionRef.current?.stop();
-    cleanupExplicit();
     setListening(false);
-  }, [cleanupExplicit]);
+  }, [cleanupExplicit, finalizing]);
 
   const startExplicit = useCallback(async (url: string) => {
     if (!navigator.mediaDevices?.getUserMedia || typeof AudioWorkletNode === "undefined") {
@@ -183,6 +210,8 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
         channels: 1,
       }));
       setListening(true);
+      finalizingRef.current = false;
+      setFinalizing(false);
     };
     socket.onmessage = (event) => {
       if (typeof event.data !== "string") return;
@@ -191,6 +220,10 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
       if (message.type === "error" || message.error) {
         setError(message.error ?? "Voice transcription stopped.");
         stop();
+        return;
+      }
+      if (message.type === "ended") {
+        cleanupExplicit();
         return;
       }
       const next = message.text ?? message.transcript;
@@ -208,7 +241,9 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
       setListening(false);
     };
     worklet.port.onmessage = (event: MessageEvent<ArrayBuffer>) => {
-      if (socket.readyState === WebSocket.OPEN) socket.send(event.data);
+      if (socket.readyState === WebSocket.OPEN && !finalizingRef.current) {
+        socket.send(event.data);
+      }
     };
     await context.resume();
   }, [cleanupExplicit, onTranscript, stop]);
@@ -217,6 +252,7 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
     const Constructor = getRecognitionConstructor();
     const socketUrl = voiceSocketUrl();
     if (listening) return;
+    if (finalizing) return;
 
     if (socketUrl) {
       setTranscript("");
@@ -263,7 +299,7 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
       setError("Voice input is already starting. Try again in a moment.");
       setListening(false);
     }
-  }, [cleanupExplicit, listening, onTranscript, startExplicit]);
+  }, [cleanupExplicit, finalizing, listening, onTranscript, startExplicit]);
 
   useEffect(() => {
     return () => {
@@ -275,6 +311,7 @@ export function useVoiceInput(onTranscript?: (text: string) => void) {
   return {
     supported: supported || voiceSocketUrl() !== null,
     listening,
+    finalizing,
     transcript,
     error,
     mode,

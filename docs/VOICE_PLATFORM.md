@@ -67,8 +67,10 @@ the licensing position; do not copy it into a product by default.
   Speechmatics without exposing provider credentials to the browser.
 - Partial and final Speechmatics transcript events are normalized into the
   client protocol.
+- Stopping a voice session sends `EndOfStream` through the gateway and waits
+  for final transcript events before releasing the connection.
 - The gateway has unit coverage for client-start parsing and transcript
-  normalization.
+  normalization, plus a mocked end-to-end stop/final-transcript lifecycle.
 
 ### Before provider-backed deployment
 
@@ -76,7 +78,8 @@ the licensing position; do not copy it into a product by default.
   gateway environment.
 - Exercise the connection with Famile phrases and measure partial latency,
   finalization latency, accuracy, failure rate, and cost per minute.
-- Add explicit final-utterance handling so interim text never submits to Mira.
+- [x] Keep interim and final transcripts in an editable input; Send remains
+  an explicit person action.
 - Add retention/deletion language once transcript persistence is introduced.
 
 ## Initial transport contract
@@ -94,6 +97,13 @@ The server may reply with JSON transcript events such as:
 
 ```json
 {"type":"transcript","text":"What are you noticing?","final":true}
+```
+
+When the provider has delivered every final transcript after a stop request, it
+responds with:
+
+```json
+{"type":"ended"}
 ```
 
 or an error:

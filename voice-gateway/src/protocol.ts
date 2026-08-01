@@ -11,6 +11,7 @@ export type ClientControl = { type: "stop" };
 export type GatewayEvent =
   | { type: "ready" }
   | { type: "transcript"; text: string; final: boolean }
+  | { type: "ended" }
   | { type: "error"; error: string };
 
 export function parseClientMessage(value: string): ClientStart | ClientControl | null {
@@ -53,6 +54,7 @@ export function speechmaticsEvent(value: string): GatewayEvent | null {
       metadata?: { transcript?: string };
     };
     if (message.message === "RecognitionStarted") return { type: "ready" };
+    if (message.message === "EndOfTranscript") return { type: "ended" };
     if (
       message.message === "AddPartialTranscript" ||
       message.message === "AddTranscript"
