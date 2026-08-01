@@ -7,6 +7,12 @@ orb's render tier as part of the emotional vocabulary.
 This plan is phased so each phase ships value on its own. No phase depends on
 a later one. Work can proceed in parallel across repos once Phase 0 lands.
 
+Voice is a separate platform capability rather than a new Mira posture. The
+shared direction and product boundaries are in
+[VOICE_PLATFORM.md](./VOICE_PLATFORM.md). Any voice implementation should
+emit the same operational Mira events and remain subject to this contract's
+safety charter.
+
 ---
 
 ## Phase 0 — Canonical contract (week 1)

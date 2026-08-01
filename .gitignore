@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/voice-gateway/node_modules/
+/voice-gateway/dist/
 /.pnp
 .pnp.*
 .yarn/*

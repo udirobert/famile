@@ -33,6 +33,11 @@ The canonical network persona, posture vocabulary, orb spec, and tier
 transitions live in [MIRA.md](./MIRA.md). The implementation plan is
 [MIRA_IMPLEMENTATION_PLAN.md](./MIRA_IMPLEMENTATION_PLAN.md).
 
+The shared voice-platform direction lives in
+[VOICE_PLATFORM.md](./VOICE_PLATFORM.md). It covers reusable real-time voice
+patterns and safety boundaries; it does not make voice biomarkers or emotion
+inference part of Mira.
+
 ## Safety
 
 No medical advice. Decline personal health details in chat. Stay grounded in [PRODUCTS.md](./PRODUCTS.md).

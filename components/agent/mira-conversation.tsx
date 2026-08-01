@@ -11,6 +11,7 @@ import {
 } from "@/lib/products";
 import { EASE, DUR } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { useVoiceInput } from "@/lib/agent/voice-input";
 
 type Msg = { role: "user" | "agent"; text: string };
 
@@ -56,6 +57,7 @@ export function MiraConversation({
   const inputRef = useRef<HTMLInputElement>(null);
   const sitFiredRef = useRef(false);
   const reduced = useReducedMotion();
+  const voice = useVoiceInput(setInput);
 
   // Hydrate prior turns from the Base44 shared memory store on first mount.
   // When Base44 is not configured (local dev, or 503), this silently no-ops
@@ -307,6 +309,23 @@ export function MiraConversation({
             className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink-dim focus:outline-none"
             disabled={busy || resting}
           />
+          {voice.supported && (
+            <button
+              type="button"
+              onClick={voice.listening ? voice.stop : voice.start}
+              disabled={busy || resting}
+              aria-label={voice.listening ? "Stop voice input" : "Start voice input"}
+              aria-pressed={voice.listening}
+              className={cn(
+                "shrink-0 rounded-full border px-3 py-2 text-xs transition-colors disabled:opacity-40",
+                voice.listening
+                  ? "border-aurora-amber/60 bg-aurora-amber/15 text-ink"
+                  : "border-line-strong text-ink-dim hover:border-aurora-lavender/40 hover:text-ink",
+              )}
+            >
+              {voice.listening ? "Stop" : "Speak"}
+            </button>
+          )}
           <button
             type="submit"
             disabled={busy || resting || !input.trim()}
@@ -315,6 +334,21 @@ export function MiraConversation({
             {busy ? "…" : "Send"}
           </button>
         </form>
+        {voice.listening && (
+          <p
+            className="border-t border-line px-5 py-2 text-xs text-ink-dim sm:px-6"
+            role="status"
+          >
+            {voice.mode === "websocket"
+              ? "Listening. Audio is being sent to the configured transcription service; Famile does not save it."
+              : "Listening. Nothing is saved. Stop when you are finished."}
+          </p>
+        )}
+        {voice.error && !voice.listening && (
+          <p className="border-t border-line px-5 py-2 text-xs text-ink-dim sm:px-6" role="status">
+            {voice.error}
+          </p>
+        )}
       </motion.div>
 
       {resting && onReturn && (
