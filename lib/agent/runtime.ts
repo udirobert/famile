@@ -29,6 +29,8 @@ export function getEngine(): ReasoningEngine {
 class ReplayEngine implements ReasoningEngine {
   readonly live = false;
 
+  // ReplayEngine does not use research, but the interface requires the slot.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async *answerStream(_query: string, _research?: unknown): AsyncIterable<string> {
     const answer = replayAnswer(_query);
     // Reveal gradually so the UX matches the live path; it's still a recorded

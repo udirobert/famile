@@ -29,25 +29,25 @@ class SafeEnvironment extends Component<
   }
 }
 
-// RoomEnvironment is a procedural, self-contained PMREM. It replaces the
-// 1.6 MB `/hdri/empty_warehouse_01_1k.hdr` file and removes the network fetch.
+// RoomEnvironment is a procedural scene of light panels. Bake it to a PMREM
+// once on mount; this replaces the 1.6 MB `/hdri/empty_warehouse_01_1k.hdr`
+// file and removes the network fetch entirely.
 function RoomEnv() {
-  const { gl, scene } = useThree();
-  const { envMap, renderTarget } = useMemo(() => {
-    const rt = new RoomEnvironment().renderTarget(gl);
-    return { envMap: rt.texture, renderTarget: rt };
+  const { gl } = useThree();
+  const { envMap, pmremGenerator } = useMemo(() => {
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const rt = pmrem.fromScene(new RoomEnvironment(), 0.04);
+    return { envMap: rt.texture, pmremGenerator: pmrem };
   }, [gl]);
 
   useEffect(() => {
-    const prev = scene.environment;
-    scene.environment = envMap;
     return () => {
-      scene.environment = prev;
-      renderTarget.dispose();
+      pmremGenerator.dispose();
+      envMap.dispose();
     };
-  }, [scene, envMap, renderTarget]);
+  }, [envMap, pmremGenerator]);
 
-  return null;
+  return <primitive object={envMap} attach="environment" />;
 }
 
 type MorphBlobProps = {
