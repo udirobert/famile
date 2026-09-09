@@ -1,3 +1,4 @@
+import "server-only";
 import { needsResearch } from "./research-intent";
 
 // Firecrawl Research Index — grounds Mira's answers in life-science literature.
