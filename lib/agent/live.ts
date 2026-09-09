@@ -1,6 +1,7 @@
 import { products } from "@/lib/products";
 import { replayAnswer } from "./replay";
 import type { ReasoningEngine } from "./runtime";
+import type { ResearchContext } from "@/lib/research";
 import {
   anyProviderConfigured,
   getProviderChain,
@@ -46,11 +47,21 @@ function productContext(): string {
     .join("\n\n");
 }
 
-function buildMessages(query: string): ChatMessage[] {
-  return [
+function buildMessages(
+  query: string,
+  research?: ResearchContext | null,
+): ChatMessage[] {
+  const messages: ChatMessage[] = [
     { role: "system", content: SYSTEM_PROMPT + productContext() },
-    { role: "user", content: query },
   ];
+  // Evidence grounding from the Firecrawl Research Index. Folds into a
+  // dedicated system message so the model treats it as context, not user
+  // speech, and never splices it into the person's literal words.
+  if (research?.grounded && research.contextText) {
+    messages.push({ role: "system", content: research.contextText });
+  }
+  messages.push({ role: "user", content: query });
+  return messages;
 }
 
 /**
@@ -61,14 +72,17 @@ function buildMessages(query: string): ChatMessage[] {
 export class LiveEngine implements ReasoningEngine {
   readonly live = true;
 
-  async *answerStream(query: string): AsyncIterable<string> {
+  async *answerStream(
+    query: string,
+    research?: ResearchContext | null,
+  ): AsyncIterable<string> {
     const chain = getProviderChain();
     if (!chain.length) {
       yield replayAnswer(query);
       return;
     }
 
-    const messages = buildMessages(query);
+    const messages = buildMessages(query, research);
     let lastError: unknown;
 
     for (const provider of chain) {

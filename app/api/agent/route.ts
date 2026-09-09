@@ -1,4 +1,5 @@
 import { getEngine } from "@/lib/agent/runtime";
+import { resolveResearch } from "@/lib/research";
 import { rateLimit } from "@/lib/agent/ratelimit";
 import {
   base44Configured,
@@ -140,11 +141,15 @@ export async function POST(req: Request) {
 
   // Path 2: local engine (existing behavior, preserved as fallback).
   const engine = getEngine();
+  // Optional literature grounding, live answers only. Resolving before we
+  // open the stream keeps the X-Famile-Grounded header available on a plain
+  // Response (headers can't be set after streaming starts).
+  const research = engine.live ? await resolveResearch(q) : null;
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
-        for await (const chunk of engine.answerStream(q)) {
+        for await (const chunk of engine.answerStream(q, research)) {
           controller.enqueue(encoder.encode(chunk));
         }
       } catch {
@@ -160,6 +165,7 @@ export async function POST(req: Request) {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-store",
       "X-Famile-Live": String(engine.live),
+      "X-Famile-Grounded": String(research?.grounded ?? false),
       "RateLimit-Limit": String(rl.limit),
       "RateLimit-Remaining": String(rl.remaining),
       "RateLimit-Reset": String(Math.ceil(rl.resetAt / 1000)),

@@ -8,9 +8,12 @@
 //   2. Loads recent MiraTurn rows for context (last 10).
 //   3. Scrubs the incoming query for personal health information; if PHI is
 //      detected, persists a redacted marker instead of the raw text.
-//   4. Calls the Base44 built-in AI integration to generate Mira's reply,
+//   4. Optionally grounds the reply in the Firecrawl Research Index
+//      (life-science literature) for evidence-seeking queries — sets
+//      X-Famile-Grounded when used; degrades gracefully when unconfigured.
+//   5. Calls the Base44 built-in AI integration to generate Mira's reply,
 //      constrained by the canonical system prompt from docs/MIRA.md.
-//   5. Streams the reply back to the caller, then persists both turns.
+//   6. Streams the reply back to the caller, then persists both turns.
 //
 // The function uses asServiceRole for entity writes because the famile.xyz
 // surface is anonymous (httpOnly cookie, no login). Session-key scoping is
@@ -56,6 +59,116 @@ const MAX_QUERY_CHARS = 500;
 const MAX_CONTEXT_TURNS = 10;
 
 type Turn = { role: "user" | "agent"; content: string };
+
+// --- Firecrawl Research Index grounding (optional, graceful) ---
+//
+// Mirrors famile/web's lib/research.ts so both Mira paths behave the same.
+// Fetched only for evidence-seeking queries, never for redacted (PHI) turns,
+// and only when FIRECRAWL_API_KEY is configured. Any failure returns an
+// ungrounded result and the function answers from context alone.
+
+const FIRECRAWL_ENDPOINT = "https://api.firecrawl.dev/v2/search/research";
+const FIRECRAWL_TIMEOUT_MS = 8_000;
+
+type ResearchSource = {
+  title: string;
+  url: string;
+  publishedDate?: string;
+  description?: string;
+};
+
+type ResearchResult = {
+  grounded: boolean;
+  contextText: string;
+};
+
+const EVIDENCE_HINTS: RegExp[] = [
+  /what does the (research|literature|science|data|evidence|studies)\s+(say|show|suggest|tell)/i,
+  /what (do|did) (studies|trials|researchers) (show|find|suggest)/i,
+  /is there (any )?(evidence|research|data)/i,
+  /\b(evidence|research|data) (for|that|shows|suggests|on)\b/i,
+  /\bclinical trial/i,
+  /\bmeta[- ]analysis/i,
+  /\bsystematic review/i,
+  /\bpeer[- ]reviewed/i,
+  /stud(y|ies) (on|of|show|suggest|found|examined)/i,
+  /\bscience behind/i,
+  /\bwhat is known about/i,
+  /\b(effect|effects|efficacy|effectiveness|mechanism) (of|on)/i,
+  /\bcorrelat(ion|ions?|e) (between|with)/i,
+  /\bdoes it (work|help|matter)\b/i,
+  /\b(body|brain|sleep|fasting|glp-?1|metformin|meditation|cortisol|circadian|intermittent fasting)\b.*\b(research|evidence|studies|literature|science|data)\b/i,
+];
+
+function needsResearch(query: string): boolean {
+  return EVIDENCE_HINTS.some((re) => re.test(query));
+}
+
+async function resolveResearch(query: string): Promise<ResearchResult> {
+  const ungrounded: ResearchResult = { grounded: false, contextText: "" };
+  const key = Deno.env.get("FIRECRAWL_API_KEY");
+  if (!key) return ungrounded;
+  if (!needsResearch(query)) return ungrounded;
+
+  const rawMax = Number.parseInt(Deno.env.get("FIRECRAWL_RESEARCH_MAX") ?? "4", 10);
+  const max = Number.isFinite(rawMax) ? Math.min(8, Math.max(1, rawMax)) : 4;
+
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), FIRECRAWL_TIMEOUT_MS);
+  let json: unknown;
+  try {
+    const res = await fetch(FIRECRAWL_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({ query, limit: max }),
+      signal: ctrl.signal,
+    });
+    if (!res.ok) return ungrounded;
+    json = await res.json();
+  } catch {
+    return ungrounded;
+  } finally {
+    clearTimeout(t);
+  }
+
+  const data = (json as { data?: unknown })?.data;
+  if (!Array.isArray(data)) return ungrounded;
+
+  const sources: ResearchSource[] = data
+    .map((item): ResearchSource | null => {
+      if (!item || typeof item !== "object") return null;
+      const o = item as Record<string, unknown>;
+      const title = typeof o.title === "string" ? o.title.trim() : "";
+      const url = typeof o.url === "string" ? o.url.trim() : "";
+      if (!title && !url) return null;
+      return {
+        title,
+        url,
+        publishedDate: typeof o.publishedDate === "string" ? o.publishedDate : undefined,
+        description: typeof o.description === "string" ? o.description : undefined,
+      };
+    })
+    .filter((s): s is ResearchSource => s !== null)
+    .slice(0, max);
+
+  if (!sources.length) return ungrounded;
+
+  const lines = sources.map(
+    (s, i) =>
+      `${i + 1}. ${s.title}${s.publishedDate ? ` (${s.publishedDate})` : ""} — ${s.url}`,
+  );
+  return {
+    grounded: true,
+    contextText: [
+      "Research context (life-science literature).",
+      "Use it only to characterize what the literature says. Never turn a paper into a recommendation; distinguish what is known from what is not.",
+      ...lines,
+    ].join("\n"),
+  };
+}
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") {
@@ -142,6 +255,12 @@ Deno.serve(async (req) => {
   const redacted = PHI_RE.test(q);
   const userContentToStore = redacted ? REDACTED_MARKER : q;
 
+  // Optional literature grounding. Never fires for redacted (PHI) turns;
+  // any configuration or upstream failure degrades to ungrounded.
+  const research = redacted
+    ? { grounded: false, contextText: "" }
+    : await resolveResearch(q);
+
   // Persist the user turn immediately (so a crash mid-stream still leaves the
   // intent in the record). The agent turn is persisted after the stream.
   try {
@@ -189,6 +308,11 @@ Deno.serve(async (req) => {
   // 4. Build the message array for the AI call.
   const messages = [
     { role: "system", content: SYSTEM_PROMPT },
+    // Evidence grounding as a dedicated system message (context, not user
+    // speech). Mirrors famile/web's live engine so both paths behave alike.
+    ...(research.grounded && research.contextText
+      ? [{ role: "system" as const, content: research.contextText }]
+      : []),
     ...history
       .filter((t) => t.content && t.content !== REDACTED_MARKER)
       .map((t) => ({ role: t.role, content: t.content })),
@@ -375,6 +499,7 @@ Deno.serve(async (req) => {
       "X-Famile-Live": String(!streamError),
       "X-Famile-Session": session.id,
       "X-Famile-Redacted": String(redacted),
+      "X-Famile-Grounded": String(research.grounded),
     },
   });
 });
