@@ -39,7 +39,7 @@ export function ProvenanceAffordance({
             transition={{ duration: reduced ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="mt-2 rounded-[var(--radius-md)] border border-dashed border-line-strong p-3 text-left">
+            <div className="mt-2 rounded-md border border-dashed border-line-strong p-3 text-left">
               <p className="text-[10px] uppercase tracking-[0.16em] text-ink-dim">
                 source
               </p>

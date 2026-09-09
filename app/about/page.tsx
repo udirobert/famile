@@ -58,7 +58,7 @@ export default function AboutPage() {
               <p className="mb-6 text-xs uppercase tracking-[0.2em] text-ink-dim">
                 Practice
               </p>
-              <div className="grid gap-px overflow-hidden rounded-[var(--radius-xl)] border border-line bg-line sm:grid-cols-3">
+              <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
                 {products.map((p) => (
                   <div
                     key={p.slug}

@@ -19,12 +19,13 @@ const wordParent: Variants = {
   }),
 };
 
+// No filter: blur() here — animating blur on display type forces a repaint
+// every frame. y + opacity composite on the GPU and read just as soft.
 const wordChild: Variants = {
-  hidden: { opacity: 0, y: "0.55em", filter: "blur(6px)" },
+  hidden: { opacity: 0, y: "0.55em" },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { duration: DUR.base, ease: EASE.soft },
   },
 };

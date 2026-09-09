@@ -69,7 +69,7 @@ export function ProductDetail({ product }: { product: Product }) {
             </AccordionItem>
           </Accordion>
 
-          <div className="mt-10 grid grid-cols-3 gap-6 rounded-[var(--radius-lg)] border border-line p-6">
+          <div className="mt-10 grid grid-cols-3 gap-6 rounded-lg border border-line p-6">
             {product.metric.map((m) => (
               <div key={m.label}>
                 <p
@@ -125,7 +125,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 className="absolute inset-0"
               />
             </div>
-            <div className="mt-8 rounded-[var(--radius-lg)] border border-line bg-canvas-elevated/30 p-5 backdrop-blur-xl">
+            <div className="mt-8 rounded-lg border border-line bg-canvas-elevated/30 p-5 backdrop-blur-xl">
               <p className="text-xs uppercase tracking-[0.18em] text-ink-dim">
                 In product
               </p>

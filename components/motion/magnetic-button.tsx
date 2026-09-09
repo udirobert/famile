@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "motion/react";
-import { useRef, type ReactNode } from "react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { useRef, useSyncExternalStore, type ReactNode } from "react";
 
 type MagneticProps = {
   children: ReactNode;
@@ -11,6 +11,19 @@ type MagneticProps = {
 
 export function Magnetic({ children, className, strength = 0.4 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  // Magnetic is a delight layer for precise pointers only. On touch, the
+  // first tap fires mousemove and the target would jump out from under the
+  // visitor's finger — render plain instead.
+  const coarse = useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia("(pointer: coarse)");
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia("(pointer: coarse)").matches,
+    () => false,
+  );
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const x = useSpring(mx, { stiffness: 180, damping: 18, mass: 0.5 });
@@ -27,6 +40,10 @@ export function Magnetic({ children, className, strength = 0.4 }: MagneticProps)
   function reset() {
     mx.set(0);
     my.set(0);
+  }
+
+  if (reduced || coarse) {
+    return <div className={className}>{children}</div>;
   }
 
   return (

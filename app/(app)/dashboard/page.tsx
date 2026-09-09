@@ -51,10 +51,10 @@ export default function DashboardPage() {
               key={p.slug}
               href={`/products/${p.slug}`}
               transitionTypes={["nav-forward"]}
-              className="group relative overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl transition-all duration-500 hover:border-aurora-lavender/40 hover:bg-canvas-elevated/70"
+              className="group relative overflow-hidden rounded-xl border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl transition-all duration-500 hover:border-aurora-lavender/40 hover:bg-canvas-elevated/70"
             >
               <div
-                className="absolute -inset-px -z-10 rounded-[var(--radius-xl)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                className="absolute -inset-px -z-10 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 style={{
                   background: `radial-gradient(60% 60% at 50% 0%, ${p.accent}22, transparent 70%)`,
                 }}

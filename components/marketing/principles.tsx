@@ -56,7 +56,7 @@ export function Principles() {
           whileInView="visible"
           viewport={viewportOnce}
           variants={fadeUp}
-          className="mx-auto mt-16 max-w-2xl rounded-[var(--radius-xl)] border border-line bg-canvas-elevated/40 px-6 py-2 backdrop-blur-xl sm:px-8"
+          className="mx-auto mt-16 max-w-2xl rounded-xl border border-line bg-canvas-elevated/40 px-6 py-2 backdrop-blur-xl sm:px-8"
         >
           <Accordion>
             {notes.map((p) => (

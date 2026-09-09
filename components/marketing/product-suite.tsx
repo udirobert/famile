@@ -47,10 +47,10 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      className="group relative flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl sm:p-10"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl sm:p-10"
     >
       <div
-        className="absolute -inset-px -z-10 rounded-[var(--radius-xl)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute -inset-px -z-10 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
           background: `radial-gradient(60% 60% at 50% 0%, ${product.accent}22, transparent 70%)`,
         }}

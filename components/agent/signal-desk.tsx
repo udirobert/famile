@@ -84,7 +84,7 @@ export function SignalDesk() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={viewportOnce}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-3xl overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 backdrop-blur-xl"
+          className="mx-auto max-w-3xl overflow-hidden rounded-xl border border-line-strong bg-canvas-elevated/40 backdrop-blur-xl"
         >
           {/* Desk header */}
           <div className="flex items-center justify-between border-b border-line px-6 py-4 sm:px-8">
@@ -144,7 +144,7 @@ export function SignalDesk() {
                     </span>
                     {isDecide ? (
                       <p
-                        className="rounded-[var(--radius-md)] border px-4 py-3 font-display text-lg leading-snug tracking-tight"
+                        className="rounded-md border px-4 py-3 font-display text-lg leading-snug tracking-tight"
                         style={{
                           borderColor: `${color}55`,
                           background: `${color}14`,
@@ -156,7 +156,7 @@ export function SignalDesk() {
                       </p>
                     ) : isReport ? (
                       <p
-                        className="rounded-[var(--radius-md)] border border-dashed border-line-strong px-4 py-3 font-mono text-sm leading-relaxed text-ink-muted"
+                        className="rounded-md border border-dashed border-line-strong px-4 py-3 font-mono text-sm leading-relaxed text-ink-muted"
                       >
                         {step.text}
                       </p>

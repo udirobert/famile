@@ -134,7 +134,7 @@ export function AgentDashboard() {
   return (
     <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
       {/* Today's focus */}
-      <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl">
+      <div className="relative overflow-hidden rounded-xl border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl">
         <div className="mb-6 flex items-center justify-between">
           <p className="text-xs uppercase tracking-[0.18em] text-ink-dim">
             Today&apos;s focus
@@ -190,7 +190,7 @@ export function AgentDashboard() {
                   initial={reduced ? false : { opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: reduced ? 0 : 0.4 }}
-                  className="rounded-[var(--radius-md)] border border-line px-3 py-2"
+                  className="rounded-md border border-line px-3 py-2"
                 >
                   <span className="text-[10px] uppercase tracking-[0.16em] text-ink-dim">
                     {s.label}
@@ -211,7 +211,7 @@ export function AgentDashboard() {
       {/* What shifted — live when Base44 is connected, replay otherwise.
           Same motion, same styling, same shape. The data source is the only
           seam. */}
-      <div className="flex flex-col rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl">
+      <div className="flex flex-col rounded-xl border border-line-strong bg-canvas-elevated/40 p-8 backdrop-blur-xl">
         <p className="mb-6 text-xs uppercase tracking-[0.18em] text-ink-dim">
           What shifted
         </p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NextLink from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Container } from "@/components/ui/container";
@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 
 const links = [
-  { href: "/?mira=1", label: "Mira" },
-  { href: "/#principles", label: "Notes" },
+  { href: "/#suite", label: "Suite" },
+  { href: "/#principles", label: "Principles" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -19,6 +19,8 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -31,6 +33,22 @@ export function Nav() {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // Dialog behavior: Escape closes, focus moves into the menu on open and
+  // returns to the trigger on close.
+  useEffect(() => {
+    if (!open) return;
+    closeButtonRef.current?.focus();
+    const trigger = openButtonRef.current;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      trigger?.focus();
     };
   }, [open]);
 
@@ -74,9 +92,11 @@ export function Nav() {
           </div>
 
           <button
+            ref={openButtonRef}
             onClick={() => setOpen(true)}
             className="flex h-10 w-10 items-center justify-center md:hidden"
             aria-label="Open menu"
+            aria-expanded={open}
           >
             <span className="flex flex-col gap-1.5">
               <span className="h-px w-6 bg-ink" />
@@ -96,12 +116,16 @@ export function Nav() {
             exit={{ opacity: 0 }}
             transition={{ duration: DUR.base, ease: EASE.soft }}
             className="fixed inset-0 z-[60] bg-canvas/95 backdrop-blur-2xl md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
           >
             <Container className="flex h-16 items-center justify-between">
               <span className="font-display text-2xl italic tracking-tight text-ink">
                 famile
               </span>
               <button
+                ref={closeButtonRef}
                 onClick={() => setOpen(false)}
                 className="flex h-10 w-10 items-center justify-center"
                 aria-label="Close menu"

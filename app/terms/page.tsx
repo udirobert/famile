@@ -39,7 +39,7 @@ export default function TermsPage() {
               <span className="text-aurora-gradient text-luminous">Use</span>
             </h1>
 
-            <div className="mt-8 rounded-[var(--radius-md)] border border-aurora-amber/40 bg-aurora-amber/10 p-4 text-sm text-ink-muted">
+            <div className="mt-8 rounded-md border border-aurora-amber/40 bg-aurora-amber/10 p-4 text-sm text-ink-muted">
               <strong className="text-ink">Draft.</strong> This is a draft for
               review by a qualified lawyer before launch. It is not legal
               advice. Last updated: {UPDATED}.
