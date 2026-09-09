@@ -19,6 +19,16 @@ export const fadeUp: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: DUR.slow, ease: EASE.soft } },
 };
 
+/**
+ * Tempo map: hero moments stay slow (fadeUp), but UI feedback — messages,
+ * chips, small cards — should feel immediate. Use fadeUpFast for anything
+ * the visitor just asked for.
+ */
+export const fadeUpFast: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: EASE.soft } },
+};
+
 export const fadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: DUR.slow, ease: EASE.soft } },

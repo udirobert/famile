@@ -5,7 +5,7 @@ export function Grain({ className }: { className?: string }) {
     <div
       aria-hidden
       className={cn(
-        "pointer-events-none fixed inset-0 z-[1] opacity-[0.04] mix-blend-soft-light",
+        "pointer-events-none fixed inset-0 z-[70] opacity-[0.04] mix-blend-soft-light",
         className,
       )}
       style={{

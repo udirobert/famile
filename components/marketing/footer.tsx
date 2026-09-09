@@ -54,6 +54,14 @@ export function Footer() {
               </li>
               <li>
                 <NextLink
+                  href="/dashboard"
+                  className="text-ink-muted transition-colors hover:text-ink"
+                >
+                  Suite
+                </NextLink>
+              </li>
+              <li>
+                <NextLink
                   href="/about"
                   className="text-ink-muted transition-colors hover:text-ink"
                 >

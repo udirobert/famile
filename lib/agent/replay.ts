@@ -119,11 +119,11 @@ export const replayDashboardEvents: DashboardEvent[] = [
 export const sampleQA: SampleQA[] = [
   {
     q: "What is this place?",
-    a: "A field for attention — stillness meeting measure. I'm Mira. I can talk things through; I don't diagnose or replace a clinician.",
+    a: "famile is a small studio for staying well. I'm Mira — I can talk things through, and the suite (Sukari, Orbura, Ardum) holds daily practice. I don't diagnose.",
   },
   {
     q: "Who are you?",
-    a: "Mira. Conversation, not care delivery. I don't dose, and I don't carry memory across Famile apps.",
+    a: "Mira — company and clarity while you sort things out. I remember what you share here; I don't diagnose, dose, or replace your clinician.",
   },
   {
     q: "Just sit with me for a minute.",
@@ -131,7 +131,7 @@ export const sampleQA: SampleQA[] = [
   },
   {
     q: "What's Sukari?",
-    a: "A metabolic practice layer: one doable action from the day's patterns, with care-team signal by exception. Built for adherence over intensity.",
+    a: "Sukari is daily metabolic care: one doable action from the day's patterns, with care-team signal only when something shifts. Built for adherence over intensity.",
   },
   {
     q: "Is this medical advice?",

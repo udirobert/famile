@@ -21,10 +21,11 @@
   --color-aurora-amber: #ffc581;
   --color-aurora-deep: #4a3b8c;
 
-  /* Ink - text on canvas */
+  /* Ink - text on canvas. ink-dim clears WCAG AA (4.5:1) on canvas +
+     elevated surfaces; keep it that way — it carries disclaimers and labels. */
   --color-ink: #f5edff;
   --color-ink-muted: #b5a8d6;
-  --color-ink-dim: #6b5e8a;
+  --color-ink-dim: #9b8cc4;
 
   /* Lines */
   --color-line: rgba(196, 176, 255, 0.08);
@@ -172,6 +173,32 @@
 @keyframes aurora-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+/* CSS orb drift — transform-only, compositor-friendly. The global
+   reduced-motion rule at the end of this file stills it. */
+@keyframes css-orb-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(1.5%, -2%, 0) scale(1.03); }
+  66% { transform: translate3d(-1.5%, 1.5%, 0) scale(0.985); }
+}
+
+.css-orb-drift {
+  animation: css-orb-drift 14s var(--ease-soft) infinite;
+}
+.css-orb-drift-slow {
+  animation-duration: 22s;
+  animation-direction: reverse;
+}
+
+/* Designed loading state for deferred WebGL: a slow bloom, not a spinner. */
+@keyframes bloom-in {
+  from { opacity: 0; transform: scale(0.985); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.bloom-in {
+  animation: bloom-in 900ms var(--ease-soft) both;
 }
 
 @keyframes pulse-soft {

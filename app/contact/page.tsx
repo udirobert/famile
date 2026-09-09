@@ -64,7 +64,7 @@ export default function ContactPage() {
                 <a
                   key={c.label}
                   href={`mailto:${c.value}`}
-                  className="group rounded-[var(--radius-lg)] border border-line bg-canvas-elevated/30 p-5 text-left backdrop-blur-xl transition-all duration-300 hover:border-aurora-lavender/40 hover:bg-canvas-elevated/60"
+                  className="group rounded-lg border border-line bg-canvas-elevated/30 p-5 text-left backdrop-blur-xl transition-all duration-300 hover:border-aurora-lavender/40 hover:bg-canvas-elevated/60"
                 >
                   <p className="text-xs uppercase tracking-[0.18em] text-ink-dim">
                     {c.label}
@@ -77,7 +77,7 @@ export default function ContactPage() {
             </div>
 
             <div className="mt-12">
-              <Button href="/dashboard" size="lg" transitionTypes={["nav-forward"]}>
+              <Button href="/#suite" size="lg">
                 Or explore the suite
               </Button>
             </div>

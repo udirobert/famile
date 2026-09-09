@@ -37,13 +37,13 @@ export default function Error({
           we surface it clearly - then offer a path back.
         </p>
         {error?.message && (
-          <pre className="mx-auto mt-6 max-w-md overflow-x-auto rounded-[var(--radius-md)] border border-line bg-canvas-elevated/40 p-4 text-left text-xs text-ink-dim">
+          <pre className="mx-auto mt-6 max-w-md overflow-x-auto rounded-md border border-line bg-canvas-elevated/40 p-4 text-left text-xs text-ink-dim">
             {error.message}
           </pre>
         )}
         <div className="mt-10 flex justify-center gap-3">
           <Button onClick={() => unstable_retry()}>Try again</Button>
-          <Button href="/" variant="secondary" transitionTypes={["nav-back"]}>
+          <Button href="/" variant="secondary">
             Back to site
           </Button>
         </div>

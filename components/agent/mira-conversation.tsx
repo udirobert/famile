@@ -54,10 +54,14 @@ export function MiraConversation({
   const [live, setLive] = useState<boolean | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const accRef = useRef("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const sitFiredRef = useRef(false);
   const reduced = useReducedMotion();
   const voice = useVoiceInput(setInput);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // Set once a question is sent this session, so hydrated history is not
+  // announced on mount.
+  const [started, setStarted] = useState(false);
 
   // Hydrate prior turns from the Base44 shared memory store on first mount.
   // When Base44 is not configured (local dev, or 503), this silently no-ops
@@ -103,9 +107,24 @@ export function MiraConversation({
     inputRef.current?.focus({ preventScroll: true });
   }, [autoFocus, resting]);
 
+  // Keep the latest exchange in view while replies stream in.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages]);
+
+  // Auto-grow the composer up to ~5 lines, then let it scroll.
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = "0px";
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  }, [input]);
+
   async function send(q: string) {
     const query = q.trim();
     if (!query || busy || resting) return;
+    setStarted(true);
     const sit = wantsSit(query);
     sitFiredRef.current = false;
     setInput("");
@@ -187,6 +206,11 @@ export function MiraConversation({
   }
 
   const lastAgent = [...messages].reverse().find((m) => m.role === "agent");
+  // Screen-reader announcement: streaming tokens would spam a live region,
+  // so only the completed reply is announced (role="status" = polite+atomic).
+  // Derived during render: empty while busy, the full reply once finished.
+  const announcement =
+    started && !busy && lastAgent?.text ? lastAgent.text : "";
   const chips =
     !busy && !resting && lastAgent?.text ? softMatches(lastAgent.text) : [];
   const speaking = busy && !resting;
@@ -195,7 +219,7 @@ export function MiraConversation({
     <div className={cn("relative flex min-h-0 flex-1 flex-col", className)}>
       <motion.div
         layout={!reduced}
-        className="flex min-h-0 flex-1 flex-col rounded-[var(--radius-xl)] border border-line-strong bg-canvas-elevated/50 backdrop-blur-xl"
+        className="flex min-h-0 flex-1 flex-col rounded-xl border border-line-strong bg-canvas-elevated/50 backdrop-blur-xl"
         animate={{ opacity: resting ? 0.32 : 1 }}
         transition={{ duration: DUR.slow, ease: EASE.soft }}
         style={{
@@ -217,7 +241,7 @@ export function MiraConversation({
           </div>
           <div className="flex items-center gap-3">
             <span className="text-[10px] uppercase tracking-[0.16em] text-ink-dim">
-              {live === null ? "here" : live ? "live" : "sample"}
+              {live === null ? "here" : live ? "live" : "recorded"}
             </span>
             {onClose && !resting && (
               <button
@@ -231,7 +255,16 @@ export function MiraConversation({
           </div>
         </div>
 
-        <div className="min-h-[180px] flex-1 overflow-y-auto px-5 py-5 sm:px-6">
+        <p className="sr-only" role="status">
+          {announcement}
+        </p>
+        <div
+          ref={scrollRef}
+          role="log"
+          aria-live="off"
+          aria-label="Conversation with Mira"
+          className="min-h-[180px] flex-1 overflow-y-auto px-5 py-5 sm:px-6"
+        >
           {messages.length === 0 ? (
             <div className="space-y-4">
               <p className="text-sm leading-relaxed text-ink-muted">
@@ -256,12 +289,10 @@ export function MiraConversation({
                 {messages.map((m, i) => (
                   <motion.div
                     key={i}
-                    initial={
-                      reduced ? false : { opacity: 0, y: 8, filter: "blur(4px)" }
-                    }
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    initial={reduced ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      duration: reduced ? 0 : 0.35,
+                      duration: reduced ? 0 : 0.3,
                       ease: EASE.soft,
                     }}
                     className={m.role === "user" ? "text-right" : ""}
@@ -270,8 +301,8 @@ export function MiraConversation({
                       className={cn(
                         "inline-block max-w-[90%] px-4 py-2.5 text-sm leading-relaxed",
                         m.role === "user"
-                          ? "rounded-[var(--radius-md)] bg-aurora-lavender/15 text-ink"
-                          : "rounded-[var(--radius-md)] text-ink-muted",
+                          ? "rounded-md bg-aurora-lavender/15 text-ink"
+                          : "rounded-md text-ink-muted",
                       )}
                     >
                       {m.text || (
@@ -299,14 +330,22 @@ export function MiraConversation({
             e.preventDefault();
             send(input);
           }}
-          className="flex items-center gap-2 border-t border-line px-3 py-3 sm:px-4"
+          className="flex items-end gap-2 border-t border-line px-3 py-3 sm:px-4"
         >
-          <input
+          <textarea
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                send(input);
+              }
+            }}
             placeholder="What’s on your mind…"
-            className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-ink placeholder:text-ink-dim focus:outline-none"
+            aria-label="Message Mira"
+            rows={1}
+            className="min-w-0 flex-1 resize-none bg-transparent px-3 py-2 text-sm leading-relaxed text-ink placeholder:text-ink-dim focus:outline-none"
             disabled={busy || resting}
           />
           {voice.supported && (
