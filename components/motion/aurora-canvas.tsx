@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { useInView, useReducedMotion } from "motion/react";
 import * as THREE from "three";
+import { AuroraFallback } from "./aurora-fallback";
 
 const vertexShader = /* glsl */ `
   varying vec2 vUv;
@@ -150,14 +151,7 @@ export function AuroraCanvas({
   if (reducedMotion) {
     return (
       <div ref={ref} className={className} aria-hidden>
-        <div className="absolute inset-0 bg-canvas" />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 30% 20%, rgba(196,176,255,0.28), transparent 60%), radial-gradient(ellipse 70% 50% at 70% 80%, rgba(126,232,200,0.18), transparent 60%), radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255,184,224,0.14), transparent 70%)",
-          }}
-        />
+        <AuroraFallback />
       </div>
     );
   }

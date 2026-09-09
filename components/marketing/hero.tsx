@@ -3,15 +3,42 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { AuroraCanvas } from "@/components/motion/aurora-canvas";
-import { MorphBlob } from "@/components/motion/morph-blob";
+import { AuroraFallback } from "@/components/motion/aurora-fallback";
+import { CssOrb } from "@/components/motion/css-orb";
 import { Magnetic } from "@/components/motion/magnetic-button";
 import { MiraConversation } from "@/components/agent/mira-conversation";
 import { EXHALE_MS, INHALE_MS, REST_MS } from "@/lib/agent/sit";
 import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+
+// WebGL is deferred out of the initial bundle (three.js is ~1 MB). While the
+// chunk streams in — and for no-JS first paint — the CSS atmosphere below
+// stands in, then blooms into the real thing.
+const AuroraCanvas = dynamic(
+  () =>
+    import("@/components/motion/aurora-canvas").then((m) => m.AuroraCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0" aria-hidden>
+        <AuroraFallback />
+      </div>
+    ),
+  },
+);
+
+const MorphBlob = dynamic(
+  () => import("@/components/motion/morph-blob").then((m) => m.MorphBlob),
+  {
+    ssr: false,
+    loading: () => (
+      <CssOrb from="#c4b0ff" to="#7ee8c8" className="absolute inset-0" />
+    ),
+  },
+);
 
 /**
  * Open transition notes (why this is simpler than layoutId morphs):
@@ -62,7 +89,7 @@ export function Hero() {
       className="relative flex min-h-[100svh] items-center overflow-x-clip pt-24 pb-16"
     >
       <AuroraCanvas
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0 -z-10 bloom-in"
         intensity={isResting ? 0.82 : mira ? 1.12 : 1}
       />
       <div className="absolute inset-0 -z-10 bg-canvas/20" aria-hidden />
@@ -106,7 +133,8 @@ export function Hero() {
                     variants={fadeUp}
                     className="mt-8 max-w-sm text-lg leading-relaxed text-ink-muted"
                   >
-                    A quiet field for attention — and what follows from it.
+                    Companions for the daily work of staying well —
+                    metabolic care, recovery, and practice.
                   </motion.p>
 
                   <motion.div variants={fadeUp} className="mt-10">
@@ -156,7 +184,7 @@ export function Hero() {
           </div>
 
           {/* Orb stays put — quiet presence; slows into a breath when resting */}
-          <div className="relative mx-auto w-full max-w-[480px]">
+          <div className="relative mx-auto w-full max-w-[260px] sm:max-w-[360px] lg:max-w-[480px]">
             <motion.div
               className="relative mx-auto aspect-square w-full"
               animate={
@@ -199,7 +227,7 @@ export function Hero() {
                   to="#7ee8c8"
                   speed={isResting ? 0.55 : mira ? 1.55 : 1.4}
                   distort={isResting ? 0.28 : mira ? 0.45 : 0.42}
-                  className="absolute inset-0"
+                  className="absolute inset-0 bloom-in"
                 />
               </div>
             </motion.div>

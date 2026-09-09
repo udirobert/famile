@@ -1,12 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { MorphBlob } from "@/components/motion/morph-blob";
+import dynamic from "next/dynamic";
+import { CssOrb } from "@/components/motion/css-orb";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { ProvenanceAffordance } from "@/components/agent/provenance";
 import { productOpenLabel, type Product } from "@/lib/products";
+
+// The product page's orb is its hero — WebGL tier 1, but deferred so the
+// page paints text first and the orb blooms in.
+const MorphBlob = dynamic(
+  () => import("@/components/motion/morph-blob").then((m) => m.MorphBlob),
+  {
+    ssr: false,
+    loading: () => (
+      <CssOrb from="#c4b0ff" to="#7ee8c8" className="absolute inset-0" />
+    ),
+  },
+);
 
 const liveSignal: Record<Product["slug"], { title: string; hint: string }> = {
   sukari: {
@@ -122,7 +135,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 to={product.glyph.to}
                 speed={1.3}
                 distort={0.44}
-                className="absolute inset-0"
+                className="absolute inset-0 bloom-in"
               />
             </div>
             <div className="mt-8 rounded-lg border border-line bg-canvas-elevated/30 p-5 backdrop-blur-xl">

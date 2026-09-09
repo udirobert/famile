@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { Container } from "@/components/ui/container";
-import { MorphBlob } from "@/components/motion/morph-blob";
+import { CssOrb } from "@/components/motion/css-orb";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { Magnetic } from "@/components/motion/magnetic-button";
 import { Button } from "@/components/ui/button";
@@ -30,8 +30,8 @@ export function ProductSuite() {
         </div>
 
         <div className="mt-20 grid gap-6 lg:grid-cols-3">
-          {products.map((p, i) => (
-            <ProductCard key={p.slug} product={p} index={i} />
+          {products.map((p) => (
+            <ProductCard key={p.slug} product={p} />
           ))}
         </div>
       </Container>
@@ -39,7 +39,7 @@ export function ProductSuite() {
   );
 }
 
-function ProductCard({ product, index }: { product: Product; index: number }) {
+function ProductCard({ product }: { product: Product }) {
   return (
     <motion.article
       id={product.slug}
@@ -73,11 +73,9 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           }}
           aria-hidden
         />
-        <MorphBlob
+        <CssOrb
           from={product.glyph.from}
           to={product.glyph.to}
-          speed={1.2 + index * 0.2}
-          distort={0.38 + index * 0.06}
           className="absolute inset-0"
         />
       </motion.div>

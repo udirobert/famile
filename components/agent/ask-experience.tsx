@@ -3,14 +3,39 @@
 import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Container } from "@/components/ui/container";
-import { AuroraCanvas } from "@/components/motion/aurora-canvas";
-import { MorphBlob } from "@/components/motion/morph-blob";
+import { AuroraFallback } from "@/components/motion/aurora-fallback";
+import { CssOrb } from "@/components/motion/css-orb";
 import { MiraConversation } from "@/components/agent/mira-conversation";
 import { EXHALE_MS, INHALE_MS, REST_MS } from "@/lib/agent/sit";
 import { DUR, EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useLatestPosture } from "@/lib/agent/network";
+
+// Deferred WebGL — see hero.tsx. The CSS atmosphere blooms into the shader.
+const AuroraCanvas = dynamic(
+  () =>
+    import("@/components/motion/aurora-canvas").then((m) => m.AuroraCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0" aria-hidden>
+        <AuroraFallback />
+      </div>
+    ),
+  },
+);
+
+const MorphBlob = dynamic(
+  () => import("@/components/motion/morph-blob").then((m) => m.MorphBlob),
+  {
+    ssr: false,
+    loading: () => (
+      <CssOrb from="#7ee8c8" to="#c4b0ff" className="absolute inset-0" />
+    ),
+  },
+);
 
 // Conversational posture — what the orb is doing right now, driven by the
 // conversation itself (instant) or the network (5s poll, for cross-surface
@@ -116,7 +141,7 @@ export function AskExperience() {
   return (
     <section className="relative flex min-h-[100svh] items-center overflow-x-clip pt-28 pb-16">
       <AuroraCanvas
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0 -z-10 bloom-in"
         intensity={resting ? 0.82 : 1.15}
       />
       <div className="absolute inset-0 -z-10 bg-canvas/20" aria-hidden />
@@ -183,7 +208,7 @@ export function AskExperience() {
                   to={resting ? "#c4b0ff" : orb.to}
                   speed={resting ? 0.55 : orb.speed}
                   distort={resting ? 0.28 : orb.distort}
-                  className="absolute inset-0"
+                  className="absolute inset-0 bloom-in"
                 />
               </div>
             </motion.div>
