@@ -40,13 +40,12 @@ export function ProductDetail({ product }: { product: Product }) {
   const signal = liveSignal[product.slug];
 
   return (
-    <Container className="py-4">
+    <Container className="py-28 sm:py-36">
       <Link
-        href="/dashboard"
-        transitionTypes={["nav-back"]}
+        href="/#suite"
         className="mb-8 inline-flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-ink"
       >
-        ← Suite map
+        ← The suite
       </Link>
 
       <div className="grid gap-12 lg:grid-cols-[1fr_0.8fr]">

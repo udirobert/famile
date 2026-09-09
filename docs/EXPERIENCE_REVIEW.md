@@ -326,27 +326,31 @@ a metaphor to learn what the company does.
 
 ## 9. Prioritized roadmap
 
-**Now (hours, no design risk):**
+**Now (hours, no design risk):** — ✅ shipped
 1. ✅ Fix production build (voice-gateway excluded from root tsconfig).
-2. Reinstate `ProductSuite` on `/` (repairs story + `/#suite` + SEO mismatch).
-3. Lift `ink-dim` contrast (one token).
-4. Make `HeroFallback` the real static hero (h1 + subline in initial HTML).
-5. `role="log"` / `aria-live` on the conversation; Escape + focus on the menu.
+2. ✅ Reinstate `ProductSuite` on `/` (repairs story + `/#suite` + SEO mismatch).
+3. ✅ Lift `ink-dim` contrast (one token).
+4. ✅ Make `HeroFallback` the real static hero (h1 + subline in initial HTML).
+5. ✅ `role="log"` / `aria-live` on the conversation; Escape + focus on the menu.
 
-**Next (days, design-visible):**
-6. Dynamic-import WebGL with the CSS-gradient bloom as the loading state.
-7. Context budget: CSS glyphs for cards/sections, WebGL reserved for the hero
-   orb + aurora.
-8. Tempo map: fast UI feedback, slow hero moments; drop blur from
-   `TextReveal`.
-9. Hero subline + Mira sample answers per §8.1.
-10. Decide the suite shell question (§4.4) — recommendation: marketing.
+**Next (days, design-visible):** — ✅ shipped
+6. ✅ Dynamic-import WebGL with the CSS-gradient bloom as the loading state.
+7. ✅ Context budget: CSS glyphs for cards/sections, WebGL reserved for the
+   hero orb + aurora (homepage contexts: 3 → 2).
+8. ✅ Tempo map: `fadeUpFast` for UI feedback; blur dropped from `TextReveal`
+   and message entrances.
+9. ✅ Hero subline + Mira sample answers per §8.1.
+10. ✅ Suite shell question resolved: `/products/*` and `/dashboard` are
+    marketing pages; the app sidebar/topbar shell is retired.
 
-**Later (the memorable layer):**
-11. Rebuild `ExperienceSection` as the single-orb scrollytelling sequence
+**Later (the memorable layer):** — partially shipped
+11. ✅ `ExperienceSection` rebuilt as the single-orb scrollytelling sequence
     through the three product accents (§4.3).
-12. Textarea composer; "recorded" label; magnetic guards; Lenis tuning.
-13. Web-vitals telemetry; HDR downsize; then iterate on measured data.
+12. ✅ Textarea composer; "recorded" label; magnetic guards; Lenis tuning.
+13. ✅ Web-vitals telemetry scaffold (`/api/vitals` + console in dev).
+    Remaining: HDR downsize (deferred for now — the 1.6 MB map now loads
+    post-hydration with the dynamic-imported orb, cached immutable), and
+    iterating on measured data once vitals flow.
 
 ---
 

@@ -77,7 +77,7 @@ export default function ContactPage() {
             </div>
 
             <div className="mt-12">
-              <Button href="/dashboard" size="lg" transitionTypes={["nav-forward"]}>
+              <Button href="/#suite" size="lg">
                 Or explore the suite
               </Button>
             </div>

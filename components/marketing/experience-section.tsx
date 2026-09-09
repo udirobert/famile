@@ -45,14 +45,16 @@ const phases: Phase[] = [
   },
 ];
 
-// Scroll timing: each phase fades in, holds, fades out. Phase 0 starts
-// visible so the pinned field is never empty when the section sticks.
-const RANGES: [number, number, number][] = [
-  [-1, 0.26, 0.33],
-  [0.33, 0.4, 0.59],
-  [0.66, 0.73, 2],
+// Scroll timing: each phase fades in over F, holds, fades out over F —
+// except the first, which starts visible so the pinned field is never empty,
+// and the last, which holds to the end. Transform inputs must be strictly
+// increasing, hence the explicit windows.
+const F = 0.06;
+const WINDOWS: [number, number][] = [
+  [0, 0.3],
+  [0.36, 0.63],
+  [0.69, 1],
 ];
-const OUT_EXTRA = 0.07;
 
 function PhaseText({
   progress,
@@ -63,21 +65,14 @@ function PhaseText({
   index: number;
   phase: Phase;
 }) {
-  const [start, mid, end] = RANGES[index];
-  const fadeInEnd = index === 0 ? start : mid;
+  const [visStart, visEnd] = WINDOWS[index];
   const product = getProduct(phase.slug);
+  const first = index === 0;
   const last = index === phases.length - 1;
+  const input = [visStart - F, visStart, visEnd, visEnd + F];
 
-  const opacity = useTransform(
-    progress,
-    [start, fadeInEnd, end, end + OUT_EXTRA],
-    [index === 0 ? 1 : 0, 1, 1, last ? 1 : 0],
-  );
-  const y = useTransform(
-    progress,
-    [start, fadeInEnd, end, end + OUT_EXTRA],
-    [index === 0 ? 0 : 32, 0, 0, last ? 0 : -32],
-  );
+  const opacity = useTransform(progress, input, [first ? 1 : 0, 1, 1, last ? 1 : 0]);
+  const y = useTransform(progress, input, [first ? 0 : 32, 0, 0, last ? 0 : -32]);
 
   const words = phase.line.split(" ");
   const lead = words.slice(0, -2).join(" ");
@@ -114,12 +109,13 @@ function RailDot({
   progress: MotionValue<number>;
   index: number;
 }) {
-  const [start, , end] = RANGES[index];
+  const [visStart, visEnd] = WINDOWS[index];
+  const first = index === 0;
   const last = index === phases.length - 1;
   const opacity = useTransform(
     progress,
-    [start, start + 0.03, end, end + 0.03],
-    [index === 0 ? 1 : 0.25, 1, 1, last ? 1 : 0.25],
+    [visStart - F, visStart, visEnd, visEnd + F],
+    [first ? 1 : 0.25, 1, 1, last ? 1 : 0.25],
   );
   const product = getProduct(phases[index].slug);
   return (
