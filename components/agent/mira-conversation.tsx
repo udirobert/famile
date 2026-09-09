@@ -12,6 +12,7 @@ import {
 import { EASE, DUR } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useVoiceInput } from "@/lib/agent/voice-input";
+import { needsResearch } from "@/lib/research-intent";
 
 type Msg = { role: "user" | "agent"; text: string };
 
@@ -62,6 +63,10 @@ export function MiraConversation({
   // Set once a question is sent this session, so hydrated history is not
   // announced on mount.
   const [started, setStarted] = useState(false);
+  // Whether the last agent reply was grounded in the Firecrawl Research Index.
+  const [grounded, setGrounded] = useState<boolean | null>(null);
+  // Whether the current request is waiting on evidence retrieval.
+  const [checking, setChecking] = useState(false);
 
   // Hydrate prior turns from the Base44 shared memory store on first mount.
   // When Base44 is not configured (local dev, or 503), this silently no-ops
@@ -125,6 +130,8 @@ export function MiraConversation({
     const query = q.trim();
     if (!query || busy || resting) return;
     setStarted(true);
+    setGrounded(null);
+    setChecking(needsResearch(query));
     const sit = wantsSit(query);
     sitFiredRef.current = false;
     setInput("");
@@ -154,6 +161,8 @@ export function MiraConversation({
           res.status === 429
             ? "Too many questions — wait a moment and try again."
             : "Mira couldn't respond right now. Try again.";
+        setGrounded(null);
+        setChecking(false);
         setMessages((m) => {
           const copy = m.slice();
           copy[copy.length - 1] = { role: "agent", text: msg };
@@ -162,6 +171,7 @@ export function MiraConversation({
         return;
       }
       setLive(res.headers.get("X-Famile-Live") === "true");
+      setGrounded(res.headers.get("X-Famile-Grounded") === "true");
       if (!res.body) throw new Error("no body");
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -175,6 +185,7 @@ export function MiraConversation({
         const snapshot = accRef.current;
         if (firstToken && snapshot) {
           firstToken = false;
+          setChecking(false);
           onPosture?.("offering");
         }
         if (sit && snapshot && !sitFiredRef.current) {
@@ -188,6 +199,7 @@ export function MiraConversation({
         });
       }
     } catch {
+      setGrounded(null);
       setMessages((m) => {
         const copy = m.slice();
         const last = copy[copy.length - 1];
@@ -201,6 +213,7 @@ export function MiraConversation({
       });
     } finally {
       setBusy(false);
+      setChecking(false);
       onPosture?.("steady");
     }
   }
@@ -305,15 +318,29 @@ export function MiraConversation({
                           : "rounded-md text-ink-muted",
                       )}
                     >
-                      {m.text || (
-                        <span className="inline-flex gap-1">
-                          <Dot /> <Dot delay={0.15} /> <Dot delay={0.3} />
-                        </span>
-                      )}
+                      {m.text ||
+                        (checking && i === messages.length - 1 ? (
+                          <span className="inline-flex items-center gap-2 text-xs text-ink-dim">
+                            <span className="inline-flex gap-1">
+                              <Dot /> <Dot delay={0.15} /> <Dot delay={0.3} />
+                            </span>
+                            Checking the literature…
+                          </span>
+                        ) : (
+                          <span className="inline-flex gap-1">
+                            <Dot /> <Dot delay={0.15} /> <Dot delay={0.3} />
+                          </span>
+                        ))}
                     </span>
                   </motion.div>
                 ))}
               </AnimatePresence>
+              {!busy && grounded && lastAgent && (
+                <div className="flex items-center gap-2 pl-1 pt-2 text-[10px] uppercase tracking-[0.16em] text-ink-dim">
+                  <span className="h-1.5 w-1.5 rounded-full bg-aurora-mint" />
+                  Grounded in life-science literature
+                </div>
+              )}
               {chips.length > 0 && (
                 <div className="flex flex-wrap gap-2 pt-1">
                   {chips.map((p) => (

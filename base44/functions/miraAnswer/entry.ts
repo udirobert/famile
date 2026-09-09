@@ -66,6 +66,10 @@ type Turn = { role: "user" | "agent"; content: string };
 // Fetched only for evidence-seeking queries, never for redacted (PHI) turns,
 // and only when FIRECRAWL_API_KEY is configured. Any failure returns an
 // ungrounded result and the function answers from context alone.
+//
+// Note: EVIDENCE_HINTS and needsResearch are intentionally kept identical to
+// famile/web/lib/research-intent.ts. Base44 functions are deployed separately,
+// so this file duplicates the patterns; update both locations together.
 
 const FIRECRAWL_ENDPOINT = "https://api.firecrawl.dev/v2/search/research";
 const FIRECRAWL_TIMEOUT_MS = 8_000;

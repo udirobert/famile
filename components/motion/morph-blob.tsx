@@ -1,15 +1,15 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Environment } from "@react-three/drei";
-import { Component, useMemo, useRef, type ReactNode } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Float, MeshDistortMaterial } from "@react-three/drei";
+import { Component, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { useInView, useReducedMotion } from "motion/react";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-// The drei <Environment preset> fetches an HDR from a remote CDN. If that
-// fetch fails (network, CORS, CDN outage) it throws and would take the whole
-// page down via the root error boundary. The blob already has explicit lights,
-// so the environment map is purely decorative — drop it silently on failure.
+// Procedural environment generation should not throw, but guard it with an
+// error boundary anyway — if the WebGL context is in a bad state we want the
+// rest of the page to survive.
 class SafeEnvironment extends Component<
   { children: ReactNode },
   { failed: boolean }
@@ -21,12 +21,33 @@ class SafeEnvironment extends Component<
   }
 
   componentDidCatch(error: unknown) {
-    console.warn("Environment preset failed to load, falling back to lights only", error);
+    console.warn("RoomEnvironment failed, falling back to lights only", error);
   }
 
   render() {
     return this.state.failed ? null : this.props.children;
   }
+}
+
+// RoomEnvironment is a procedural, self-contained PMREM. It replaces the
+// 1.6 MB `/hdri/empty_warehouse_01_1k.hdr` file and removes the network fetch.
+function RoomEnv() {
+  const { gl, scene } = useThree();
+  const { envMap, renderTarget } = useMemo(() => {
+    const rt = new RoomEnvironment().renderTarget(gl);
+    return { envMap: rt.texture, renderTarget: rt };
+  }, [gl]);
+
+  useEffect(() => {
+    const prev = scene.environment;
+    scene.environment = envMap;
+    return () => {
+      scene.environment = prev;
+      renderTarget.dispose();
+    };
+  }, [scene, envMap, renderTarget]);
+
+  return null;
 }
 
 type MorphBlobProps = {
@@ -119,7 +140,7 @@ export function MorphBlob({
         <directionalLight position={[3, 4, 5]} intensity={1.2} color="#c4b0ff" />
         <pointLight position={[-4, -2, -3]} intensity={1.4} color="#ffb8e0" />
         <SafeEnvironment>
-          <Environment files="/hdri/empty_warehouse_01_1k.hdr" />
+          <RoomEnv />
         </SafeEnvironment>
         <Blob from={from} to={to} speed={speed} distort={distort} />
       </Canvas>
