@@ -145,16 +145,17 @@ export function ExperienceSection() {
     offset: ["start start", "end end"],
   });
 
-  // The orb breathes through the suite palette: lavender → mint → pink → amber.
+  // The orb takes each product's glyph color during its phase, then morphs
+  // through the crossfade to the next: Sukari, Orbura, Ardum.
   const orbFrom = useTransform(
     scrollYProgress,
-    [0, 0.33, 0.66, 1],
-    ["#c4b0ff", "#7ee8c8", "#ffb8e0", "#ffc581"],
+    [0, 0.3, 0.36, 0.63, 0.69, 1],
+    ["#c4b0ff", "#7ee8c8", "#ffb8e0", "#ffc581", "#7ee8c8", "#ffc581"],
   );
   const orbTo = useTransform(
     scrollYProgress,
-    [0, 0.33, 0.66, 1],
-    ["#7ee8c8", "#c4b0ff", "#ffc581", "#7ee8c8"],
+    [0, 0.3, 0.36, 0.63, 0.69, 1],
+    ["#7ee8c8", "#c4b0ff", "#ffc581", "#ffb8e0", "#ffc581", "#7ee8c8"],
   );
   const orbBackground = useMotionTemplate`radial-gradient(circle at 35% 30%, ${orbFrom}, ${orbTo} 72%)`;
   const orbScale = useTransform(
@@ -241,4 +242,3 @@ export function ExperienceSection() {
     </section>
   );
 }
-

@@ -364,4 +364,3 @@ atmosphere costs ~1 MB and three GPU contexts before a single word arrives.
 Put the products back on the page, give the poetry a plain-spoken subline,
 lazy-load the WebGL behind a designed bloom, and fix one color token — and
 the same site becomes clear, fast, and much more itself.
-

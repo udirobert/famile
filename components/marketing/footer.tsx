@@ -57,7 +57,7 @@ export function Footer() {
                   href="/dashboard"
                   className="text-ink-muted transition-colors hover:text-ink"
                 >
-                  Suite map
+                  Suite
                 </NextLink>
               </li>
               <li>

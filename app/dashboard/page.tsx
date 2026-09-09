@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   description:
     "Three practices. Each one thing at a time — Sukari, Orbura, and Ardum. Orientation here; continuous care in the product apps.",
   alternates: { canonical: "/dashboard" },
-  robots: { index: false, follow: false },
 };
 
 export default function DashboardPage() {

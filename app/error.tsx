@@ -43,7 +43,7 @@ export default function Error({
         )}
         <div className="mt-10 flex justify-center gap-3">
           <Button onClick={() => unstable_retry()}>Try again</Button>
-          <Button href="/" variant="secondary" transitionTypes={["nav-back"]}>
+          <Button href="/" variant="secondary">
             Back to site
           </Button>
         </div>
