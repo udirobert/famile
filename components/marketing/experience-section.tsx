@@ -48,13 +48,25 @@ const phases: Phase[] = [
 // Scroll timing: each phase fades in over F, holds, fades out over F —
 // except the first, which starts visible so the pinned field is never empty,
 // and the last, which holds to the end. Transform inputs must be strictly
-// increasing, hence the explicit windows.
+// increasing and within [0, 1] — Motion's scroll accelerate path feeds them
+// to WAAPI as keyframe offsets, which reject values outside that range.
 const F = 0.06;
 const WINDOWS: [number, number][] = [
   [0, 0.3],
   [0.36, 0.63],
   [0.69, 1],
 ];
+
+/** Fade window clamped to [0, 1] and strictly increasing for WAAPI. */
+function phaseScrollInput(visStart: number, visEnd: number): [number, number, number, number] {
+  const eps = 1e-4;
+  const a = Math.max(0, visStart - F);
+  const b = Math.min(1, Math.max(a + eps, visStart));
+  const d = Math.min(1, visEnd + F);
+  let c = Math.min(d - eps, Math.max(b + eps, visEnd));
+  if (c <= b) c = Math.min(d - eps, b + eps);
+  return [a, b, c, Math.max(c + eps, d)];
+}
 
 function PhaseText({
   progress,
@@ -69,7 +81,7 @@ function PhaseText({
   const product = getProduct(phase.slug);
   const first = index === 0;
   const last = index === phases.length - 1;
-  const input = [visStart - F, visStart, visEnd, visEnd + F];
+  const input = phaseScrollInput(visStart, visEnd);
 
   const opacity = useTransform(progress, input, [first ? 1 : 0, 1, 1, last ? 1 : 0]);
   const y = useTransform(progress, input, [first ? 0 : 32, 0, 0, last ? 0 : -32]);
@@ -114,7 +126,7 @@ function RailDot({
   const last = index === phases.length - 1;
   const opacity = useTransform(
     progress,
-    [visStart - F, visStart, visEnd, visEnd + F],
+    phaseScrollInput(visStart, visEnd),
     [first ? 1 : 0.25, 1, 1, last ? 1 : 0.25],
   );
   const product = getProduct(phases[index].slug);
