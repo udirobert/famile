@@ -34,6 +34,14 @@ const liveSignal: Record<Product["slug"], { title: string; hint: string }> = {
     title: "Intention held.",
     hint: "One decision when you’re ready.",
   },
+  kytos: {
+    title: "The Observatory is open.",
+    hint: "Every run, failures included.",
+  },
+  lemma: {
+    title: "Paper under audit.",
+    hint: "Judged before a human looks.",
+  },
 };
 
 export function ProductDetail({ product }: { product: Product }) {
@@ -113,7 +121,18 @@ export function ProductDetail({ product }: { product: Product }) {
                 {productOpenLabel(product)}
               </Button>
             )}
-            <Button href="/ask" variant="secondary" size="md">
+            {product.repo && product.repo !== product.url && (
+              <Button
+                href={product.repo}
+                variant="ghost"
+                size="md"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Source →
+              </Button>
+            )}
+            <Button href={`/ask?p=${product.slug}`} variant="secondary" size="md">
               Ask
             </Button>
           </div>

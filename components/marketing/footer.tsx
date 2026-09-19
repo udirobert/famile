@@ -1,6 +1,6 @@
 import NextLink from "next/link";
 import { Container } from "@/components/ui/container";
-import { products } from "@/lib/products";
+import { practiceProducts, researchProducts } from "@/lib/products";
 
 export function Footer() {
   return (
@@ -21,13 +21,30 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-12 sm:grid-cols-3 sm:gap-16">
+        <div className="grid grid-cols-2 gap-12 sm:grid-cols-4 sm:gap-16">
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
               Practice
             </p>
             <ul className="space-y-3 text-sm">
-              {products.map((p) => (
+              {practiceProducts.map((p) => (
+                <li key={p.slug}>
+                  <NextLink
+                    href={`/products/${p.slug}`}
+                    className="text-ink-muted transition-colors hover:text-ink"
+                  >
+                    {p.name}
+                  </NextLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-dim">
+              Bench
+            </p>
+            <ul className="space-y-3 text-sm">
+              {researchProducts.map((p) => (
                 <li key={p.slug}>
                   <NextLink
                     href={`/products/${p.slug}`}

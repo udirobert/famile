@@ -11,6 +11,7 @@ import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 
 const links = [
   { href: "/#suite", label: "Suite" },
+  { href: "/#bench", label: "Bench" },
   { href: "/#principles", label: "Principles" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },

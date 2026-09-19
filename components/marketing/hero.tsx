@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { AuroraFallback } from "@/components/motion/aurora-fallback";
 import { CssOrb } from "@/components/motion/css-orb";
+import { preloadMotionChunks } from "@/components/motion/preload";
 import { Magnetic } from "@/components/motion/magnetic-button";
 import { MiraConversation } from "@/components/agent/mira-conversation";
 import { EXHALE_MS, INHALE_MS, REST_MS } from "@/lib/agent/sit";
@@ -82,6 +83,10 @@ export function Hero() {
     const t = window.setTimeout(endRest, REST_MS);
     return () => window.clearTimeout(t);
   }, [isResting, endRest]);
+
+  useEffect(() => {
+    preloadMotionChunks();
+  }, []);
 
   return (
     <section

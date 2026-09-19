@@ -77,10 +77,12 @@ export function productSchema(product: Product) {
     "@type": "SoftwareApplication",
     name: product.name,
     description: product.description,
-    applicationCategory: "HealthApplication",
+    applicationCategory:
+      product.kind === "research" ? "ResearchApplication" : "HealthApplication",
     applicationSubCategory: product.category,
     operatingSystem: "Web",
     url: `${SITE}/products/${product.slug}`,
+    ...(product.repo ? { sameAs: product.repo } : {}),
     publisher: { "@id": `${SITE}/#organization` },
     inLanguage: "en",
   };

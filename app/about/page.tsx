@@ -4,7 +4,11 @@ import { MarketingShell } from "@/components/marketing/shell";
 import { Container } from "@/components/ui/container";
 import { JsonLd } from "@/components/JsonLd";
 import { webPageSchema } from "@/lib/schema";
-import { productOpenLabel, products } from "@/lib/products";
+import {
+  practiceProducts,
+  productOpenLabel,
+  researchProducts,
+} from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "About",
@@ -59,7 +63,7 @@ export default function AboutPage() {
                 Practice
               </p>
               <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3">
-                {products.map((p) => (
+                {practiceProducts.map((p) => (
                   <div
                     key={p.slug}
                     className="bg-canvas-elevated/40 p-8 backdrop-blur-xl"
@@ -90,6 +94,45 @@ export default function AboutPage() {
                           Soon
                         </span>
                       )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-16">
+              <p className="mb-2 text-xs uppercase tracking-[0.2em] text-ink-dim">
+                The bench
+              </p>
+              <p className="mb-6 text-sm text-ink-dim">
+                Open research, built in public — not care apps.
+              </p>
+              <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+                {researchProducts.map((p) => (
+                  <div
+                    key={p.slug}
+                    className="bg-canvas-elevated/40 p-8 backdrop-blur-xl"
+                  >
+                    <h3 className="font-display text-2xl tracking-tight">
+                      {p.name}
+                    </h3>
+                    <p className="mt-2 text-sm text-ink-muted">{p.tagline}</p>
+                    <div className="mt-6 flex flex-col gap-2">
+                      <Link
+                        href={`/products/${p.slug}`}
+                        transitionTypes={["nav-forward"]}
+                        className="inline-block text-sm text-ink transition-opacity hover:opacity-80"
+                      >
+                        Details →
+                      </Link>
+                      <a
+                        href={p.repo ?? p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-ink-muted underline-offset-4 hover:underline"
+                      >
+                        Source
+                      </a>
                     </div>
                   </div>
                 ))}

@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { sampleQA } from "@/lib/agent/replay";
 import { wantsSit } from "@/lib/agent/sit";
 import {
+  getProduct,
   products,
   type Product,
   type ProductSlug,
@@ -19,6 +20,22 @@ type Msg = { role: "user" | "agent"; text: string };
 function softMatches(text: string): Product[] {
   const lower = text.toLowerCase();
   return products.filter((p) => lower.includes(p.name.toLowerCase()));
+}
+
+// Starter questions when the surface opens oriented to a product (/ask?p=…).
+// Each names the product so the replay engine's keyword branches match too.
+function startersFor(name: string, kind: Product["kind"]): string[] {
+  return kind === "research"
+    ? [
+        `What is ${name}?`,
+        `How does ${name} work?`,
+        `What has ${name} published so far?`,
+      ]
+    : [
+        `What is ${name}?`,
+        `Who is ${name} for?`,
+        `How is ${name} different from the others?`,
+      ];
 }
 
 type MiraConversationProps = {
@@ -37,6 +54,9 @@ type MiraConversationProps = {
   /** Fired once when prior turns hydrate from Base44 on mount. The orb
    * uses this to bloom, signaling continuity without words. */
   onMemory?: () => void;
+  /** Open oriented to a product (from /ask?p=<slug>): greeting and starter
+   * questions name it. Mira's system prompt already carries every product. */
+  product?: ProductSlug;
 };
 
 export function MiraConversation({
@@ -48,6 +68,7 @@ export function MiraConversation({
   onReturn,
   onPosture,
   onMemory,
+  product,
 }: MiraConversationProps) {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -74,6 +95,9 @@ export function MiraConversation({
   // When a ?session=<key> URL parameter is present (share link), it's passed
   // to the history endpoint so the right conversation hydrates.
   const hydratedRef = useRef(false);
+  // Prior turns restored on this device (not via a shared ?session link).
+  // Shown as a named header so continuity is visible, not implicit.
+  const [resumed, setResumed] = useState(false);
   useEffect(() => {
     if (hydratedRef.current) return;
     hydratedRef.current = true;
@@ -96,6 +120,7 @@ export function MiraConversation({
         );
         // Signal the orb that memory hydrated — a warm bloom to say
         // "I was here" without words.
+        if (!sessionParam) setResumed(true);
         onMemory?.();
       } catch {
         // Non-fatal: start with an empty conversation.
@@ -228,6 +253,11 @@ export function MiraConversation({
     !busy && !resting && lastAgent?.text ? softMatches(lastAgent.text) : [];
   const speaking = busy && !resting;
 
+  const oriented = product ? getProduct(product) : null;
+  const starterQuestions = oriented
+    ? startersFor(oriented.name, oriented.kind)
+    : sampleQA.map((qa) => qa.q);
+
   return (
     <div className={cn("relative flex min-h-0 flex-1 flex-col", className)}>
       <motion.div
@@ -281,23 +311,42 @@ export function MiraConversation({
           {messages.length === 0 ? (
             <div className="space-y-4">
               <p className="text-sm leading-relaxed text-ink-muted">
-                What are you noticing?
+                {oriented
+                  ? `About ${oriented.name}. What are you noticing?`
+                  : "What are you noticing?"}
               </p>
               <div className="flex flex-wrap gap-2">
-                {sampleQA.map((qa) => (
+                {starterQuestions.map((q) => (
                   <button
-                    key={qa.q}
+                    key={q}
                     type="button"
-                    onClick={() => send(qa.q)}
+                    onClick={() => send(q)}
                     className="rounded-full border border-line-strong bg-canvas-elevated/30 px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-aurora-lavender/40 hover:text-ink"
                   >
-                    {qa.q}
+                    {q}
                   </button>
                 ))}
               </div>
             </div>
           ) : (
             <div className="space-y-3">
+              {resumed && !started && (
+                <div className="mb-1 flex items-center justify-between gap-3 border-b border-line pb-3">
+                  <span className="text-[10px] uppercase tracking-[0.16em] text-ink-dim">
+                    where we left off
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMessages([]);
+                      setResumed(false);
+                    }}
+                    className="text-[10px] uppercase tracking-[0.16em] text-ink-dim transition-colors hover:text-ink-muted"
+                  >
+                    start fresh
+                  </button>
+                </div>
+              )}
               <AnimatePresence initial={false}>
                 {messages.map((m, i) => (
                   <motion.div

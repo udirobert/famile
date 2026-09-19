@@ -1,0 +1,42 @@
+import type { Metadata } from "next";
+import { MarketingShell } from "@/components/marketing/shell";
+import { ProductDetail } from "@/components/marketing/product-detail";
+import { JsonLd } from "@/components/JsonLd";
+import { getProduct } from "@/lib/products";
+import { productSchema, breadcrumbSchema } from "@/lib/schema";
+
+export function generateMetadata(): Metadata {
+  const product = getProduct("kytos");
+  return {
+    title: `${product.name} - ${product.tagline}`,
+    description: product.description,
+    alternates: { canonical: "/products/kytos" },
+    openGraph: {
+      title: `${product.name} - ${product.tagline}`,
+      description: product.description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} - ${product.tagline}`,
+      description: product.description,
+    },
+  };
+}
+
+export default function KytosPage() {
+  const product = getProduct("kytos");
+  return (
+    <MarketingShell>
+      <JsonLd data={productSchema(product)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Suite", path: "/#suite" },
+          { name: product.name, path: `/products/${product.slug}` },
+        ])}
+      />
+      <ProductDetail product={product} />
+    </MarketingShell>
+  );
+}

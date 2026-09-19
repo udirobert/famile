@@ -1,9 +1,12 @@
-export type ProductSlug = "sukari" | "orbura" | "ardum";
+export type ProductSlug = "sukari" | "orbura" | "ardum" | "kytos" | "lemma";
 
 export type ProductUrlStatus = "live" | "soon";
 
+export type ProductKind = "practice" | "research";
+
 export type Product = {
   slug: ProductSlug;
+  kind: ProductKind;
   name: string;
   tagline: string;
   description: string;
@@ -14,6 +17,7 @@ export type Product = {
   status: "AI-native" | "AI-enabled";
   url: string;
   urlStatus: ProductUrlStatus;
+  repo?: string;
   features: { title: string; body: string }[];
   metric: { label: string; value: string }[];
 };
@@ -21,6 +25,7 @@ export type Product = {
 export const products: Product[] = [
   {
     slug: "sukari",
+    kind: "practice",
     name: "Sukari",
     tagline: "A daily companion for metabolic care that has to last.",
     description:
@@ -55,6 +60,7 @@ export const products: Product[] = [
   },
   {
     slug: "orbura",
+    kind: "practice",
     name: "Orbura",
     tagline: "Recovery intelligence for people, and the teams around them.",
     description:
@@ -89,6 +95,7 @@ export const products: Product[] = [
   },
   {
     slug: "ardum",
+    kind: "practice",
     name: "Ardum",
     tagline: "The shape of your practice — intention before inventory.",
     description:
@@ -121,6 +128,78 @@ export const products: Product[] = [
       { label: "Booking", value: "Secondary" },
     ],
   },
+  {
+    slug: "kytos",
+    kind: "research",
+    name: "Kytos",
+    tagline: "How an unseen cell will answer perturbation, read from its quiet state.",
+    description:
+      "Kytos predicts how an unseen cellular context responds to CRISPRi perturbation from its unperturbed basal state alone. An entry for the 2026 Virtual Cell Challenge, built in public through the Kytos Observatory.",
+    longDescription:
+      "Kytos (κύτος, 'hollow vessel') holds what the measurements say and nothing more. Every experiment the project runs publishes to the Kytos Observatory — cell-eval metrics, ceiling headroom, biological audit flags, literature evidence — including the probe run deliberately built to fail. The next experiment is chosen by distance to the measured ceiling, not by leaderboard position.",
+    category: "Cellular Modelling",
+    status: "AI-native",
+    url: "https://kytos.netlify.app",
+    repo: "https://github.com/udirobert/kytos",
+    urlStatus: "live",
+    glyph: { from: "#7ec8ff", to: "#7ee8c8" },
+    accent: "#7ec8ff",
+    features: [
+      {
+        title: "Basal only",
+        body: "Predictions are made from the unperturbed state alone — no peeking at the perturbation data for the context being tested.",
+      },
+      {
+        title: "The Observatory",
+        body: "Every run publishes its metrics, audit flags, and briefing as it lands. Failures stay on the wall beside the rest.",
+      },
+      {
+        title: "Ceiling as compass",
+        body: "Headroom to the measured ceiling decides the next experiment, not rank.",
+      },
+    ],
+    metric: [
+      { label: "Cells", value: "360k" },
+      { label: "Targets", value: "300" },
+      { label: "Runs shared", value: "Every one" },
+    ],
+  },
+  {
+    slug: "lemma",
+    kind: "research",
+    name: "Lemma",
+    tagline: "An auditor of scientific claims that refuses to trust itself.",
+    description:
+      "Lemma takes an unseen paper, extracts its testable claims, writes and runs honest numerical audits, assembles an inspectable evidence trail — then a judge decides whether the trail is trustworthy before any human looks at it.",
+    longDescription:
+      "A paper becomes a self-judged evidence trail: supported, falsified, or inconclusive, with the receipts attached. Success criteria may only be derived from a claim's own wording — no added thresholds. Every LLM call and tool result lands in an append-only trace, so the reasoning is auditable end to end. Built for the re:AGENT End-to-End Agentic Science track at Founders Inc.",
+    category: "Agentic Science",
+    status: "AI-native",
+    url: "https://github.com/udirobert/lemma",
+    repo: "https://github.com/udirobert/lemma",
+    urlStatus: "live",
+    glyph: { from: "#e8e2b8", to: "#c4b0ff" },
+    accent: "#e8e2b8",
+    features: [
+      {
+        title: "Claims, not vibes",
+        body: "Up to six testable claims are extracted per paper, ordered by importance, each with a success criterion drawn only from the claim's own statement.",
+      },
+      {
+        title: "Honest audits",
+        body: "Numerical audits are written and run per claim. Where reproduction can't reach the paper's number, the gap is recorded — not the threshold.",
+      },
+      {
+        title: "Judge before human",
+        body: "A judge grades the assembled logbook's trustworthiness first; every call and result sits in an append-only trace.",
+      },
+    ],
+    metric: [
+      { label: "Pipeline", value: "4 stages" },
+      { label: "Claims / paper", value: "≤ 6" },
+      { label: "Trace", value: "Append-only" },
+    ],
+  },
 ];
 
 export function getProduct(slug: ProductSlug): Product {
@@ -128,6 +207,14 @@ export function getProduct(slug: ProductSlug): Product {
   if (!product) throw new Error(`Unknown product: ${slug}`);
   return product;
 }
+
+export const practiceProducts = products.filter(
+  (p): p is Product & { kind: "practice" } => p.kind === "practice",
+);
+
+export const researchProducts = products.filter(
+  (p): p is Product & { kind: "research" } => p.kind === "research",
+);
 
 export function productOpenLabel(product: Product): string {
   if (product.urlStatus === "soon") return `${product.name} coming soon`;

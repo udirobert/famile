@@ -15,38 +15,21 @@ export function MarketingShell({ children }: { children: React.ReactNode }) {
 }
 
 function AmbientAurora() {
+  // One painted layer instead of four blurred fixed divs: a blurred
+  // full-viewport stack re-composites on every scroll frame on mobile.
+  // Multi-stop radial gradients give the same soft edges for free.
   return (
-    <div aria-hidden className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-      <div className="absolute inset-0 bg-canvas" />
-      <div
-        className="absolute -top-1/4 left-1/2 h-[85vh] w-[85vh] -translate-x-1/2 rounded-full opacity-50 blur-[140px]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(196,176,255,0.20), transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute bottom-0 -right-32 h-[60vh] w-[60vh] rounded-full opacity-40 blur-[140px]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(255,184,224,0.16), transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute bottom-0 -left-32 h-[60vh] w-[60vh] rounded-full opacity-40 blur-[140px]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(126,232,200,0.12), transparent 70%)",
-        }}
-      />
-      {/* Warm amber dawn glow rising low - keeps the canvas calm, not cold */}
-      <div
-        className="absolute -bottom-[12%] left-1/2 h-[55vh] w-[72vw] -translate-x-1/2 rounded-full opacity-45 blur-[150px]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(255,197,129,0.20), transparent 70%)",
-        }}
-      />
-    </div>
+    <div
+      aria-hidden
+      className="fixed inset-0 -z-10 pointer-events-none bg-canvas"
+      style={{
+        backgroundImage: [
+          "radial-gradient(46% 46% at 50% -10%, rgba(196,176,255,0.18), transparent 72%)",
+          "radial-gradient(40% 40% at 110% 104%, rgba(255,184,224,0.12), transparent 72%)",
+          "radial-gradient(40% 40% at -10% 104%, rgba(126,232,200,0.09), transparent 72%)",
+          "radial-gradient(65% 48% at 50% 115%, rgba(255,197,129,0.15), transparent 72%)",
+        ].join(", "),
+      }}
+    />
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { MarketingShell } from "@/components/marketing/shell";
 import { AskExperience } from "@/components/agent/ask-experience";
 import { JsonLd } from "@/components/JsonLd";
@@ -24,7 +25,9 @@ export default function AskPage() {
           description: "Attention, evidence, and continuity for staying well.",
         })}
       />
-      <AskExperience />
+      <Suspense fallback={null}>
+        <AskExperience />
+      </Suspense>
     </MarketingShell>
   );
 }

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { AuroraFallback } from "@/components/motion/aurora-fallback";
 import { CssOrb } from "@/components/motion/css-orb";
@@ -11,6 +12,7 @@ import { MiraConversation } from "@/components/agent/mira-conversation";
 import { EXHALE_MS, INHALE_MS, REST_MS } from "@/lib/agent/sit";
 import { DUR, EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { products, type ProductSlug } from "@/lib/products";
 import { useLatestPosture } from "@/lib/agent/network";
 
 // Deferred WebGL — see hero.tsx. The CSS atmosphere blooms into the shader.
@@ -101,6 +103,12 @@ export function AskExperience() {
   const [resting, setResting] = useState(false);
   const [conversational, setConversational] = useState<OrbPosture>("steady");
   const [memoryBloom, setMemoryBloom] = useState(false);
+  // /ask?p=<slug> opens oriented to a product (linked from product pages).
+  const searchParams = useSearchParams();
+  const p = searchParams.get("p");
+  const orientedProduct = products.some((x) => x.slug === p)
+    ? (p as ProductSlug)
+    : undefined;
   const endRest = useCallback(() => setResting(false), []);
   const breathCycle = INHALE_MS + EXHALE_MS;
 
@@ -231,6 +239,7 @@ export function AskExperience() {
           >
             <MiraConversation
               autoFocus
+              product={orientedProduct}
               onSit={() => setResting(true)}
               resting={resting}
               onReturn={endRest}

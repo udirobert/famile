@@ -102,6 +102,66 @@ export const replayTraces: Record<ProductSlug, AgentTrace> = {
       },
     ],
   },
+  kytos: {
+    product: "kytos",
+    steps: [
+      {
+        kind: "input",
+        label: "signal in",
+        text: "Basal expression for an unseen cellular context. 300 CRISPRi targets to predict. No perturbation data from this context.",
+      },
+      {
+        kind: "observe",
+        label: "observed",
+        text: "The 2025 atlas overlaps only a handful of these targets. Priors transfer where real signatures exist; elsewhere the model must fall back honestly.",
+      },
+      {
+        kind: "reason",
+        label: "reasoning",
+        text: "The nearest honest baseline — real control-cell resampling — sets the floor. Layer a per-target perturbation prior with log1p transport, and measure headroom to the ceiling before adding complexity.",
+      },
+      {
+        kind: "decide",
+        label: "one thing today",
+        text: "Run the Replogle-prior build: real per-target signatures for 272 of 300 targets, transport on, submit.",
+      },
+      {
+        kind: "report",
+        label: "to the Observatory",
+        text: "Run published as it landed: cell-eval score, rank, audit flags, literature evidence, briefing. The deliberately-failing probe run stays on the wall beside it.",
+      },
+    ],
+  },
+  lemma: {
+    product: "lemma",
+    steps: [
+      {
+        kind: "input",
+        label: "paper in",
+        text: "An unseen paper arrives by arXiv ID. No prior knowledge of its numbers is allowed into the audit.",
+      },
+      {
+        kind: "observe",
+        label: "observed",
+        text: "Six testable claims, ordered by importance. Each success criterion is derived only from the claim's own statement — no thresholds added after the fact.",
+      },
+      {
+        kind: "reason",
+        label: "reasoning",
+        text: "Write an audit script per claim, run it, iterate. Where reproduction can't reach the paper's number, record the gap rather than adjusting the bar.",
+      },
+      {
+        kind: "decide",
+        label: "verdict",
+        text: "Mark each claim supported, falsified, or inconclusive — receipts attached.",
+      },
+      {
+        kind: "report",
+        label: "judge before human",
+        text: "A judge grades the assembled logbook's trustworthiness before anyone reads it. Every LLM call and tool result sits in the append-only trace.",
+      },
+    ],
+  },
 };
 
 export const replayDashboardEvents: DashboardEvent[] = [
@@ -114,12 +174,18 @@ export const replayDashboardEvents: DashboardEvent[] = [
   { product: "ardum", kind: "signal", text: "Ardum: intention held — quiet week before October." },
   { product: "ardum", kind: "action", text: "One decision: timing vs solitude if both cannot be perfect." },
   { product: "ardum", kind: "report", text: "Episode note: no booking; monitoring until a hold is granted." },
+  { product: "kytos", kind: "signal", text: "Kytos: basal state read for an unseen context — 300 targets to predict." },
+  { product: "kytos", kind: "action", text: "One thing today: run the prior + transport build, submit." },
+  { product: "kytos", kind: "report", text: "Observatory updated: score, flags, and briefing published as they land." },
+  { product: "lemma", kind: "signal", text: "Lemma: unseen paper in the queue — six testable claims extracted." },
+  { product: "lemma", kind: "action", text: "Verdict per claim: supported, falsified, or inconclusive — receipts attached." },
+  { product: "lemma", kind: "report", text: "Judge graded the trail before a human looked. Trace is append-only." },
 ];
 
 export const sampleQA: SampleQA[] = [
   {
     q: "What is this place?",
-    a: "famile is a small studio for staying well. I'm Mira — I can talk things through, and the suite (Sukari, Orbura, Ardum) holds daily practice. I don't diagnose.",
+    a: "famile is a small studio for staying well. I'm Mira — I can talk things through, and the suite (Sukari, Orbura, Ardum) holds daily practice. Kytos and Lemma are the open research projects. I don't diagnose.",
   },
   {
     q: "Who are you?",
@@ -176,11 +242,15 @@ export function replayAnswer(query: string): string {
     return "Ardum holds intentions that may become rest or practice — one decision at a time; booking stays secondary until confidence is earned.";
   if (q.includes("orbura") || q.includes("recovery") || q.includes("burnout"))
     return "Orbura reads recovery signals early and adapts the plan to the week that happened — load, sleep, and capacity together.";
+  if (q.includes("kytos") || q.includes("crispr") || q.includes("virtual cell"))
+    return "Kytos predicts how an unseen cellular context responds to CRISPRi perturbation, from its basal state alone. Every run publishes to the Kytos Observatory — failures included.";
+  if (q.includes("lemma") || q.includes("claim") || q.includes("audit a paper"))
+    return "Lemma audits scientific claims end to end: it extracts a paper's testable claims, runs honest numerical audits, and a judge grades the evidence trail before any human looks.";
   if (q.includes("sukari") || q.includes("metabolic") || q.includes("surface"))
     return sampleQA[3].a;
   if (q.includes("native") || q.includes("ai-native") || q.includes("enabled"))
     return "AI-native apps run a full decide–practice–report loop. AI-enabled ones add intelligence inside an existing workflow. Either way, claims stay bounded.";
-  return "Ask what you're noticing — or about Mira, Sukari, Orbura, or Ardum.";
+  return "Ask what you're noticing — or about Mira, Sukari, Orbura, Ardum, Kytos, or Lemma.";
 }
 
 export const provenance: Record<ProductSlug, ProvenanceEntry[]> = {
@@ -242,6 +312,46 @@ export const provenance: Record<ProductSlug, ProvenanceEntry[]> = {
       source: "Ardum product vision: booking is implementation",
       reasoning:
         "People want rest, reconnection, or change — not logistics first. Booking is a terminal grant of authority, not the story of the journey.",
+    },
+  ],
+  kytos: [
+    {
+      claim: "360k",
+      source: "Kytos Observatory: VCC 2026 validation runs (k003+)",
+      reasoning:
+        "The 2026 Virtual Cell Challenge validation set Kytos submits against holds ~360k cells across 300 targets × 3 contexts. The figure describes the benchmark, not a capability claim.",
+    },
+    {
+      claim: "300",
+      source: "VCC 2026 validation specification",
+      reasoning:
+        "Each submission predicts perturbation responses for 300 CRISPRi knockdown targets in held-out contexts, from the basal state alone.",
+    },
+    {
+      claim: "Every one",
+      source: "Kytos Observatory policy: build in public",
+      reasoning:
+        "Each run — including the deliberately-failing probe and submitted scores — is published with metrics and audit flags. Selective reporting would void the point of the ledger.",
+    },
+  ],
+  lemma: [
+    {
+      claim: "4 stages",
+      source: "Lemma pipeline: extract → audit → evidence → judge",
+      reasoning:
+        "The end-to-end run is fixed at four stages so each can be run and inspected in isolation. Any verdict must pass through all four.",
+    },
+    {
+      claim: "≤ 6",
+      source: "Lemma extract spec: claims.json",
+      reasoning:
+        "At most six testable claims per paper, ordered by importance, each with a success criterion derived only from the claim's own statement — capping the surface where thresholds could be moved after the fact.",
+    },
+    {
+      claim: "Append-only",
+      source: "Lemma trace design",
+      reasoning:
+        "Every LLM call and tool result lands in an append-only trace, so the judge — and any later human — audits the reasoning itself, not just its conclusion.",
     },
   ],
 };
