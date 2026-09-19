@@ -1,17 +1,19 @@
 "use client";
 
 import {
+  AnimatePresence,
   motion,
   useMotionTemplate,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useTransform,
-  type MotionValue,
 } from "motion/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { getProduct, type ProductSlug } from "@/lib/products";
 import { CssOrb } from "@/components/motion/css-orb";
+import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 
 /**
  * The experience section, rebuilt as a single-orb scrollytelling sequence
@@ -19,6 +21,13 @@ import { CssOrb } from "@/components/motion/css-orb";
  * product accents while each aphorism arrives attached to a plain, checkable
  * sentence about what the product does. Zero WebGL contexts — the render
  * budget stays reserved for the hero orb and the aurora.
+ *
+ * Scroll picks STATE, time picks TRANSITIONS: the scroll position only
+ * decides which phase is active (one panel at a time, never crossfaded by
+ * raw progress), and AnimatePresence runs the swap on a clock. A violent
+ * flick can skip phases, but it can never land two panels on top of each
+ * other — the old window-crossfade mapped opacity straight onto scroll, so
+ * anything faster than the Lenis glide read as overlapping text.
  */
 
 type Phase = {
@@ -45,106 +54,71 @@ const phases: Phase[] = [
   },
 ];
 
-// Scroll timing: each phase fades in over F, holds, fades out over F —
-// except the first, which starts visible so the pinned field is never empty,
-// and the last, which holds to the end. Transform inputs must be strictly
-// increasing and within [0, 1] — Motion's scroll accelerate path feeds them
-// to WAAPI as keyframe offsets, which reject values outside that range.
-const F = 0.06;
-const WINDOWS: [number, number][] = [
-  [0, 0.3],
-  [0.36, 0.63],
-  [0.69, 1],
-];
-
-/** Fade window clamped to [0, 1] and strictly increasing for WAAPI. */
-function phaseScrollInput(visStart: number, visEnd: number): [number, number, number, number] {
-  const eps = 1e-4;
-  const a = Math.max(0, visStart - F);
-  const b = Math.min(1, Math.max(a + eps, visStart));
-  const d = Math.min(1, visEnd + F);
-  let c = Math.min(d - eps, Math.max(b + eps, visEnd));
-  if (c <= b) c = Math.min(d - eps, b + eps);
-  return [a, b, c, Math.max(c + eps, d)];
+function phaseFor(progress: number): number {
+  return progress < 1 / 3 ? 0 : progress < 2 / 3 ? 1 : 2;
 }
 
-function PhaseText({
-  progress,
-  index,
-  phase,
-}: {
-  progress: MotionValue<number>;
-  index: number;
-  phase: Phase;
-}) {
-  const [visStart, visEnd] = WINDOWS[index];
+function PhasePanel({ index }: { index: number }) {
+  const phase = phases[index];
   const product = getProduct(phase.slug);
-  const first = index === 0;
-  const last = index === phases.length - 1;
-  const input = phaseScrollInput(visStart, visEnd);
-
-  const opacity = useTransform(progress, input, [first ? 1 : 0, 1, 1, last ? 1 : 0]);
-  const y = useTransform(progress, input, [first ? 0 : 32, 0, 0, last ? 0 : -32]);
-
   const words = phase.line.split(" ");
   const lead = words.slice(0, -2).join(" ");
   const tail = words.slice(-2).join(" ");
 
   return (
     <motion.div
-      style={{ opacity, y }}
+      variants={stagger}
+      initial="hidden"
+      animate="visible"
+      exit={{
+        opacity: 0,
+        y: -24,
+        transition: { duration: 0.22, ease: EASE.soft, staggerChildren: 0 },
+      }}
       className="absolute inset-0 flex flex-col items-center justify-center text-center"
     >
-      <p
+      <motion.p
+        variants={fadeUp}
         className="mb-6 inline-flex items-center rounded-full border px-3 py-1 text-xs uppercase tracking-[0.18em]"
         style={{ borderColor: `${product.accent}55`, color: product.accent }}
       >
         {product.name}
-      </p>
-      <p className="font-display text-5xl leading-[1.15] tracking-tight sm:text-7xl lg:text-8xl">
+      </motion.p>
+      <motion.p
+        variants={fadeUp}
+        className="font-display text-5xl leading-[1.15] tracking-tight sm:text-7xl lg:text-8xl"
+      >
         {lead}{" "}
         <span className="text-aurora-gradient text-luminous inline-block px-0.5">
           {tail}
         </span>
-      </p>
-      <p className="mt-8 max-w-md text-base leading-relaxed text-ink-muted sm:text-lg">
+      </motion.p>
+      <motion.p
+        variants={fadeUp}
+        className="mt-8 max-w-md text-base leading-relaxed text-ink-muted sm:text-lg"
+      >
         {phase.body}
-      </p>
+      </motion.p>
     </motion.div>
   );
 }
 
-function RailDot({
-  progress,
-  index,
-}: {
-  progress: MotionValue<number>;
-  index: number;
-}) {
-  const [visStart, visEnd] = WINDOWS[index];
-  const first = index === 0;
-  const last = index === phases.length - 1;
-  const opacity = useTransform(
-    progress,
-    phaseScrollInput(visStart, visEnd),
-    [first ? 1 : 0.25, 1, 1, last ? 1 : 0.25],
-  );
-  const product = getProduct(phases[index].slug);
-  return (
-    <motion.span
-      style={{ opacity, background: product.accent }}
-      className="h-1.5 w-6 rounded-full"
-      aria-hidden
-    />
-  );
-}
-
-function ProgressRail({ progress }: { progress: MotionValue<number> }) {
+function ProgressRail({ active }: { active: number }) {
   return (
     <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2">
-      {phases.map((phase, i) => (
-        <RailDot key={phase.slug} progress={progress} index={i} />
-      ))}
+      {phases.map((phase, i) => {
+        const product = getProduct(phase.slug);
+        return (
+          <motion.span
+            key={phase.slug}
+            animate={{ opacity: i === active ? 1 : 0.25 }}
+            transition={{ duration: DUR.base, ease: EASE.soft }}
+            style={{ background: product.accent }}
+            className="h-1.5 w-6 rounded-full"
+            aria-hidden
+          />
+        );
+      })}
     </div>
   );
 }
@@ -157,16 +131,23 @@ export function ExperienceSection() {
     offset: ["start start", "end end"],
   });
 
+  const [active, setActive] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    const next = phaseFor(p);
+    setActive((cur) => (cur === next ? cur : next));
+  });
+
   // The orb takes each product's glyph color during its phase, then morphs
-  // through the crossfade to the next: Sukari, Orbura, Ardum.
+  // through the crossfade to the next: Sukari, Orbura, Ardum. Color is safe
+  // to interpolate straight from scroll — only text needed the state machine.
   const orbFrom = useTransform(
     scrollYProgress,
-    [0, 0.3, 0.36, 0.63, 0.69, 1],
+    [0, 0.3, 0.37, 0.63, 0.7, 1],
     ["#c4b0ff", "#7ee8c8", "#ffb8e0", "#ffc581", "#7ee8c8", "#ffc581"],
   );
   const orbTo = useTransform(
     scrollYProgress,
-    [0, 0.3, 0.36, 0.63, 0.69, 1],
+    [0, 0.3, 0.37, 0.63, 0.7, 1],
     ["#7ee8c8", "#c4b0ff", "#ffc581", "#ffb8e0", "#ffc581", "#7ee8c8"],
   );
   const orbBackground = useMotionTemplate`radial-gradient(circle at 35% 30%, ${orbFrom}, ${orbTo} 72%)`;
@@ -231,25 +212,23 @@ export function ExperienceSection() {
             style={{ background: orbBackground }}
           />
         </motion.div>
+        {/* Tint without backdrop-blur: display type must stay crisp
+            (EXPERIENCE_REVIEW §5.2) and a full-viewport blur is the single
+            most expensive paint on mobile. */}
         <div
-          className="absolute inset-0 bg-canvas/55 backdrop-blur-sm"
+          className="absolute inset-0 bg-canvas/70"
           aria-hidden
         />
 
         <Container className="relative z-10">
           <div className="relative mx-auto h-[70vh] max-w-4xl">
-            {phases.map((phase, i) => (
-              <PhaseText
-                key={phase.slug}
-                progress={scrollYProgress}
-                index={i}
-                phase={phase}
-              />
-            ))}
+            <AnimatePresence mode="wait" initial={false}>
+              <PhasePanel key={active} index={active} />
+            </AnimatePresence>
           </div>
         </Container>
 
-        <ProgressRail progress={scrollYProgress} />
+        <ProgressRail active={active} />
       </div>
     </section>
   );

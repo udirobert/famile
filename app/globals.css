@@ -72,6 +72,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Native smooth scrolling (the reduced-motion block below forces `auto`).
+       scroll-padding clears the fixed nav so /#suite-style anchors land
+       where they point. */
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
 
   body {

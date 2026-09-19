@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
-import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { WebVitals } from "@/components/analytics/web-vitals";
 import { JsonLd } from "@/components/JsonLd";
 import { siteGraphSchema } from "@/lib/schema";
@@ -107,7 +106,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-canvas text-ink">
         <JsonLd data={siteGraphSchema()} />
         <WebVitals />
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
       </body>
     </html>
   );
