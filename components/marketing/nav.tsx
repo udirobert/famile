@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 
 const links = [
-  { href: "/#suite", label: "Suite" },
-  { href: "/#bench", label: "Bench" },
-  { href: "/#principles", label: "Principles" },
+  { href: "/ask", label: "Mira" },
+  { href: "/#suite", label: "Practice" },
+  { href: "/research", label: "Bench" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];

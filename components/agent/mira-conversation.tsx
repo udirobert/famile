@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { sampleQA } from "@/lib/agent/replay";
 import { wantsSit } from "@/lib/agent/sit";
+import {
+  getHeldSnapshot,
+  getServerHeldSnapshot,
+  parseHeld,
+  saveHeld,
+  subscribeHeld,
+} from "@/lib/agent/held";
 import {
   getProduct,
   products,
@@ -258,6 +265,16 @@ export function MiraConversation({
     ? startersFor(oriented.name, oriented.kind)
     : sampleQA.map((qa) => qa.q);
 
+  // Held intention: device-local between visits (see lib/agent/held.ts).
+  const heldRaw = useSyncExternalStore(
+    subscribeHeld,
+    getHeldSnapshot,
+    getServerHeldSnapshot,
+  );
+  const held = useMemo(() => parseHeld(heldRaw), [heldRaw]);
+  const lastUser = [...messages].reverse().find((m) => m.role === "user");
+  const lastUserHeld = !!held && lastUser?.text === held.text;
+
   return (
     <div className={cn("relative flex min-h-0 flex-1 flex-col", className)}>
       <motion.div
@@ -310,6 +327,32 @@ export function MiraConversation({
         >
           {messages.length === 0 ? (
             <div className="space-y-4">
+              {held && (
+                <div className="rounded-md border border-dashed border-line-strong p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-ink-dim">
+                      held on this device · {held.at.slice(0, 10)}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => saveHeld(null)}
+                      className="text-[10px] uppercase tracking-[0.16em] text-ink-dim transition-colors hover:text-ink-muted"
+                    >
+                      release
+                    </button>
+                  </div>
+                  <p className="mt-2 text-sm italic leading-relaxed text-ink-muted">
+                    “{held.text}”
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => send(`Let’s pick this back up: ${held.text}`)}
+                    className="mt-3 rounded-full border border-line-strong px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-aurora-lavender/40 hover:text-ink"
+                  >
+                    pick it up →
+                  </button>
+                </div>
+              )}
               <p className="text-sm leading-relaxed text-ink-muted">
                 {oriented
                   ? `About ${oriented.name}. What are you noticing?`
@@ -395,6 +438,24 @@ export function MiraConversation({
                   {chips.map((p) => (
                     <SoftChip key={p.slug} product={p} />
                   ))}
+                </div>
+              )}
+              {!busy && !resting && lastUser && (
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      saveHeld({
+                        text: lastUser.text,
+                        at: new Date().toISOString(),
+                      })
+                    }
+                    className="text-[10px] uppercase tracking-[0.16em] text-ink-dim transition-colors hover:text-ink-muted"
+                  >
+                    {lastUserHeld
+                      ? "held on this device"
+                      : "hold this — keep it on this device"}
+                  </button>
                 </div>
               )}
             </div>

@@ -26,6 +26,15 @@ const MAX_BODY_BYTES = 10_000;
 const SESSION_COOKIE = "famile_mira_session";
 const SESSION_COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
+// Opt-in sharing of the Mira session across sibling apps (e.g. ".famile.xyz"
+// so sukari/orbura/ardum can read the same capability). Default is host-only,
+// which is the current behavior. Set-Cookie is a raw header, so the value is
+// pattern-checked — nothing from env may reach it unsanitized.
+const COOKIE_DOMAIN_ATTR = (() => {
+  const d = process.env.SESSION_COOKIE_DOMAIN?.trim();
+  return d && /^[a-z0-9.-]+$/i.test(d) ? `; Domain=${d}` : "";
+})();
+
 function clientIp(req: Request): string {
   const xff = req.headers.get("x-forwarded-for");
   if (xff) return xff.split(",")[0].trim();
@@ -131,7 +140,7 @@ export async function POST(req: Request) {
       );
       headers.set(
         "Set-Cookie",
-        `${SESSION_COOKIE}=${sessionKey}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${SESSION_COOKIE_MAX_AGE}`,
+        `${SESSION_COOKIE}=${sessionKey}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${SESSION_COOKIE_MAX_AGE}${COOKIE_DOMAIN_ATTR}`,
       );
       return new Response(body, { status: upstream.status, headers });
     }

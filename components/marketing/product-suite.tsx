@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { CssOrb } from "@/components/motion/css-orb";
 import { TextReveal } from "@/components/motion/text-reveal";
@@ -8,6 +9,7 @@ import { Magnetic } from "@/components/motion/magnetic-button";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { ProvenanceAffordance } from "@/components/agent/provenance";
+import { BenchStrip } from "@/components/marketing/bench-strip";
 import {
   practiceProducts,
   productOpenLabel,
@@ -47,8 +49,15 @@ export function ProductSuite() {
             <p className="text-xs uppercase tracking-[0.25em] text-ink-dim">
               The bench
             </p>
-            <p className="text-xs text-ink-dim">
-              Open research, built in public — not care apps.
+            <p className="flex items-center gap-4 text-xs text-ink-dim">
+              <span>Open research, built in public — not care apps.</span>
+              <Link
+                href="/research"
+                transitionTypes={["nav-forward"]}
+                className="text-ink-muted transition-colors hover:text-ink"
+              >
+                live ledger →
+              </Link>
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2">
@@ -56,6 +65,7 @@ export function ProductSuite() {
               <ResearchCard key={p.slug} product={p} />
             ))}
           </div>
+          <BenchStrip />
         </div>
       </Container>
     </section>

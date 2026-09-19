@@ -11,6 +11,7 @@ import { CssOrb } from "@/components/motion/css-orb";
 import { preloadMotionChunks } from "@/components/motion/preload";
 import { Magnetic } from "@/components/motion/magnetic-button";
 import { MiraConversation } from "@/components/agent/mira-conversation";
+import { PracticeRun } from "@/components/marketing/practice-run";
 import { EXHALE_MS, INHALE_MS, REST_MS } from "@/lib/agent/sit";
 import { EASE, DUR, stagger, fadeUp } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -53,26 +54,41 @@ export function Hero() {
   const searchParams = useSearchParams();
   const reduced = useReducedMotion();
   const mira = searchParams.get("mira") === "1";
+  const practice = searchParams.get("practice") === "1";
   const [resting, setResting] = useState(false);
+
+  const holdScroll = useCallback((top: number) => {
+    requestAnimationFrame(() => {
+      window.scrollTo({ top, left: 0, behavior: "instant" });
+    });
+  }, []);
 
   const openMira = useCallback(() => {
     setResting(false);
     // Hold scroll where it is (usually top of hero) through the URL update.
     const y = window.scrollY;
     router.replace("/?mira=1", { scroll: false });
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: y, left: 0, behavior: "instant" });
-    });
-  }, [router]);
+    holdScroll(y);
+  }, [router, holdScroll]);
 
   const closeMira = useCallback(() => {
     setResting(false);
     const y = window.scrollY;
     router.replace("/", { scroll: false });
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: Math.min(y, 80), left: 0, behavior: "instant" });
-    });
-  }, [router]);
+    holdScroll(Math.min(y, 80));
+  }, [router, holdScroll]);
+
+  const openPractice = useCallback(() => {
+    const y = window.scrollY;
+    router.replace("/?practice=1", { scroll: false });
+    holdScroll(y);
+  }, [router, holdScroll]);
+
+  const closePractice = useCallback(() => {
+    const y = window.scrollY;
+    router.replace("/", { scroll: false });
+    holdScroll(Math.min(y, 80));
+  }, [router, holdScroll]);
 
   const endRest = useCallback(() => setResting(false), []);
   const isResting = mira && resting;
@@ -108,7 +124,7 @@ export function Hero() {
           {/* Stable left column — brand and Mira field crossfade in place */}
           <div className="relative min-h-[280px] min-w-0 sm:min-h-[320px] lg:min-h-[440px]">
             <AnimatePresence mode="sync" initial={false}>
-              {!mira ? (
+              {!mira && !practice ? (
                 <motion.div
                   key="space"
                   variants={stagger}
@@ -142,13 +158,36 @@ export function Hero() {
                     metabolic care, recovery, and practice.
                   </motion.p>
 
-                  <motion.div variants={fadeUp} className="mt-10">
+                  <motion.div variants={fadeUp} className="mt-10 flex items-center gap-3">
                     <Magnetic strength={0.3} className="inline-flex">
                       <Button type="button" size="lg" onClick={openMira}>
                         Ask Mira
                       </Button>
                     </Magnetic>
+                    <Button
+                      type="button"
+                      size="lg"
+                      variant="secondary"
+                      onClick={openPractice}
+                    >
+                      Try ninety seconds
+                    </Button>
                   </motion.div>
+                </motion.div>
+              ) : practice ? (
+                <motion.div
+                  key="practice-field"
+                  initial={reduced ? false : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{
+                    opacity: 0,
+                    y: 6,
+                    transition: { duration: 0.22, ease: EASE.soft },
+                  }}
+                  transition={{ duration: DUR.base, ease: EASE.soft, delay: reduced ? 0 : 0.06 }}
+                  className="absolute inset-0 flex flex-col"
+                >
+                  <PracticeRun onClose={closePractice} />
                 </motion.div>
               ) : (
                 <motion.div
@@ -239,16 +278,16 @@ export function Hero() {
             <p
               className={cn(
                 "mt-3 text-center text-xs uppercase tracking-[0.2em] text-ink-dim transition-opacity duration-500",
-                mira && !isResting ? "opacity-100" : "opacity-0",
+                (mira && !isResting) || practice ? "opacity-100" : "opacity-0",
               )}
-              aria-hidden={!mira || isResting}
+              aria-hidden={!((mira && !isResting) || practice)}
             >
-              Mira
+              {practice ? "Practice" : "Mira"}
             </p>
           </div>
         </div>
 
-        {!mira && (
+        {!mira && !practice && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

@@ -47,12 +47,18 @@ function HeroFallback() {
               Companions for the daily work of staying well — metabolic care,
               recovery, and practice.
             </p>
-            <div className="mt-10">
+            <div className="mt-10 flex items-center gap-3">
               <Link
                 href="/?mira=1"
                 className="relative inline-flex h-13 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-aurora-lavender via-aurora-iris to-aurora-mint px-8 text-base font-medium tracking-tight text-canvas shadow-[0_8px_40px_-8px_rgba(196,176,255,0.5)]"
               >
                 Ask Mira
+              </Link>
+              <Link
+                href="/?practice=1"
+                className="relative inline-flex h-13 items-center justify-center gap-2 rounded-full border border-line-strong bg-canvas-elevated/40 px-8 text-base font-medium tracking-tight text-ink"
+              >
+                Try ninety seconds
               </Link>
             </div>
           </div>

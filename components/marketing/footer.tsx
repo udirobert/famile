@@ -54,6 +54,14 @@ export function Footer() {
                   </NextLink>
                 </li>
               ))}
+              <li>
+                <NextLink
+                  href="/research"
+                  className="text-ink-muted transition-colors hover:text-ink"
+                >
+                  Live ledger
+                </NextLink>
+              </li>
             </ul>
           </div>
           <div>
